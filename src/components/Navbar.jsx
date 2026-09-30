@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import ByteSpaceLogo from "./Hero/ByteSpaceLogo";
 
 export default function Navbar() {
@@ -10,7 +11,9 @@ export default function Navbar() {
     <header className="relative z-30 w-full pt-6 pb-2 px-6 sm:px-12 lg:px-22 max-w-[1440px] mx-auto flex items-center justify-between">
       {/* Brand Logo (Left) */}
       <div className="flex items-center">
-        <ByteSpaceLogo />
+        <Link href="/" aria-label="ByteSpace Home">
+          <ByteSpaceLogo />
+        </Link>
       </div>
 
       {/* Desktop Navigation Links (Center) */}
@@ -40,18 +43,18 @@ export default function Navbar() {
 
       {/* Right Action Items */}
       <div className="hidden md:flex items-center gap-5 lg:gap-6">
-        <a
-          href="#signin"
+        <Link
+          href="/register"
           className="text-white/90 font-normal text-[13px] hover:text-white transition-colors duration-150"
         >
           Sign In
-        </a>
-        <a
-          href="#join"
+        </Link>
+        <Link
+          href="/register"
           className="text-white/90 font-normal text-[13px] hover:text-white transition-colors duration-150"
         >
           Join Us
-        </a>
+        </Link>
 
         {/* Shopping Bag Icon */}
         <button
@@ -163,20 +166,20 @@ export default function Navbar() {
           </a>
           <hr className="border-white/10 my-1" />
           <div className="flex justify-center items-center gap-6 pt-2">
-            <a
-              href="#signin"
+            <Link
+              href="/register"
               onClick={() => setMobileMenuOpen(false)}
               className="text-white/90 text-sm"
             >
               Sign In
-            </a>
-            <a
-              href="#join"
+            </Link>
+            <Link
+              href="/register"
               onClick={() => setMobileMenuOpen(false)}
               className="bg-[#cbfc01] text-black font-semibold text-sm px-4 py-1.5 rounded-full"
             >
               Join Us
-            </a>
+            </Link>
           </div>
         </div>
       )}

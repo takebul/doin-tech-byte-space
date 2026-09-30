@@ -1,6 +1,13 @@
-export default function ByteSpaceLogo({ className = "", dark = false }) {
+export default function ByteSpaceLogo({
+  className = "",
+  dark = false,
+  iconOnly = false,
+  whiteCutout = false,
+}) {
   return (
-    <div className={`flex items-center gap-2 select-none group cursor-pointer ${className}`}>
+    <div
+      className={`flex items-center gap-2 select-none group cursor-pointer ${className}`}
+    >
       {/* Custom ByteSpace 'b' icon with play cutout matching reference */}
       <div className="relative w-[22px] h-[24px] flex items-center justify-center shrink-0">
         <svg
@@ -19,18 +26,20 @@ export default function ByteSpaceLogo({ className = "", dark = false }) {
           {/* Inner triangle cutout pointing right */}
           <path
             d="M7 13.5L14.5 17L7 20.5V13.5Z"
-            fill={dark ? "#ffffff" : "#003be2"}
+            fill={whiteCutout || dark ? "#ffffff" : "#003be2"}
           />
         </svg>
       </div>
 
-      <span
-        className={`${
-          dark ? "text-[#1a1b1e]" : "text-white"
-        } font-bold text-[19px] tracking-[-0.015em] leading-none`}
-      >
-        ByteSpace
-      </span>
+      {!iconOnly && (
+        <span
+          className={`${
+            dark ? "text-[#1a1b1e]" : "text-white"
+          } font-bold text-[19px] tracking-[-0.015em] leading-none`}
+        >
+          ByteSpace
+        </span>
+      )}
     </div>
   );
 }
