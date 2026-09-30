@@ -27,12 +27,12 @@ export default function Navbar() {
         >
           Home
         </a>
-        <a
-          href="#courses"
+        <Link
+          href="/courses"
           className="text-white/80 font-normal text-[13px] hover:text-white transition-colors duration-150"
         >
           Courses
-        </a>
+        </Link>
         <a
           href="#creators"
           className="text-white/80 font-normal text-[13px] hover:text-white transition-colors duration-150"
@@ -150,13 +150,13 @@ export default function Navbar() {
           >
             Home
           </a>
-          <a
-            href="#courses"
+          <Link
+            href="/courses"
             onClick={() => setMobileMenuOpen(false)}
             className="text-white/80 py-1.5"
           >
             Courses
-          </a>
+          </Link>
           <a
             href="#creators"
             onClick={() => setMobileMenuOpen(false)}

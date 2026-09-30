@@ -13,10 +13,9 @@ const studentAvatars = [
 export default function CourseCard({ course, index }) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 15 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 0.4, delay: index * 0.08, ease: "easeOut" }}
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.35, delay: (index % 6) * 0.05, ease: "easeOut" }}
       whileHover={{ y: -4 }}
       className="group bg-white rounded-[22px] p-3.5 sm:p-4 border border-[#e5e6e8] shadow-[0_4px_16px_rgba(0,0,0,0.03)] hover:shadow-[0_16px_36px_rgba(0,0,0,0.08)] transition-all duration-300 flex flex-col justify-between"
     >
