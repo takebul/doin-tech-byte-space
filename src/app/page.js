@@ -6,6 +6,7 @@ import LearningPathsSection from "@/components/LearningPaths/LearningPathsSectio
 import FeaturesSection from "@/components/Features/FeaturesSection";
 import CreatorCtaSection from "@/components/CTA/CreatorCtaSection";
 import TestimonialsSection from "@/components/Testimonials/TestimonialsSection";
+import Footer from "@/components/Footer";
 
 export default function Home() {
   return (
@@ -36,6 +37,9 @@ export default function Home() {
 
       {/* Community Testimonials & Reviews */}
       <TestimonialsSection />
+
+      {/* Main Footer */}
+      <Footer />
     </main>
   );
 }

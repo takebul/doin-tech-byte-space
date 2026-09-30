@@ -1,4 +1,4 @@
-export default function ByteSpaceLogo({ className = "" }) {
+export default function ByteSpaceLogo({ className = "", dark = false }) {
   return (
     <div className={`flex items-center gap-2 select-none group cursor-pointer ${className}`}>
       {/* Custom ByteSpace 'b' icon with play cutout matching reference */}
@@ -19,12 +19,16 @@ export default function ByteSpaceLogo({ className = "" }) {
           {/* Inner triangle cutout pointing right */}
           <path
             d="M7 13.5L14.5 17L7 20.5V13.5Z"
-            fill="#003be2"
+            fill={dark ? "#ffffff" : "#003be2"}
           />
         </svg>
       </div>
 
-      <span className="text-white font-bold text-[19px] tracking-[-0.015em] leading-none">
+      <span
+        className={`${
+          dark ? "text-[#1a1b1e]" : "text-white"
+        } font-bold text-[19px] tracking-[-0.015em] leading-none`}
+      >
         ByteSpace
       </span>
     </div>
