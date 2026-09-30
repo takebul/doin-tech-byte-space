@@ -44,7 +44,7 @@ export default function Navbar() {
       {/* Right Action Items */}
       <div className="hidden md:flex items-center gap-5 lg:gap-6">
         <Link
-          href="/register"
+          href="/signin"
           className="text-white/90 font-normal text-[13px] hover:text-white transition-colors duration-150"
         >
           Sign In
@@ -167,7 +167,7 @@ export default function Navbar() {
           <hr className="border-white/10 my-1" />
           <div className="flex justify-center items-center gap-6 pt-2">
             <Link
-              href="/register"
+              href="/signin"
               onClick={() => setMobileMenuOpen(false)}
               className="text-white/90 text-sm"
             >
