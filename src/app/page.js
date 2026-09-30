@@ -1,8 +1,21 @@
+import Navbar from "@/components/Navbar";
+import HeroSection from "@/components/Hero/HeroSection";
+import StatsSection from "@/components/StatsSection";
 
 export default function Home() {
   return (
-    <div>
-      ByteSpace
-    </div>
+    <main className="relative min-h-screen w-full bg-[#003be2] flex flex-col overflow-x-hidden">
+      {/* Top Hero Container (matches reference 728px height on desktop) */}
+      <div className="relative w-full min-h-[728px] lg:h-[728px] hero-grid-bg flex flex-col justify-between overflow-hidden shrink-0">
+        {/* Top Navigation */}
+        <Navbar />
+
+        {/* Main Hero Section */}
+        <HeroSection />
+      </div>
+
+      {/* Stats / Partner Logos Section (143px height on reference) */}
+      <StatsSection />
+    </main>
   );
 }
