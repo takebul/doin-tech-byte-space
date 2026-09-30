@@ -5,6 +5,7 @@ import CoursesSection from "@/components/Courses/CoursesSection";
 import LearningPathsSection from "@/components/LearningPaths/LearningPathsSection";
 import FeaturesSection from "@/components/Features/FeaturesSection";
 import CreatorCtaSection from "@/components/CTA/CreatorCtaSection";
+import TestimonialsSection from "@/components/Testimonials/TestimonialsSection";
 
 export default function Home() {
   return (
@@ -32,6 +33,9 @@ export default function Home() {
 
       {/* Creator Call To Action Banner */}
       <CreatorCtaSection />
+
+      {/* Community Testimonials & Reviews */}
+      <TestimonialsSection />
     </main>
   );
 }
