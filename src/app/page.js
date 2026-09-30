@@ -3,6 +3,8 @@ import HeroSection from "@/components/Hero/HeroSection";
 import StatsSection from "@/components/StatsSection";
 import CoursesSection from "@/components/Courses/CoursesSection";
 import LearningPathsSection from "@/components/LearningPaths/LearningPathsSection";
+import FeaturesSection from "@/components/Features/FeaturesSection";
+import CreatorCtaSection from "@/components/CTA/CreatorCtaSection";
 
 export default function Home() {
   return (
@@ -24,6 +26,12 @@ export default function Home() {
 
       {/* Diverse Learning Paths Section */}
       <LearningPathsSection />
+
+      {/* Professional Growth & Course Management Features */}
+      <FeaturesSection />
+
+      {/* Creator Call To Action Banner */}
+      <CreatorCtaSection />
     </main>
   );
 }
