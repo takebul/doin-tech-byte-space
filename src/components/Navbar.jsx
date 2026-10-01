@@ -33,12 +33,12 @@ export default function Navbar() {
         >
           Courses
         </Link>
-        <a
-          href="#creators"
+        <Link
+          href="/creators"
           className="text-white/80 font-normal text-[13px] hover:text-white transition-colors duration-150"
         >
           Creators
-        </a>
+        </Link>
       </nav>
 
       {/* Right Action Items */}
@@ -157,13 +157,13 @@ export default function Navbar() {
           >
             Courses
           </Link>
-          <a
-            href="#creators"
+          <Link
+            href="/creators"
             onClick={() => setMobileMenuOpen(false)}
             className="text-white/80 py-1.5"
           >
             Creators
-          </a>
+          </Link>
           <hr className="border-white/10 my-1" />
           <div className="flex justify-center items-center gap-6 pt-2">
             <Link

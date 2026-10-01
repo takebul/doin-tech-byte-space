@@ -142,13 +142,12 @@ function CourseSidebarCard({ enrolled, handleEnroll }) {
           Ready to Dive In? Enroll Now and Start Building Your Digital Future!
         </p>
 
-        <button
-          type="button"
-          onClick={() => alert("Creator Profile: PurePearl Studio has authored 12 top-tier courses on ByteSpace.")}
-          className="w-fit border border-[#d6d9e0] hover:border-neutral-400 bg-white text-[#2c3038] text-[11px] font-medium px-4 py-1.5 rounded-full transition-colors cursor-pointer"
+        <Link
+          href="/creators"
+          className="w-fit border border-[#d6d9e0] hover:border-neutral-400 bg-white text-[#2c3038] text-[11px] font-medium px-4 py-1.5 rounded-full transition-colors cursor-pointer inline-block text-center"
         >
           See Full Profile
-        </button>
+        </Link>
       </div>
 
     </div>

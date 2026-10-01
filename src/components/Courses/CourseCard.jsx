@@ -20,7 +20,7 @@ export default function CourseCard({ course, index }) {
       whileHover={{ y: -4 }}
       className="group bg-white rounded-[22px] p-3.5 sm:p-4 border border-[#e5e6e8] shadow-[0_4px_16px_rgba(0,0,0,0.03)] hover:shadow-[0_16px_36px_rgba(0,0,0,0.08)] transition-all duration-300 flex flex-col justify-between"
     >
-      {/* 1. Thumbnail with Frosted Info Badges */}
+      {/* 1. Thumbnail */}
       <Link href="/course-details" className="block relative w-full aspect-[16/9.5] rounded-[16px] overflow-hidden select-none bg-neutral-100 cursor-pointer">
         <Image
           src={course.image}
