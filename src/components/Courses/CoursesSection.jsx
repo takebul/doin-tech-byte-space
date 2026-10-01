@@ -1,113 +1,48 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import CourseCard from "./CourseCard";
+import { fetchCourses, fallbackCourses, fallbackCategoryRows } from "@/lib/api";
 
-const categoryRows = [
-  // Row 1
-  [
-    "Featured",
-    "Music",
-    "Drawing & Painting",
-    "Marketing",
-    "Animation",
-    "Social Media",
-    "UI/UX Design",
-    "Creative Marketing",
-  ],
-  // Row 2
-  [
-    "Digital Illustration",
-    "Film & Video",
-    "Crafts",
-    "Freelance & Entrepreneurship",
-    "Graphic Design",
-    "Photography",
-  ],
-  // Row 3
-  [
-    "Productivity",
-    "Web Development",
-    "Data Science",
-    "Cooking",
-  ],
-];
-
-const allCourses = [
-  {
-    id: 1,
-    title: "Learn Figma from Basic",
-    author: "purepearl studio",
-    rating: 4.5,
-    level: "Beginner",
-    price: 25,
-    image: "/course-1.png",
-    category: "UI/UX Design",
-  },
-  {
-    id: 2,
-    title: "Build Digital Asset",
-    author: "purepearl studio",
-    rating: 4.5,
-    level: "Beginner",
-    price: 25,
-    image: "/course-2.png",
-    category: "Graphic Design",
-  },
-  {
-    id: 3,
-    title: "the Power of Big Data",
-    author: "purepearl studio",
-    rating: 4.5,
-    level: "Beginner",
-    price: 25,
-    image: "/course-3.png",
-    category: "Data Science",
-  },
-  {
-    id: 4,
-    title: "Balancing Productivity an...",
-    author: "purepearl studio",
-    rating: 4.5,
-    level: "Beginner",
-    price: 25,
-    image: "/course-4.png",
-    category: "Productivity",
-  },
-  {
-    id: 5,
-    title: "Mastering Money Manage...",
-    author: "purepearl studio",
-    rating: 4.5,
-    level: "Beginner",
-    price: 25,
-    image: "/course-5.png",
-    category: "Freelance & Entrepreneurship",
-  },
-  {
-    id: 6,
-    title: "From Idea to Startup Succ...",
-    author: "purepearl studio",
-    rating: 4.5,
-    level: "Beginner",
-    price: 25,
-    image: "/course-6.png",
-    category: "Marketing",
-  },
-];
+const categoryRows = fallbackCategoryRows;
+const allCourses = fallbackCourses;
 
 export default function CoursesSection() {
   const [activeCategory, setActiveCategory] = useState("Featured");
   const [showMore, setShowMore] = useState(false);
+  const [courses, setCourses] = useState(allCourses);
+  const [isLoading, setIsLoading] = useState(false);
 
-  // If Featured, show all 6. If specific category, filter or show all if category doesn't have courses yet
+  useEffect(() => {
+    let isMounted = true;
+    async function loadData() {
+      try {
+        setIsLoading(true);
+        const data = await fetchCourses({ limit: 6 });
+        if (isMounted && Array.isArray(data) && data.length > 0) {
+          setCourses(data);
+        }
+      } catch (err) {
+        console.warn("Using fallback courses:", err);
+      } finally {
+        if (isMounted) setIsLoading(false);
+      }
+    }
+    loadData();
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  // If Featured, show all courses. If specific category, filter or show all if category doesn't have courses yet
   const filteredCourses =
     activeCategory === "Featured"
-      ? allCourses
-      : allCourses.filter((c) => c.category === activeCategory).length > 0
-      ? allCourses.filter((c) => c.category === activeCategory)
-      : allCourses;
+      ? courses
+      : courses.filter((c) => c.category === activeCategory).length > 0
+      ? courses.filter((c) => c.category === activeCategory)
+      : courses;
+
 
   return (
     <section className="w-full bg-white py-16 sm:py-20 lg:py-24 text-[#242528] relative overflow-hidden">

@@ -5,6 +5,7 @@ export const metadata = {
   description: "Unlock the Power of Digital Creation with Expert Guidance. 112 Lessons, 24 hours of in-depth training.",
 };
 
-export default function CourseDetailPage() {
-  return <CourseDetailsPage />;
+export default async function CourseDetailPage({ params }) {
+  const resolvedParams = await params;
+  return <CourseDetailsPage courseId={resolvedParams?.id || "1"} />;
 }

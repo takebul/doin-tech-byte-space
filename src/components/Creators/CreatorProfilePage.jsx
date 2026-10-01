@@ -1,99 +1,51 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import CourseCard from "@/components/Courses/CourseCard";
+import { fetchCreatorById, fallbackCreator, fallbackCourses } from "@/lib/api";
 
-const creatorCourses = [
-  {
-    id: 1,
-    title: "Learn Figma from Basic",
-    author: "purepearl studio",
-    rating: 4.5,
-    level: "Beginner",
-    price: 25,
-    image: "/course-1.png",
-    category: "UI/UX Design",
-    lessons: "17 Lessons",
-    duration: "2 hours 16 mins",
-    comments: "59 Comments",
-  },
-  {
-    id: 2,
-    title: "Build Digital Asset",
-    author: "purepearl studio",
-    rating: 4.5,
-    level: "Beginner",
-    price: 25,
-    image: "/course-2.png",
-    category: "Drawing & Painting",
-    lessons: "17 Lessons",
-    duration: "2 hours 16 mins",
-    comments: "59 Comments",
-  },
-  {
-    id: 3,
-    title: "the Power of Big Data",
-    author: "purepearl studio",
-    rating: 4.5,
-    level: "Beginner",
-    price: 25,
-    image: "/course-3.png",
-    category: "Marketing",
-    lessons: "17 Lessons",
-    duration: "2 hours 16 mins",
-    comments: "59 Comments",
-  },
-  {
-    id: 4,
-    title: "Balancing Productivity an...",
-    author: "purepearl studio",
-    rating: 4.5,
-    level: "Beginner",
-    price: 25,
-    image: "/course-4.png",
-    category: "Animation",
-    lessons: "7 Lessons",
-    duration: "2 hours 16 mins",
-    comments: "59 Comments",
-  },
-  {
-    id: 5,
-    title: "Mastering Money Manage...",
-    author: "purepearl studio",
-    rating: 4.5,
-    level: "Beginner",
-    price: 25,
-    image: "/course-5.png",
-    category: "Creative Marketing",
-    lessons: "17 Lessons",
-    duration: "2 hours 16 mins",
-    comments: "59 Comments",
-  },
-  {
-    id: 6,
-    title: "From Idea to Startup Succ...",
-    author: "purepearl studio",
-    rating: 4.5,
-    level: "Beginner",
-    price: 25,
-    image: "/course-6.png",
-    category: "Social Media",
-    lessons: "7 Lessons",
-    duration: "2 hours 16 mins",
-    comments: "59 Comments",
-  },
-];
+const defaultCourses = fallbackCourses;
 
 export default function CreatorProfilePage() {
+  const [creator, setCreator] = useState(fallbackCreator);
+  const [courses, setCourses] = useState(defaultCourses);
+  const [isLoading, setIsLoading] = useState(false);
   const [isFollowing, setIsFollowing] = useState(false);
-  const [followerCount, setFollowerCount] = useState(12);
+  const [followerCount, setFollowerCount] = useState(fallbackCreator.followerCount || 12);
   const [selectedFilter, setSelectedFilter] = useState("all");
   const [sortBy, setSortBy] = useState("Most relevant");
   const [showSortDropdown, setShowSortDropdown] = useState(false);
+
+  useEffect(() => {
+    let isMounted = true;
+    async function loadData() {
+      try {
+        setIsLoading(true);
+        const data = await fetchCreatorById("purepearl-studio");
+        if (isMounted) {
+          if (data?.creator) {
+            setCreator(data.creator);
+            setFollowerCount(data.creator.followerCount || 12);
+          }
+          if (Array.isArray(data?.courses) && data.courses.length > 0) {
+            setCourses(data.courses);
+          }
+        }
+      } catch (err) {
+        console.warn("Using fallback creator profile:", err);
+      } finally {
+        if (isMounted) setIsLoading(false);
+      }
+    }
+    loadData();
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   const handleFollowToggle = () => {
     if (isFollowing) {
@@ -119,8 +71,8 @@ export default function CreatorProfilePage() {
             {/* Avatar with rounded corners */}
             <div className="w-18 h-18 sm:w-22 sm:h-22 rounded-[20px] sm:rounded-[24px] overflow-hidden relative shrink-0 shadow-lg border-2 border-white/20 bg-[#f89d9d]">
               <Image
-                src="/creator-avatar-large.png"
-                alt="PurePearl Studio Avatar"
+                src={creator.avatar || "/creator-avatar-large.png"}
+                alt={`${creator.name} Avatar`}
                 fill
                 priority
                 className="object-cover"
@@ -131,27 +83,28 @@ export default function CreatorProfilePage() {
             <div className="flex flex-col pt-0.5 sm:pt-1">
               <div className="flex items-center gap-3 flex-wrap">
                 <h1 className="text-white font-extrabold text-[24px] sm:text-[30px] lg:text-[34px] tracking-tight leading-tight">
-                  PurePearl Studio
+                  {creator.name}
                 </h1>
                 {/* Creator neon lime badge */}
                 <span className="bg-[#cbfc01] text-black font-bold text-[11px] sm:text-[11.5px] px-3.5 py-0.5 rounded-full select-none shadow-2xs">
-                  Creator
+                  {creator.badge || "Creator"}
                 </span>
               </div>
               <p className="text-white/85 text-[13px] sm:text-[14px] mt-1 font-normal">
-                Passionate UI/UX, Web designer
+                {creator.subtitle}
               </p>
             </div>
           </div>
 
           {/* Creator Bio Paragraphs */}
           <div className="space-y-2.5 text-white/85 text-[12.5px] sm:text-[13px] leading-[1.7] max-w-[860px] font-normal mt-6 sm:mt-7">
-            <p>
-              Welcome to the creative world of [Creator&apos;s Name]. Here, you&apos;ll discover the passion, expertise, and inspiration that drive my creative journey. Let&apos;s explore and learn together!
-            </p>
-            <p>
-              Dive into my creative portfolio, showcasing a glimpse of my artistic endeavors. From digital designs to multimedia projects, each piece tells a unique story. Explore the world of creativity with me.
-            </p>
+            {Array.isArray(creator.bio) ? (
+              creator.bio.map((paragraph, idx) => (
+                <p key={idx}>{paragraph}</p>
+              ))
+            ) : (
+              <p>{creator.bio}</p>
+            )}
           </div>
 
           {/* Stats Pills and Follow Button Row */}
@@ -311,7 +264,7 @@ export default function CreatorProfilePage() {
 
         {/* 6 Course Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7 items-stretch">
-          {creatorCourses.map((course, index) => (
+          {courses.map((course, index) => (
             <CourseCard key={course.id} course={course} index={index} />
           ))}
         </div>

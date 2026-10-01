@@ -21,7 +21,10 @@ export default function CourseCard({ course, index }) {
       className="group bg-white rounded-[22px] p-3.5 sm:p-4 border border-[#e5e6e8] shadow-[0_4px_16px_rgba(0,0,0,0.03)] hover:shadow-[0_16px_36px_rgba(0,0,0,0.08)] transition-all duration-300 flex flex-col justify-between"
     >
       {/* 1. Thumbnail */}
-      <Link href="/course-details" className="block relative w-full aspect-[16/9.5] rounded-[16px] overflow-hidden select-none bg-neutral-100 cursor-pointer">
+      <Link
+        href={course.id ? `/courses/${course.id}` : "/course-details"}
+        className="block relative w-full aspect-[16/9.5] rounded-[16px] overflow-hidden select-none bg-neutral-100 cursor-pointer group/thumb"
+      >
         <Image
           src={course.image}
           alt={course.title}
@@ -29,6 +32,19 @@ export default function CourseCard({ course, index }) {
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           className="object-cover transition-transform duration-500 group-hover:scale-105"
         />
+
+        {/* 3 Pills Overlay (Lessons, Duration, Comments) */}
+        <div className="absolute bottom-2.5 left-2 right-2 sm:left-2.5 sm:right-2.5 flex items-center justify-between gap-1 select-none pointer-events-none">
+          <span className="bg-white/85 backdrop-blur-md px-2 sm:px-2.5 py-0.5 rounded-full text-[9.5px] sm:text-[10.5px] font-medium text-[#383b42] shadow-2xs whitespace-nowrap">
+            {course.lessons || "17 Lessons"}
+          </span>
+          <span className="bg-white/85 backdrop-blur-md px-2 sm:px-2.5 py-0.5 rounded-full text-[9.5px] sm:text-[10.5px] font-medium text-[#383b42] shadow-2xs whitespace-nowrap">
+            {course.duration || "2 hours 16 mins"}
+          </span>
+          <span className="bg-white/85 backdrop-blur-md px-2 sm:px-2.5 py-0.5 rounded-full text-[9.5px] sm:text-[10.5px] font-medium text-[#383b42] shadow-2xs whitespace-nowrap">
+            {course.comments || "59 Comments"}
+          </span>
+        </div>
       </Link>
 
       {/* 2. Course Details */}
@@ -36,7 +52,10 @@ export default function CourseCard({ course, index }) {
         {/* Title and Rating Header */}
         <div>
           <div className="flex items-start justify-between gap-2">
-            <Link href="/course-details" className="block flex-1 group/title">
+            <Link
+              href={course.id ? `/courses/${course.id}` : "/course-details"}
+              className="block flex-1 group/title"
+            >
               <h3 className="font-bold text-[16px] sm:text-[17px] text-[#242528] group-hover/title:text-[#0047ff] leading-snug line-clamp-1 tracking-tight transition-colors">
                 {course.title}
               </h3>

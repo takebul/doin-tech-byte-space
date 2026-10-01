@@ -1,43 +1,41 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { fetchCourseById } from "@/lib/api";
 
-function CourseSidebarCard({ enrolled, handleEnroll }) {
+function CourseSidebarCard({ course, enrolled, handleEnroll }) {
   return (
     <div className="w-full bg-white rounded-[26px] sm:rounded-[30px] p-6 sm:p-7 shadow-2xl border border-neutral-100 flex flex-col">
       {/* Syllabus Header */}
       <h2 className="text-[#18181b] font-bold text-[16px] tracking-tight mb-4">
-        112 Lessons (24 hours)
+        {course?.lessons ? `${course.lessons} (${course.duration || "2 hours 16 mins"})` : "17 Lessons (2 hours 16 mins)"}
       </h2>
 
       {/* Sample Lessons Preview */}
       <div className="space-y-2.5 pb-4 border-b border-[#f0f1f4]">
-        <div className="flex items-center justify-between text-[12px]">
-          <span className="font-medium text-[#2d313a]">
-            <span className="font-semibold text-neutral-400 mr-1.5">01</span>
-            Introduction to Digital Assets
-          </span>
-          <span className="text-[#0047ff] font-medium shrink-0 ml-2">12 mins</span>
-        </div>
-        <div className="flex items-center justify-between text-[12px]">
-          <span className="font-medium text-[#2d313a]">
-            <span className="font-semibold text-neutral-400 mr-1.5">02</span>
-            Design Principles for Impacts
-          </span>
-          <span className="text-[#0047ff] font-medium shrink-0 ml-2">21 mins</span>
-        </div>
-        <div className="flex items-center justify-between text-[12px]">
-          <span className="font-medium text-[#2d313a]">
-            <span className="font-semibold text-neutral-400 mr-1.5">03</span>
-            Advanced Techniques in Digital Creation
-          </span>
-          <span className="text-[#0047ff] font-medium shrink-0 ml-2">16 mins</span>
-        </div>
-        <p className="text-[11.5px] text-[#8c919c] pt-0.5">99 more videos</p>
+        {((course?.syllabus ? course.syllabus.flatMap((s) => s.lessons || []) : []).length > 0
+          ? course.syllabus.flatMap((s) => s.lessons || []).slice(0, 3)
+          : [
+              { number: "01", title: "Introduction to Digital Assets", duration: "12 mins" },
+              { number: "02", title: "Design Principles for Impacts", duration: "21 mins" },
+              { number: "03", title: "Advanced Techniques in Digital Creation", duration: "16 mins" },
+            ]
+        ).map((les, idx) => (
+          <div key={idx} className="flex items-center justify-between text-[12px]">
+            <span className="font-medium text-[#2d313a] line-clamp-1 pr-2">
+              <span className="font-semibold text-neutral-400 mr-1.5">{les.number || `0${idx + 1}`}</span>
+              {les.title}
+            </span>
+            <span className="text-[#0047ff] font-medium shrink-0 ml-2">{les.duration}</span>
+          </div>
+        ))}
+        <p className="text-[11.5px] text-[#8c919c] pt-0.5">
+          {course?.lessonsCount ? `${Math.max(0, course.lessonsCount - 3)} more lessons` : "14 more lessons"}
+        </p>
       </div>
 
       {/* Ready to dive in prompt */}
@@ -48,7 +46,7 @@ function CourseSidebarCard({ enrolled, handleEnroll }) {
       {/* Price */}
       <div className="flex items-baseline gap-1 mt-1 mb-3">
         <span className="text-[#003be2] font-black text-[30px] tracking-tight leading-none">
-          $25
+          {course?.price ? `$${course.price}` : "$25"}
         </span>
         <span className="text-[#8c919c] text-[12px] font-normal">/lifetime</span>
       </div>
@@ -122,15 +120,15 @@ function CourseSidebarCard({ enrolled, handleEnroll }) {
         <div className="flex items-center gap-3">
           <div className="w-9 h-9 rounded-full overflow-hidden relative shrink-0 border border-neutral-200">
             <Image
-              src="/creator-purepearl-avatar.png"
-              alt="PurePearl Studio creator"
+              src={course?.authorAvatar || "/creator-avatar-large.png"}
+              alt="Course creator"
               fill
               className="object-cover"
             />
           </div>
           <div className="flex flex-col">
             <h4 className="font-bold text-[13px] text-[#18181b] leading-tight">
-              PurePearl Studio
+              {course?.author || "PurePearl Studio"}
             </h4>
             <span className="text-[11px] text-[#717682] font-normal">
               Professional Creator
@@ -138,8 +136,8 @@ function CourseSidebarCard({ enrolled, handleEnroll }) {
           </div>
         </div>
 
-        <p className="text-[11px] text-[#717682] mt-2.5 mb-3 leading-relaxed">
-          Ready to Dive In? Enroll Now and Start Building Your Digital Future!
+        <p className="text-[11.5px] text-[#717682] mt-2.5 mb-3 leading-relaxed line-clamp-3">
+          {course?.authorBio || "Ready to Dive In? Enroll Now and Start Building Your Digital Future!"}
         </p>
 
         <Link
@@ -154,12 +152,31 @@ function CourseSidebarCard({ enrolled, handleEnroll }) {
   );
 }
 
-export default function CourseDetailsPage() {
+export default function CourseDetailsPage({ courseId = "1" }) {
+  const [course, setCourse] = useState(null);
   const [activeTab, setActiveTab] = useState("About");
   const [isPlaying, setIsPlaying] = useState(false);
   const [enrolled, setEnrolled] = useState(false);
   const [shared, setShared] = useState(false);
   const [reviewFilter, setReviewFilter] = useState("All rating");
+
+  useEffect(() => {
+    let isMounted = true;
+    async function loadData() {
+      try {
+        const data = await fetchCourseById(courseId);
+        if (isMounted && data) {
+          setCourse(data);
+        }
+      } catch (err) {
+        console.warn("Could not load backend course data:", err);
+      }
+    }
+    loadData();
+    return () => {
+      isMounted = false;
+    };
+  }, [courseId]);
 
   const handleShare = () => {
     if (typeof navigator !== "undefined" && navigator.clipboard) {
@@ -174,7 +191,7 @@ export default function CourseDetailsPage() {
   const handleEnroll = () => {
     setEnrolled(true);
     setTimeout(() => {
-      alert("Congratulations! You have successfully enrolled in 'Build Digital Asset: A Comprehensive Guide'.");
+      alert(`Congratulations! You have successfully enrolled in '${course?.title || "Build Digital Asset"}'.`);
       setEnrolled(false);
     }, 400);
   };
@@ -194,20 +211,20 @@ export default function CourseDetailsPage() {
             <div className="flex flex-col items-start max-w-[760px]">
               {/* Title */}
               <h1 className="text-white font-extrabold text-[28px] sm:text-[36px] lg:text-[40px] tracking-[-0.025em] leading-[1.15]">
-                Build Digital Asset: A Comprehensive Guide
+                {course?.title || "Build Digital Asset: A Comprehensive Guide"}
               </h1>
 
               {/* Subtitle */}
               <p className="text-white/85 text-[14px] sm:text-[15px] mt-2 font-normal">
-                Unlock the Power of Digital Creation with Expert Guidance
+                {course?.description || "Unlock the Power of Digital Creation with Expert Guidance"}
               </p>
 
               {/* Author */}
               <p className="text-[13px] text-white/90 mt-2 font-normal">
                 by{" "}
-                <span className="text-[#cbfc01] font-medium hover:underline cursor-pointer">
-                  purepearl studio
-                </span>
+                <Link href="/creators" className="text-[#cbfc01] font-medium hover:underline cursor-pointer">
+                  {course?.author || "purepearl studio"}
+                </Link>
               </p>
 
               {/* Meta Tags (3 white rounded pills) */}
@@ -227,7 +244,7 @@ export default function CourseDetailsPage() {
                     <path d="M12 20V4" />
                     <path d="M6 20v-6" />
                   </svg>
-                  <span>Intermediate</span>
+                  <span>{course?.level || "Beginner"}</span>
                 </div>
 
                 {/* Rating */}
@@ -239,7 +256,7 @@ export default function CourseDetailsPage() {
                   >
                     <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                   </svg>
-                  <span>4.8 (172 reviews)</span>
+                  <span>{course?.rating ? `${course.rating} (${course?.commentsCount || 59} reviews)` : "4.5 (59 reviews)"}</span>
                 </div>
 
                 {/* Students count */}
@@ -327,7 +344,7 @@ export default function CourseDetailsPage() {
             {/* Desktop Sidebar Anchor (Starts in header, hangs down into white section) */}
             <div className="hidden lg:block lg:col-span-4 relative">
               <div className="absolute top-0 left-0 w-full z-30">
-                <CourseSidebarCard enrolled={enrolled} handleEnroll={handleEnroll} />
+                <CourseSidebarCard course={course} enrolled={enrolled} handleEnroll={handleEnroll} />
               </div>
             </div>
           </div>
@@ -373,14 +390,12 @@ export default function CourseDetailsPage() {
                   </h2>
                   <div className="space-y-4 text-[#4b4f58] text-[13px] sm:text-[13.5px] leading-[1.75] font-normal">
                     <p>
-                      Embark on an enlightening exploration into the world of digital creation with our comprehensive course, &quot;Build Digital Assets: A Comprehensive Guide.&quot; This transformative learning experience invites you to delve deep into the intricacies of crafting impactful digital content. From laying the groundwork with foundational concepts to mastering advanced techniques, this guide is meticulously curated to empower you with the skills essential for navigating the dynamic landscape of digital asset creation.
+                      {course?.overview ||
+                        "Embark on an enlightening exploration into the world of digital creation with our comprehensive course. This transformative learning experience invites you to delve deep into the intricacies of crafting impactful digital content."}
                     </p>
-                    <p>
-                      In the initial modules, you&apos;ll establish a solid foundation by immersing yourself in the foundational concepts that form the backbone of digital asset creation. Understand the fundamental elements that constitute compelling digital content and gain proficiency in leveraging these elements to communicate effectively in the digital realm.
-                    </p>
-                    <p>
-                      As you progress through the course, you&apos;ll ascend to higher levels of expertise, delving into the nuances of design principles that drive impactful creations. Uncover the secrets behind effective visual communication, exploring color theory, typography, and layout strategies that elevate your digital assets to new heights. Engage in hands-on exercises that reinforce your understanding, allowing you to apply these principles in practical scenarios.
-                    </p>
+                    {course?.description && (
+                      <p>{course.description}</p>
+                    )}
                   </div>
 
                   {/* Sneak Peak Section */}
@@ -413,16 +428,12 @@ export default function CourseDetailsPage() {
                     Key Points
                   </h3>
                   <ul className="space-y-3">
-                    {[
-                      "Foundational Concepts",
-                      "Design Principles Mastery",
-                      "Advanced Techniques in Digital Creation",
-                      "Project Showcase and Critique",
-                      "Optimizing for Various Platforms",
-                      "Digital Asset Management Best Practices",
-                      "Monetization Strategies",
-                      "Capstone Project: Build Your Portfolio",
-                    ].map((point, index) => (
+                    {(course?.whatYouWillLearn || [
+                      "Foundational Concepts and Essential Principles",
+                      "Design Principles Mastery and Visual Hierarchy",
+                      "Advanced Techniques in Digital Creation & Production",
+                      "Project Showcase, Critique and Developer Handoff",
+                    ]).map((point, index) => (
                       <li key={index} className="flex items-center gap-3 text-[13.5px] text-[#25282f] font-medium">
                         {/* Blue circular checkmark */}
                         <span className="w-4 h-4 rounded-full bg-[#003be2] text-white flex items-center justify-center shrink-0">
@@ -455,38 +466,26 @@ export default function CourseDetailsPage() {
 
                   {/* Modules List */}
                   <div className="space-y-5">
-                    {[
+                    {(course?.syllabus || [
                       {
-                        title: "Module 1: Introduction to Digital Assets",
+                        sectionTitle: "Module 1: Foundations & Core Concepts",
                         description:
-                          "Lay the groundwork with lessons like 'Understanding Digital Elements' and 'Navigating Design Software Tools.' Dive into the essentials of digital asset creation.",
+                          "Lay the groundwork with software navigation, core tools, and layout systems.",
+                        lessons: [
+                          { number: "01", title: "Introduction to Digital Elements", duration: "12 mins", preview: true },
+                          { number: "02", title: "Navigating Design Software Tools", duration: "21 mins", preview: false },
+                        ],
                       },
                       {
-                        title: "Module 2: Design Principles for Impact",
+                        sectionTitle: "Module 2: Advanced Techniques & Production",
                         description:
-                          "Master the principles that drive impactful designs with lessons such as 'Color Theory in Digital Design' and 'Typography Essentials.' Elevate your visual communication skills.",
+                          "Master the principles that drive impactful designs with color theory, typography, and hierarchy.",
+                        lessons: [
+                          { number: "03", title: "Color Theory in Digital Design", duration: "18 mins", preview: true },
+                          { number: "04", title: "Typography Essentials & Hierarchy", duration: "24 mins", preview: false },
+                        ],
                       },
-                      {
-                        title: "Module 4: User-Centric Design Strategies",
-                        description:
-                          "Understand 'Design Thinking in Digital Creation' and delve into 'User Experience (UX) Essentials.' Craft digital assets with a focus on user-centric design.",
-                      },
-                      {
-                        title: "Module 5: Interactive Media and Engagement",
-                        description:
-                          "Engage your audience with lessons like 'Creating Interactive Presentations' and 'Integrating Multimedia Elements.' Master the art of creating immersive digital experiences.",
-                      },
-                      {
-                        title: "Module 6: Project Showcase and Critique",
-                        description:
-                          "Perfect your presentation skills with 'Effective Presentation Techniques' and embrace collaboration with 'Peer Critique and Collaboration.' Showcase your work with confidence.",
-                      },
-                      {
-                        title: "Module 7: Optimizing Digital Assets for Various Platforms",
-                        description:
-                          "Adapt your digital creations for 'Mobile Platforms' and optimize for 'Social Media.' Ensure widespread accessibility and engagement across diverse digital landscapes.",
-                      },
-                    ].map((mod, idx) => (
+                    ]).map((mod, idx) => (
                       <div key={idx} className="flex items-start gap-4">
                         {/* Lime rounded square icon with video camera */}
                         <div className="w-10 h-10 rounded-[12px] bg-[#cbfc01] flex items-center justify-center shrink-0 mt-0.5 shadow-2xs">
@@ -499,13 +498,31 @@ export default function CourseDetailsPage() {
                           </svg>
                         </div>
                         {/* Content */}
-                        <div className="flex flex-col">
-                          <h4 className="font-bold text-[13.5px] sm:text-[14px] text-[#18181b] tracking-tight leading-snug">
-                            {mod.title}
+                        <div className="flex-1 flex flex-col">
+                          <h4 className="font-bold text-[14.5px] sm:text-[15px] text-[#18181b] tracking-tight leading-snug">
+                            {mod.sectionTitle || mod.title}
                           </h4>
-                          <p className="text-[12.5px] sm:text-[13px] text-[#555a64] leading-[1.65] font-normal mt-1">
-                            {mod.description}
-                          </p>
+                          {mod.description && (
+                            <p className="text-[12.5px] sm:text-[13px] text-[#555a64] leading-[1.65] font-normal mt-1">
+                              {mod.description}
+                            </p>
+                          )}
+                          {mod.lessons && mod.lessons.length > 0 && (
+                            <div className="mt-3 space-y-2 border-t border-[#f0f1f4] pt-2.5">
+                              {mod.lessons.map((les, lIdx) => (
+                                <div key={lIdx} className="flex items-center justify-between text-[12px] text-[#4b4f58]">
+                                  <div className="flex items-center gap-2">
+                                    <span className="font-semibold text-neutral-400">{les.number}</span>
+                                    <span className="font-medium text-[#2d313a]">{les.title}</span>
+                                    {les.preview && (
+                                      <span className="bg-blue-50 text-[#0047ff] text-[10px] font-semibold px-2 py-0.5 rounded-full">Preview</span>
+                                    )}
+                                  </div>
+                                  <span className="text-[#8c919c] font-mono text-[11.5px] shrink-0 ml-2">{les.duration}</span>
+                                </div>
+                              ))}
+                            </div>
+                          )}
                         </div>
                       </div>
                     ))}
@@ -635,49 +652,37 @@ export default function CourseDetailsPage() {
                   {/* Reviews List */}
                   <div className="space-y-4">
                     {[
+                      ...(course?.reviews?.map((r, i) => ({
+                        id: `course-rev-${i}`,
+                        name: r.user,
+                        role: "Verified Student",
+                        time: r.date || "recently",
+                        stars: r.rating || 5,
+                        ratingKey: `★ ${Math.round(r.rating || 5)}`,
+                        avatar: `/avatar-${(i % 4) + 1}.png`,
+                        content: `“${r.comment}”`,
+                      })) || []),
                       {
                         id: 1,
-                        name: "PurePearl Studio",
-                        role: "UI/UX Designer",
-                        time: "a year ago",
+                        name: course?.author || "PurePearl Studio",
+                        role: "Course Instructor",
+                        time: "recently",
                         stars: 5,
                         ratingKey: "★ 5",
-                        avatar: "/reviewer-purepearl.png",
+                        avatar: course?.authorAvatar || "/reviewer-purepearl.png",
                         content:
-                          "“The course provided me with a comprehensive understanding of digital asset creation. The lessons were in-depth, practical, and immediately applicable to my work. Highly recommended!”",
+                          "“The course provides a comprehensive, hands-on understanding of modern digital creation. The lessons are in-depth, practical, and immediately applicable to real-world projects!”",
                       },
                       {
                         id: 2,
                         name: "Albert Flores",
-                        role: "UI/UX Designer",
-                        time: "a year ago",
+                        role: "Product Designer",
+                        time: "2 weeks ago",
                         stars: 5,
                         ratingKey: "★ 5",
                         avatar: "/reviewer-albert.png",
                         content:
                           "This course transformed my approach to digital design. The combination of theory, hands-on exercises, and real-world applications made it a truly enriching experience. Excited to implement what I’ve learned!",
-                      },
-                      {
-                        id: 3,
-                        name: "Cody Fisher",
-                        role: "UI/UX Designer",
-                        time: "a year ago",
-                        stars: 5,
-                        ratingKey: "★ 5",
-                        avatar: "/reviewer-cody.png",
-                        content:
-                          "The project showcase and critique module created a collaborative environment where I could showcase my work, receive valuable feedback, and refine my skills. It added a unique and valuable dimension to the learning process.",
-                      },
-                      {
-                        id: 4,
-                        name: "Brooklyn Simmons",
-                        role: "UI/UX Designer",
-                        time: "a year ago",
-                        stars: 5,
-                        ratingKey: "★ 5",
-                        avatar: "/reviewer-brooklyn.png",
-                        content:
-                          "The lessons on optimizing digital assets for various platforms were particularly insightful. The course adapts to the evolving digital landscape, and the engaging content kept me motivated throughout.",
                       },
                     ]
                       .filter((r) => reviewFilter === "All rating" || r.ratingKey === reviewFilter)
@@ -739,7 +744,7 @@ export default function CourseDetailsPage() {
             <div className="lg:col-span-4 w-full">
               {/* Mobile Sidebar (< lg) */}
               <div className="block lg:hidden mt-8">
-                <CourseSidebarCard enrolled={enrolled} handleEnroll={handleEnroll} />
+                <CourseSidebarCard course={course} enrolled={enrolled} handleEnroll={handleEnroll} />
               </div>
             </div>
 
