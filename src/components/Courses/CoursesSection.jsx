@@ -21,8 +21,9 @@ export default function CoursesSection() {
         setIsLoading(true);
         // Fetch all courses so filtering by any category displays immediate real data
         const data = await fetchCourses();
-        if (isMounted && Array.isArray(data) && data.length > 0) {
-          setCourses(data);
+        const courseList = Array.isArray(data) ? data : data?.courses;
+        if (isMounted && Array.isArray(courseList) && courseList.length > 0) {
+          setCourses(courseList);
         }
       } catch (err) {
         console.warn("Using fallback courses:", err);

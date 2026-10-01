@@ -1858,7 +1858,64 @@ export const fallbackCreator = {
 };
 
 /**
- * Fetch courses from Express/MongoDB backend with optional query params
+ * Client-side fallback for filtering, sorting and paginating when server is offline
+ */
+function paginateFallbackCourses(params = {}) {
+  let list = [...fallbackCourses];
+  const { category, level, search, sortBy, page = 1, limit = 6 } = params;
+
+  if (category && category !== "Featured" && category !== "All") {
+    list = list.filter(
+      (c) => (c.category || "").toLowerCase() === category.trim().toLowerCase()
+    );
+  }
+  if (level && level !== "All Level" && level !== "All") {
+    list = list.filter(
+      (c) => (c.level || "").toLowerCase() === level.trim().toLowerCase()
+    );
+  }
+  if (search && search.trim()) {
+    const s = search.trim().toLowerCase();
+    list = list.filter(
+      (c) =>
+        (c.title || "").toLowerCase().includes(s) ||
+        (c.author || "").toLowerCase().includes(s) ||
+        (c.category || "").toLowerCase().includes(s) ||
+        (c.description || "").toLowerCase().includes(s)
+    );
+  }
+
+  if (sortBy === "Highest Rated") {
+    list.sort((a, b) => (b.rating || 0) - (a.rating || 0));
+  } else if (sortBy === "Price: Low to High") {
+    list.sort((a, b) => (a.price || 0) - (b.price || 0));
+  } else if (sortBy === "Price: High to Low") {
+    list.sort((a, b) => (b.price || 0) - (a.price || 0));
+  } else {
+    list.sort((a, b) => (a.id || 0) - (b.id || 0));
+  }
+
+  const total = list.length;
+  const p = Math.max(1, parseInt(page, 10) || 1);
+  const l = Math.max(1, parseInt(limit, 10) || 6);
+  const totalPages = Math.ceil(total / l) || 1;
+  const skip = (p - 1) * l;
+  const courses = list.slice(skip, skip + l);
+
+  return {
+    success: true,
+    courses,
+    total,
+    page: p,
+    limit: l,
+    totalPages,
+  };
+}
+
+/**
+ * Fetch courses from Express/MongoDB backend with optional query params.
+ * If params.page is provided, returns paginated object { courses, total, totalPages, page, limit }.
+ * Otherwise, returns the courses array with attached pagination properties.
  */
 export async function fetchCourses(params = {}) {
   try {
@@ -1878,13 +1935,71 @@ export async function fetchCourses(params = {}) {
     }
 
     const data = await res.json();
-    if (data?.success && Array.isArray(data.courses) && data.courses.length > 0) {
-      return data.courses;
+    if (data?.success && Array.isArray(data.courses)) {
+      if (params.page !== undefined || params.limit !== undefined) {
+        return {
+          success: true,
+          courses: data.courses,
+          total: data.total ?? data.courses.length,
+          page: data.page ?? 1,
+          limit: data.limit ?? data.courses.length,
+          totalPages: data.totalPages ?? 1,
+        };
+      }
+      const arr = data.courses;
+      arr.total = data.total ?? data.courses.length;
+      arr.page = data.page ?? 1;
+      arr.limit = data.limit ?? data.courses.length;
+      arr.totalPages = data.totalPages ?? 1;
+      return arr;
     }
-    return fallbackCourses;
+    return params.page !== undefined ? paginateFallbackCourses(params) : fallbackCourses;
   } catch (error) {
     console.warn("Backend API unavailable, using fallback courses:", error.message);
-    return fallbackCourses;
+    return params.page !== undefined ? paginateFallbackCourses(params) : fallbackCourses;
+  }
+}
+
+/**
+ * Dedicated paginated course fetcher for the courses catalog route
+ */
+export async function fetchPaginatedCourses(params = {}) {
+  try {
+    const url = new URL(`${API_BASE_URL}/courses`);
+    const finalParams = {
+      page: 1,
+      limit: 6,
+      ...params,
+    };
+    Object.entries(finalParams).forEach(([key, val]) => {
+      if (val !== undefined && val !== null && val !== "") {
+        url.searchParams.append(key, val);
+      }
+    });
+
+    const res = await fetch(url.toString(), {
+      cache: "no-store",
+    });
+
+    if (!res.ok) {
+      throw new Error(`Failed to fetch paginated courses: ${res.status}`);
+    }
+
+    const data = await res.json();
+    if (data?.success && Array.isArray(data.courses)) {
+      return {
+        success: true,
+        courses: data.courses,
+        total: data.total ?? data.courses.length,
+        page: data.page ?? Number(finalParams.page),
+        limit: data.limit ?? Number(finalParams.limit),
+        totalPages: data.totalPages ?? Math.ceil((data.total ?? data.courses.length) / Number(finalParams.limit)),
+      };
+    }
+    return paginateFallbackCourses(finalParams);
+  } catch (error) {
+    console.warn("Backend API unavailable, using paginated fallback:", error.message);
+    return paginateFallbackCourses(params);
   }
 }
 
