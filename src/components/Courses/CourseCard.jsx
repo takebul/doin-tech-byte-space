@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { motion } from "motion/react";
 
 const studentAvatars = [
@@ -20,7 +21,7 @@ export default function CourseCard({ course, index }) {
       className="group bg-white rounded-[22px] p-3.5 sm:p-4 border border-[#e5e6e8] shadow-[0_4px_16px_rgba(0,0,0,0.03)] hover:shadow-[0_16px_36px_rgba(0,0,0,0.08)] transition-all duration-300 flex flex-col justify-between"
     >
       {/* 1. Thumbnail with Frosted Info Badges */}
-      <div className="relative w-full aspect-[16/9.5] rounded-[16px] overflow-hidden select-none bg-neutral-100">
+      <Link href="/course-details" className="block relative w-full aspect-[16/9.5] rounded-[16px] overflow-hidden select-none bg-neutral-100 cursor-pointer">
         <Image
           src={course.image}
           alt={course.title}
@@ -28,16 +29,18 @@ export default function CourseCard({ course, index }) {
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           className="object-cover transition-transform duration-500 group-hover:scale-105"
         />
-      </div>
+      </Link>
 
       {/* 2. Course Details */}
       <div className="pt-3.5 sm:pt-4 flex flex-col flex-1 justify-between">
         {/* Title and Rating Header */}
         <div>
           <div className="flex items-start justify-between gap-2">
-            <h3 className="font-bold text-[16px] sm:text-[17px] text-[#242528] leading-snug line-clamp-1 tracking-tight">
-              {course.title}
-            </h3>
+            <Link href="/course-details" className="block flex-1 group/title">
+              <h3 className="font-bold text-[16px] sm:text-[17px] text-[#242528] group-hover/title:text-[#0047ff] leading-snug line-clamp-1 tracking-tight transition-colors">
+                {course.title}
+              </h3>
+            </Link>
             {/* Rating */}
             <div className="flex items-center gap-1 shrink-0 pt-0.5">
               <span className="font-semibold text-[13px] text-[#4b4c53] leading-none">
