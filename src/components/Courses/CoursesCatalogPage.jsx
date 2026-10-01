@@ -12,7 +12,7 @@ import {
   fallbackCategories,
 } from "@/lib/api";
 
-const PAGE_SIZE = 6;
+const PAGE_SIZE = 9;
 const initialCourses = fallbackCourses.slice(0, PAGE_SIZE);
 
 export default function CoursesCatalogPage() {
@@ -31,7 +31,7 @@ export default function CoursesCatalogPage() {
   const [courses, setCourses] = useState(initialCourses);
   const [totalCourses, setTotalCourses] = useState(fallbackCourses.length);
   const [totalPages, setTotalPages] = useState(
-    Math.ceil(fallbackCourses.length / PAGE_SIZE)
+    Math.ceil(fallbackCourses.length / PAGE_SIZE),
   );
   const [categoriesList, setCategoriesList] = useState(fallbackCategories);
   const [isLoading, setIsLoading] = useState(false);
@@ -87,7 +87,7 @@ export default function CoursesCatalogPage() {
         router.replace(newUrl, { scroll: false });
       }
     },
-    [pathname, router, searchParams]
+    [pathname, router, searchParams],
   );
 
   // Fetch categories list on mount
@@ -117,7 +117,13 @@ export default function CoursesCatalogPage() {
       try {
         setIsLoading(true);
         // Sync URL with current filters & pagination
-        updateUrl(currentPage, selectedCategory, selectedLevel, searchQuery, sortBy);
+        updateUrl(
+          currentPage,
+          selectedCategory,
+          selectedLevel,
+          searchQuery,
+          sortBy,
+        );
 
         const res = await fetchPaginatedCourses({
           page: currentPage,
@@ -145,14 +151,21 @@ export default function CoursesCatalogPage() {
       () => {
         loadData();
       },
-      searchQuery ? 300 : 0
+      searchQuery ? 300 : 0,
     );
 
     return () => {
       isMounted = false;
       clearTimeout(debounceTimer);
     };
-  }, [currentPage, selectedCategory, selectedLevel, searchQuery, sortBy, updateUrl]);
+  }, [
+    currentPage,
+    selectedCategory,
+    selectedLevel,
+    searchQuery,
+    sortBy,
+    updateUrl,
+  ]);
 
   const handleCategorySelect = (cat) => {
     setSelectedCategory(cat);
@@ -322,17 +335,21 @@ export default function CoursesCatalogPage() {
                 </button>
                 {showLevelMenu && (
                   <div className="absolute top-full left-0 mt-1.5 bg-white border border-[#e2e4e9] rounded-xl shadow-lg py-1 z-30 min-w-[130px]">
-                    {["All Level", "Beginner", "Intermediate", "Advanced"].map((lvl) => (
-                      <button
-                        key={lvl}
-                        onClick={() => handleLevelSelect(lvl)}
-                        className={`w-full text-left px-3 py-1.5 text-[12px] hover:bg-neutral-50 cursor-pointer ${
-                          selectedLevel === lvl ? "font-semibold text-[#0047ff]" : "text-neutral-700"
-                        }`}
-                      >
-                        {lvl}
-                      </button>
-                    ))}
+                    {["All Level", "Beginner", "Intermediate", "Advanced"].map(
+                      (lvl) => (
+                        <button
+                          key={lvl}
+                          onClick={() => handleLevelSelect(lvl)}
+                          className={`w-full text-left px-3 py-1.5 text-[12px] hover:bg-neutral-50 cursor-pointer ${
+                            selectedLevel === lvl
+                              ? "font-semibold text-[#0047ff]"
+                              : "text-neutral-700"
+                          }`}
+                        >
+                          {lvl}
+                        </button>
+                      ),
+                    )}
                   </div>
                 )}
               </div>
@@ -342,7 +359,9 @@ export default function CoursesCatalogPage() {
                 type="button"
                 onClick={() => handleCategorySelect("Featured")}
                 className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border border-[#e2e4e9] bg-white text-[12px] font-medium transition-colors cursor-pointer shadow-2xs ${
-                  selectedCategory === "Featured" ? "border-neutral-400 text-black font-semibold" : "text-[#444851] hover:border-neutral-400"
+                  selectedCategory === "Featured"
+                    ? "border-neutral-400 text-black font-semibold"
+                    : "text-[#444851] hover:border-neutral-400"
                 }`}
               >
                 <svg
@@ -398,12 +417,19 @@ export default function CoursesCatalogPage() {
               </button>
               {showSortMenu && (
                 <div className="absolute top-full right-0 mt-1.5 bg-white border border-[#e2e4e9] rounded-xl shadow-lg py-1 z-30 min-w-[150px]">
-                  {["Most Popular", "Highest Rated", "Price: Low to High", "Price: High to Low"].map((sort) => (
+                  {[
+                    "Most Popular",
+                    "Highest Rated",
+                    "Price: Low to High",
+                    "Price: High to Low",
+                  ].map((sort) => (
                     <button
                       key={sort}
                       onClick={() => handleSortSelect(sort)}
                       className={`w-full text-left px-3 py-1.5 text-[12px] hover:bg-neutral-50 cursor-pointer ${
-                        sortBy === sort ? "font-semibold text-[#0047ff]" : "text-neutral-700"
+                        sortBy === sort
+                          ? "font-semibold text-[#0047ff]"
+                          : "text-neutral-700"
                       }`}
                     >
                       {sort}
@@ -436,7 +462,9 @@ export default function CoursesCatalogPage() {
         </div>
 
         {/* 3. Course Cards Grid (3 Columns) */}
-        <div className={`transition-opacity duration-200 ${isLoading ? "opacity-60" : "opacity-100"}`}>
+        <div
+          className={`transition-opacity duration-200 ${isLoading ? "opacity-60" : "opacity-100"}`}
+        >
           {courses.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7">
               {courses.map((course, idx) => (
@@ -449,7 +477,9 @@ export default function CoursesCatalogPage() {
             </div>
           ) : (
             <div className="text-center py-20 text-neutral-500">
-              <p className="text-base font-medium">No courses found matching your criteria.</p>
+              <p className="text-base font-medium">
+                No courses found matching your criteria.
+              </p>
               <button
                 type="button"
                 onClick={handleResetFilters}
@@ -489,26 +519,30 @@ export default function CoursesCatalogPage() {
               </button>
 
               {/* Dynamic Page Numbers generated from backend totalPages */}
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                <button
-                  key={page}
-                  type="button"
-                  onClick={() => handlePageChange(page)}
-                  disabled={isLoading}
-                  className={`text-[13px] min-w-[28px] h-7 px-2 rounded-full transition-all cursor-pointer ${
-                    currentPage === page
-                      ? "font-bold text-[#18181b] bg-[#ececee] shadow-2xs"
-                      : "font-normal text-neutral-500 hover:text-black"
-                  }`}
-                >
-                  {page}
-                </button>
-              ))}
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                (page) => (
+                  <button
+                    key={page}
+                    type="button"
+                    onClick={() => handlePageChange(page)}
+                    disabled={isLoading}
+                    className={`text-[13px] min-w-[28px] h-7 px-2 rounded-full transition-all cursor-pointer ${
+                      currentPage === page
+                        ? "font-bold text-[#18181b] bg-[#ececee] shadow-2xs"
+                        : "font-normal text-neutral-500 hover:text-black"
+                    }`}
+                  >
+                    {page}
+                  </button>
+                ),
+              )}
 
               {/* Next Button */}
               <button
                 type="button"
-                onClick={() => handlePageChange(Math.min(totalPages, currentPage + 1))}
+                onClick={() =>
+                  handlePageChange(Math.min(totalPages, currentPage + 1))
+                }
                 disabled={currentPage >= totalPages || isLoading}
                 aria-label="Next Page"
                 className="w-8 h-8 rounded-full border border-[#e2e4e9] flex items-center justify-center text-neutral-600 hover:border-neutral-400 disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer"

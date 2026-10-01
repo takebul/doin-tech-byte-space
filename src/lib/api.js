@@ -9,7 +9,7 @@ export const fallbackCourses = [
     "title": "Learn Figma from Basic",
     "author": "purepearl studio",
     "authorId": "purepearl-studio",
-    "authorAvatar": "/creator-avatar-large.png",
+    "authorAvatar": "/user-creator-avatar.jpg",
     "authorBio": "Passionate UI/UX designer with 8+ years experience guiding tens of thousands of designers worldwide.",
     "rating": 4.8,
     "level": "Beginner",
@@ -1841,12 +1841,639 @@ export const fallbackCategoryRows = [
   ],
 ];
 
+export const fallbackCreators = [
+  {
+    "id": "purepearl-studio",
+    "slug": "purepearl-studio",
+    "name": "purepearl studio",
+    "badge": "Creator",
+    "subtitle": "Passionate UI/UX designer with 8+ years experience guiding tens of thousands of designers worldwide",
+    "avatar": "/user-creator-avatar.jpg",
+    "bio": [
+      "Passionate UI/UX designer with 8+ years experience guiding tens of thousands of designers worldwide.",
+      "Explore comprehensive courses, practical toolkits, and project-based tutorials designed for real-world excellence."
+    ],
+    "productsCount": 6,
+    "followerCount": 12,
+    "rating": 4.8,
+    "coursesCount": 6,
+    "skills": [
+      "Figma",
+      "UI/UX",
+      "Auto Layout",
+      "Design Systems"
+    ],
+    "category": "UI/UX Design",
+    "featuredCourseIds": [
+      1
+    ]
+  },
+  {
+    "id": "aura-creative-lab",
+    "slug": "aura-creative-lab",
+    "name": "Aura Creative Lab",
+    "badge": "Top Instructor",
+    "subtitle": "Specialist studio building enterprise design systems and icon ecosystems for global tech platforms",
+    "avatar": "/creator-purepearl-avatar.png",
+    "bio": [
+      "Specialist studio building enterprise design systems and icon ecosystems for global tech platforms.",
+      "Explore comprehensive courses, practical toolkits, and project-based tutorials designed for real-world excellence."
+    ],
+    "productsCount": 24,
+    "followerCount": 2450,
+    "rating": 4.9,
+    "coursesCount": 1,
+    "skills": [
+      "Branding",
+      "Typography",
+      "Vector Art",
+      "Visual Identity"
+    ],
+    "category": "Graphic Design",
+    "featuredCourseIds": [
+      2
+    ]
+  },
+  {
+    "id": "nexus-data-studio",
+    "slug": "nexus-data-studio",
+    "name": "Nexus Data Studio",
+    "badge": "Top Instructor",
+    "subtitle": "Data architects and visualization experts helping modern organizations turn massive datasets into actionable insight",
+    "avatar": "/avatar-1.png",
+    "bio": [
+      "Data architects and visualization experts helping modern organizations turn massive datasets into actionable insight.",
+      "Explore comprehensive courses, practical toolkits, and project-based tutorials designed for real-world excellence."
+    ],
+    "productsCount": 21,
+    "followerCount": 3820,
+    "rating": 4.7,
+    "coursesCount": 1,
+    "skills": [
+      "SQL",
+      "Big Data",
+      "Analytics",
+      "Dashboards"
+    ],
+    "category": "Data Science",
+    "featuredCourseIds": [
+      3
+    ]
+  },
+  {
+    "id": "elena-vance",
+    "slug": "elena-vance",
+    "name": "Elena Vance",
+    "badge": "Top Instructor",
+    "subtitle": "Author, cognitive productivity coach, and former design director focused on high-performance creative routines",
+    "avatar": "/avatar-2.png",
+    "bio": [
+      "Author, cognitive productivity coach, and former design director focused on high-performance creative routines.",
+      "Explore comprehensive courses, practical toolkits, and project-based tutorials designed for real-world excellence."
+    ],
+    "productsCount": 15,
+    "followerCount": 1890,
+    "rating": 4.6,
+    "coursesCount": 1,
+    "skills": [
+      "Flow State",
+      "Deep Work",
+      "Habit Systems",
+      "Time Management"
+    ],
+    "category": "Productivity",
+    "featuredCourseIds": [
+      4
+    ]
+  },
+  {
+    "id": "marcus-sterling",
+    "slug": "marcus-sterling",
+    "name": "Marcus Sterling",
+    "badge": "Top Instructor",
+    "subtitle": "Chartered financial analyst and CFO consultant for digital creators, creative agencies, and indie founders",
+    "avatar": "/avatar-3.png",
+    "bio": [
+      "Chartered financial analyst and CFO consultant for digital creators, creative agencies, and indie founders.",
+      "Explore comprehensive courses, practical toolkits, and project-based tutorials designed for real-world excellence."
+    ],
+    "productsCount": 18,
+    "followerCount": 4120,
+    "rating": 4.7,
+    "coursesCount": 1,
+    "skills": [
+      "Value Pricing",
+      "Client Acquisition",
+      "Negotiation",
+      "Finance"
+    ],
+    "category": "Freelance & Entrepreneurship",
+    "featuredCourseIds": [
+      5
+    ]
+  },
+  {
+    "id": "venturecraft-studio",
+    "slug": "venturecraft-studio",
+    "name": "VentureCraft Studio",
+    "badge": "Top Instructor",
+    "subtitle": "Serial entrepreneurs and product architects who have launched 14 bootstrapped software products",
+    "avatar": "/avatar-4.png",
+    "bio": [
+      "Serial entrepreneurs and product architects who have launched 14 bootstrapped software products.",
+      "Explore comprehensive courses, practical toolkits, and project-based tutorials designed for real-world excellence."
+    ],
+    "productsCount": 26,
+    "followerCount": 5600,
+    "rating": 4.9,
+    "coursesCount": 1,
+    "skills": [
+      "SaaS Funnels",
+      "Product Hunt",
+      "Growth Marketing",
+      "User Acquisition"
+    ],
+    "category": "Marketing",
+    "featuredCourseIds": [
+      6
+    ]
+  },
+  {
+    "id": "cyberflux-studio",
+    "slug": "cyberflux-studio",
+    "name": "CyberFlux Studio",
+    "badge": "Top Instructor",
+    "subtitle": "Award-winning creative technologist specializing in WebGL, CSS physics animations, and fluid motion design",
+    "avatar": "/avatar-5.png",
+    "bio": [
+      "Award-winning creative technologist specializing in WebGL, CSS physics animations, and fluid motion design.",
+      "Explore comprehensive courses, practical toolkits, and project-based tutorials designed for real-world excellence."
+    ],
+    "productsCount": 22,
+    "followerCount": 3240,
+    "rating": 4.9,
+    "coursesCount": 1,
+    "skills": [
+      "Motion Design",
+      "After Effects",
+      "Framer Motion",
+      "Interaction"
+    ],
+    "category": "Animation",
+    "featuredCourseIds": [
+      7
+    ]
+  },
+  {
+    "id": "maya-lin",
+    "slug": "maya-lin",
+    "name": "Maya Lin Illustration",
+    "badge": "Top Instructor",
+    "subtitle": "Editorial illustrator and visual storyteller featured in The New Yorker, Wired, and Apple Design Award apps",
+    "avatar": "/avatar-6.png",
+    "bio": [
+      "Editorial illustrator and visual storyteller featured in The New Yorker, Wired, and Apple Design Award apps.",
+      "Explore comprehensive courses, practical toolkits, and project-based tutorials designed for real-world excellence."
+    ],
+    "productsCount": 20,
+    "followerCount": 4780,
+    "rating": 4.8,
+    "coursesCount": 1,
+    "skills": [
+      "Color Theory",
+      "Composition",
+      "Visual Storytelling",
+      "Character Art"
+    ],
+    "category": "Digital Illustration",
+    "featuredCourseIds": [
+      8
+    ]
+  },
+  {
+    "id": "devstack-collective",
+    "slug": "devstack-collective",
+    "name": "DevStack Collective",
+    "badge": "Top Instructor",
+    "subtitle": "Principal software engineers training teams in modern full-stack TypeScript, React 19, and cloud infrastructure",
+    "avatar": "/avatar-1.png",
+    "bio": [
+      "Principal software engineers training teams in modern full-stack TypeScript, React 19, and cloud infrastructure.",
+      "Explore comprehensive courses, practical toolkits, and project-based tutorials designed for real-world excellence."
+    ],
+    "productsCount": 30,
+    "followerCount": 6890,
+    "rating": 4.95,
+    "coursesCount": 1,
+    "skills": [
+      "Next.js",
+      "React 19",
+      "TypeScript",
+      "Tailwind CSS"
+    ],
+    "category": "Web Development",
+    "featuredCourseIds": [
+      9
+    ]
+  },
+  {
+    "id": "finlytix-design",
+    "slug": "finlytix-design",
+    "name": "Finlytix Design",
+    "badge": "Top Instructor",
+    "subtitle": "Specialist fintech and enterprise dashboard design team crafting mission-critical interfaces for Fortune 500 apps",
+    "avatar": "/avatar-2.png",
+    "bio": [
+      "Specialist fintech and enterprise dashboard design team crafting mission-critical interfaces for Fortune 500 apps.",
+      "Explore comprehensive courses, practical toolkits, and project-based tutorials designed for real-world excellence."
+    ],
+    "productsCount": 19,
+    "followerCount": 2950,
+    "rating": 4.8,
+    "coursesCount": 1,
+    "skills": [
+      "Figma",
+      "UI/UX",
+      "Auto Layout",
+      "Design Systems"
+    ],
+    "category": "UI/UX Design",
+    "featuredCourseIds": [
+      10
+    ]
+  },
+  {
+    "id": "kaelen-voss",
+    "slug": "kaelen-voss",
+    "name": "Kaelen Voss",
+    "badge": "Top Instructor",
+    "subtitle": "Independent design consultant who has billed over $1",
+    "avatar": "/avatar-3.png",
+    "bio": [
+      "Independent design consultant who has billed over $1.2M in client projects over a 7-year solo career.",
+      "Explore comprehensive courses, practical toolkits, and project-based tutorials designed for real-world excellence."
+    ],
+    "productsCount": 16,
+    "followerCount": 3100,
+    "rating": 4.75,
+    "coursesCount": 1,
+    "skills": [
+      "Value Pricing",
+      "Client Acquisition",
+      "Negotiation",
+      "Finance"
+    ],
+    "category": "Freelance & Entrepreneurship",
+    "featuredCourseIds": [
+      11
+    ]
+  },
+  {
+    "id": "pulse-creative-media",
+    "slug": "pulse-creative-media",
+    "name": "Pulse Creative Media",
+    "badge": "Top Instructor",
+    "subtitle": "Growth marketers and viral content producers who have generated over 50M organic impressions for digital products",
+    "avatar": "/avatar-4.png",
+    "bio": [
+      "Growth marketers and viral content producers who have generated over 50M organic impressions for digital products.",
+      "Explore comprehensive courses, practical toolkits, and project-based tutorials designed for real-world excellence."
+    ],
+    "productsCount": 23,
+    "followerCount": 4420,
+    "rating": 4.85,
+    "coursesCount": 1,
+    "skills": [
+      "Viral Content",
+      "Audience Growth",
+      "Brand Storytelling",
+      "Community"
+    ],
+    "category": "Social Media",
+    "featuredCourseIds": [
+      12
+    ]
+  },
+  {
+    "id": "atomic-systems-lab",
+    "slug": "atomic-systems-lab",
+    "name": "Atomic Systems Lab",
+    "badge": "Top Instructor",
+    "subtitle": "Design token pioneers and design engineering leaders shaping systems for top SaaS platforms",
+    "avatar": "/avatar-5.png",
+    "bio": [
+      "Design token pioneers and design engineering leaders shaping systems for top SaaS platforms.",
+      "Explore comprehensive courses, practical toolkits, and project-based tutorials designed for real-world excellence."
+    ],
+    "productsCount": 28,
+    "followerCount": 5100,
+    "rating": 4.95,
+    "coursesCount": 1,
+    "skills": [
+      "Figma",
+      "UI/UX",
+      "Auto Layout",
+      "Design Systems"
+    ],
+    "category": "UI/UX Design",
+    "featuredCourseIds": [
+      13
+    ]
+  },
+  {
+    "id": "claycraft-3d",
+    "slug": "claycraft-3d",
+    "name": "ClayCraft 3D",
+    "badge": "Top Instructor",
+    "subtitle": "Digital toy designer, 3D character artist, and Blender community educator renowned for cute playful styles",
+    "avatar": "/avatar-6.png",
+    "bio": [
+      "Digital toy designer, 3D character artist, and Blender community educator renowned for cute playful styles.",
+      "Explore comprehensive courses, practical toolkits, and project-based tutorials designed for real-world excellence."
+    ],
+    "productsCount": 25,
+    "followerCount": 3750,
+    "rating": 4.85,
+    "coursesCount": 1,
+    "skills": [
+      "3D Vector",
+      "Blender",
+      "Digital Painting",
+      "Concept Art"
+    ],
+    "category": "Drawing & Painting",
+    "featuredCourseIds": [
+      14
+    ]
+  },
+  {
+    "id": "fluxflow-growth",
+    "slug": "fluxflow-growth",
+    "name": "FluxFlow Growth",
+    "badge": "Top Instructor",
+    "subtitle": "Product-led growth advisors helping software companies optimize trial-to-paid funnels and user onboarding",
+    "avatar": "/avatar-1.png",
+    "bio": [
+      "Product-led growth advisors helping software companies optimize trial-to-paid funnels and user onboarding.",
+      "Explore comprehensive courses, practical toolkits, and project-based tutorials designed for real-world excellence."
+    ],
+    "productsCount": 21,
+    "followerCount": 2680,
+    "rating": 4.8,
+    "coursesCount": 1,
+    "skills": [
+      "SaaS Funnels",
+      "Product Hunt",
+      "Growth Marketing",
+      "User Acquisition"
+    ],
+    "category": "Marketing",
+    "featuredCourseIds": [
+      15
+    ]
+  },
+  {
+    "id": "fluidmotion-studio",
+    "slug": "fluidmotion-studio",
+    "name": "FluidMotion Studio",
+    "badge": "Top Instructor",
+    "subtitle": "Creative animation studio producing kinetic typography campaigns for Spotify, Nike, and leading design conferences",
+    "avatar": "/avatar-2.png",
+    "bio": [
+      "Creative animation studio producing kinetic typography campaigns for Spotify, Nike, and leading design conferences.",
+      "Explore comprehensive courses, practical toolkits, and project-based tutorials designed for real-world excellence."
+    ],
+    "productsCount": 27,
+    "followerCount": 4930,
+    "rating": 4.9,
+    "coursesCount": 1,
+    "skills": [
+      "Motion Design",
+      "After Effects",
+      "Framer Motion",
+      "Interaction"
+    ],
+    "category": "Animation",
+    "featuredCourseIds": [
+      16
+    ]
+  },
+  {
+    "id": "studio-lowen",
+    "slug": "studio-lowen",
+    "name": "Studio Löwen Zurich",
+    "badge": "Top Instructor",
+    "subtitle": "Heritage Swiss design bureau dedicated to grid-based visual systems, timeless typography, and modern minimalism",
+    "avatar": "/avatar-3.png",
+    "bio": [
+      "Heritage Swiss design bureau dedicated to grid-based visual systems, timeless typography, and modern minimalism.",
+      "Explore comprehensive courses, practical toolkits, and project-based tutorials designed for real-world excellence."
+    ],
+    "productsCount": 18,
+    "followerCount": 3400,
+    "rating": 4.8,
+    "coursesCount": 1,
+    "skills": [
+      "Branding",
+      "Typography",
+      "Vector Art",
+      "Visual Identity"
+    ],
+    "category": "Graphic Design",
+    "featuredCourseIds": [
+      17
+    ]
+  },
+  {
+    "id": "aether-ui-lab",
+    "slug": "aether-ui-lab",
+    "name": "Aether UI Lab",
+    "badge": "Top Instructor",
+    "subtitle": "Human interface designers and iOS prototyping specialists behind multiple App Store Best of the Year winners",
+    "avatar": "/avatar-4.png",
+    "bio": [
+      "Human interface designers and iOS prototyping specialists behind multiple App Store Best of the Year winners.",
+      "Explore comprehensive courses, practical toolkits, and project-based tutorials designed for real-world excellence."
+    ],
+    "productsCount": 29,
+    "followerCount": 6200,
+    "rating": 4.95,
+    "coursesCount": 1,
+    "skills": [
+      "Figma",
+      "UI/UX",
+      "Auto Layout",
+      "Design Systems"
+    ],
+    "category": "UI/UX Design",
+    "featuredCourseIds": [
+      18
+    ]
+  },
+  {
+    "id": "echowave-audio",
+    "slug": "echowave-audio",
+    "name": "EchoWave Audio Lab",
+    "badge": "Top Instructor",
+    "subtitle": "Electronic music producer and audio engineer with over 10 years experience producing chart-topping tracks",
+    "avatar": "/avatar-1.png",
+    "bio": [
+      "Electronic music producer and audio engineer with over 10 years experience producing chart-topping tracks.",
+      "Explore comprehensive courses, practical toolkits, and project-based tutorials designed for real-world excellence."
+    ],
+    "productsCount": 22,
+    "followerCount": 2850,
+    "rating": 4.9,
+    "coursesCount": 1,
+    "skills": [
+      "Sound Design",
+      "DAW",
+      "Synthesizers",
+      "Music Production"
+    ],
+    "category": "Music",
+    "featuredCourseIds": [
+      19
+    ]
+  },
+  {
+    "id": "vanguard-creative",
+    "slug": "vanguard-creative",
+    "name": "Vanguard Creative",
+    "badge": "Top Instructor",
+    "subtitle": "Award-winning creative strategists behind memorable consumer campaigns and viral product launches",
+    "avatar": "/avatar-2.png",
+    "bio": [
+      "Award-winning creative strategists behind memorable consumer campaigns and viral product launches.",
+      "Explore comprehensive courses, practical toolkits, and project-based tutorials designed for real-world excellence."
+    ],
+    "productsCount": 20,
+    "followerCount": 3920,
+    "rating": 4.85,
+    "coursesCount": 1,
+    "skills": [
+      "Brand Strategy",
+      "Consumer Campaigns",
+      "Content Direction",
+      "Positioning"
+    ],
+    "category": "Creative Marketing",
+    "featuredCourseIds": [
+      20
+    ]
+  },
+  {
+    "id": "cinecraft-studio",
+    "slug": "cinecraft-studio",
+    "name": "CineCraft Studio",
+    "badge": "Top Instructor",
+    "subtitle": "Indie filmmaker and commercial director with credits on Netflix documentaries and global brand commercials",
+    "avatar": "/avatar-3.png",
+    "bio": [
+      "Indie filmmaker and commercial director with credits on Netflix documentaries and global brand commercials.",
+      "Explore comprehensive courses, practical toolkits, and project-based tutorials designed for real-world excellence."
+    ],
+    "productsCount": 25,
+    "followerCount": 4310,
+    "rating": 4.95,
+    "coursesCount": 1,
+    "skills": [
+      "Cinematography",
+      "Directing",
+      "Color Grading",
+      "Lighting Setup"
+    ],
+    "category": "Film & Video",
+    "featuredCourseIds": [
+      21
+    ]
+  },
+  {
+    "id": "terra-wheel",
+    "slug": "terra-wheel",
+    "name": "Terra & Wheel Studio",
+    "badge": "Top Instructor",
+    "subtitle": "Master ceramicist and sculptor exhibiting handcrafted clay collections across international galleries",
+    "avatar": "/avatar-4.png",
+    "bio": [
+      "Master ceramicist and sculptor exhibiting handcrafted clay collections across international galleries.",
+      "Explore comprehensive courses, practical toolkits, and project-based tutorials designed for real-world excellence."
+    ],
+    "productsCount": 18,
+    "followerCount": 1950,
+    "rating": 4.8,
+    "coursesCount": 1,
+    "skills": [
+      "Ceramics",
+      "Clay Sculpting",
+      "Wheel Throwing",
+      "Handmade Goods"
+    ],
+    "category": "Crafts",
+    "featuredCourseIds": [
+      22
+    ]
+  },
+  {
+    "id": "lumen-photo",
+    "slug": "lumen-photo",
+    "name": "Lumen Photography Lab",
+    "badge": "Top Instructor",
+    "subtitle": "Editorial photographer featured in Vogue, Architectural Digest, and commercial agency campaigns",
+    "avatar": "/avatar-5.png",
+    "bio": [
+      "Editorial photographer featured in Vogue, Architectural Digest, and commercial agency campaigns.",
+      "Explore comprehensive courses, practical toolkits, and project-based tutorials designed for real-world excellence."
+    ],
+    "productsCount": 21,
+    "followerCount": 3670,
+    "rating": 4.9,
+    "coursesCount": 1,
+    "skills": [
+      "Portrait Lighting",
+      "Studio Strobes",
+      "Lightroom Retouching",
+      "Composition"
+    ],
+    "category": "Photography",
+    "featuredCourseIds": [
+      23
+    ]
+  },
+  {
+    "id": "chef-olivier",
+    "slug": "chef-olivier",
+    "name": "Chef Olivier Gastronomie",
+    "badge": "Top Instructor",
+    "subtitle": "Michelin-trained executive chef sharing fine dining techniques adapted for everyday home kitchens",
+    "avatar": "/avatar-6.png",
+    "bio": [
+      "Michelin-trained executive chef sharing fine dining techniques adapted for everyday home kitchens.",
+      "Explore comprehensive courses, practical toolkits, and project-based tutorials designed for real-world excellence."
+    ],
+    "productsCount": 19,
+    "followerCount": 5820,
+    "rating": 4.92,
+    "coursesCount": 1,
+    "skills": [
+      "Knife Skills",
+      "Sauce Emulsions",
+      "Fine Dining",
+      "Flavor Layering"
+    ],
+    "category": "Cooking",
+    "featuredCourseIds": [
+      24
+    ]
+  }
+];
+
 export const fallbackCreator = {
   id: "purepearl-studio",
   name: "PurePearl Studio",
   badge: "Creator",
   subtitle: "Passionate UI/UX, Web designer",
-  avatar: "/creator-avatar-large.png",
+  avatar: "/user-creator-avatar.jpg",
   bio: [
     "Welcome to the creative world of PurePearl Studio. Here, you'll discover the passion, expertise, and inspiration that drive my creative journey. Let's explore and learn together!",
     "Dive into my creative portfolio, showcasing a glimpse of my artistic endeavors. From digital designs to multimedia projects, each piece tells a unique story. Explore the world of creativity with me.",
@@ -2031,11 +2658,67 @@ export async function fetchCourseById(id) {
 }
 
 /**
- * Fetch creators
+ * Client-side fallback for filtering, sorting and paginating creators when server is offline
  */
-export async function fetchCreators() {
+function paginateFallbackCreators(params = {}) {
+  let list = [...fallbackCreators];
+  const { category, search, sortBy, page = 1, limit = 6 } = params;
+
+  if (category && category !== "Featured" && category !== "All") {
+    list = list.filter(
+      (c) => (c.category || "").toLowerCase() === category.trim().toLowerCase()
+    );
+  }
+
+  if (search && search.trim()) {
+    const s = search.trim().toLowerCase();
+    list = list.filter(
+      (c) =>
+        (c.name || "").toLowerCase().includes(s) ||
+        (c.subtitle || "").toLowerCase().includes(s) ||
+        (c.category || "").toLowerCase().includes(s) ||
+        (Array.isArray(c.skills) && c.skills.some((sk) => sk.toLowerCase().includes(s)))
+    );
+  }
+
+  if (sortBy === "Highest Rated") {
+    list.sort((a, b) => (b.rating || 0) - (a.rating || 0));
+  } else if (sortBy === "Most Followers" || sortBy === "Most Popular") {
+    list.sort((a, b) => (b.followerCount || 0) - (a.followerCount || 0));
+  } else if (sortBy === "Most Products") {
+    list.sort((a, b) => (b.productsCount || 0) - (a.productsCount || 0));
+  }
+
+  const total = list.length;
+  const p = Math.max(1, parseInt(page, 10) || 1);
+  const l = Math.max(1, parseInt(limit, 10) || 6);
+  const totalPages = Math.ceil(total / l) || 1;
+  const skip = (p - 1) * l;
+  const creators = list.slice(skip, skip + l);
+
+  return {
+    success: true,
+    creators,
+    total,
+    page: p,
+    limit: l,
+    totalPages,
+  };
+}
+
+/**
+ * Fetch creators with optional query parameters and pagination
+ */
+export async function fetchCreators(params = {}) {
   try {
-    const res = await fetch(`${API_BASE_URL}/creators`, {
+    const url = new URL(`${API_BASE_URL}/creators`);
+    Object.entries(params).forEach(([key, val]) => {
+      if (val !== undefined && val !== null && val !== "") {
+        url.searchParams.append(key, val);
+      }
+    });
+
+    const res = await fetch(url.toString(), {
       cache: "no-store",
     });
 
@@ -2044,15 +2727,71 @@ export async function fetchCreators() {
     }
 
     const data = await res.json();
-    if (data?.success && Array.isArray(data.creators) && data.creators.length > 0) {
+    if (data?.success && Array.isArray(data.creators)) {
+      if (params.page !== undefined || params.limit !== undefined) {
+        return {
+          success: true,
+          creators: data.creators,
+          total: data.total ?? data.creators.length,
+          page: data.page ?? 1,
+          limit: data.limit ?? data.creators.length,
+          totalPages: data.totalPages ?? 1,
+        };
+      }
       return data.creators;
     }
-    return [fallbackCreator];
+    return params.page !== undefined ? paginateFallbackCreators(params) : fallbackCreators;
   } catch (error) {
     console.warn("Backend API error for creators, using fallback:", error.message);
-    return [fallbackCreator];
+    return params.page !== undefined ? paginateFallbackCreators(params) : fallbackCreators;
   }
 }
+
+/**
+ * Dedicated paginated creator fetcher for the creators route
+ */
+export async function fetchPaginatedCreators(params = {}) {
+  try {
+    const url = new URL(`${API_BASE_URL}/creators`);
+    const finalParams = {
+      page: 1,
+      limit: 6,
+      ...params,
+    };
+    Object.entries(finalParams).forEach(([key, val]) => {
+      if (val !== undefined && val !== null && val !== "") {
+        url.searchParams.append(key, val);
+      }
+    });
+
+    const res = await fetch(url.toString(), {
+      cache: "no-store",
+    });
+
+    if (!res.ok) {
+      throw new Error(`Failed to fetch paginated creators: ${res.status}`);
+    }
+
+    const data = await res.json();
+    if (data?.success && Array.isArray(data.creators)) {
+      return {
+        success: true,
+        creators: data.creators,
+        total: data.total ?? data.creators.length,
+        page: data.page ?? Number(finalParams.page),
+        limit: data.limit ?? Number(finalParams.limit),
+        totalPages:
+          data.totalPages ??
+          Math.ceil((data.total ?? data.creators.length) / Number(finalParams.limit)),
+      };
+    }
+    return paginateFallbackCreators(finalParams);
+  } catch (error) {
+    console.warn("Backend API unavailable, using paginated creators fallback:", error.message);
+    return paginateFallbackCreators(params);
+  }
+}
+
 
 /**
  * Fetch a single creator with their courses

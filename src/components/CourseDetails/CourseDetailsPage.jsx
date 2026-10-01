@@ -121,7 +121,7 @@ function CourseSidebarCard({ course, enrolled, handleEnroll }) {
         <div className="flex items-center gap-3">
           <div className="w-9 h-9 rounded-full overflow-hidden relative shrink-0 border border-neutral-200">
             <Image
-              src={course?.authorAvatar || "/creator-avatar-large.png"}
+              src={course?.authorAvatar || "/user-creator-avatar.jpg"}
               alt="Course creator"
               fill
               className="object-cover"

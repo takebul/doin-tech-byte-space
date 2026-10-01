@@ -1,11 +1,17 @@
-import CreatorProfilePage from "@/components/Creators/CreatorProfilePage";
+import { Suspense } from "react";
+import CreatorsCatalogPage from "@/components/Creators/CreatorsCatalogPage";
 
 export const metadata = {
-  title: "PurePearl Studio - Creator Profile | ByteSpace",
+  title: "Explore Creators & Instructors - ByteSpace",
   description:
-    "Explore courses, digital assets, and tutorials created by PurePearl Studio on ByteSpace.",
+    "Discover top creators, instructors, and creative studios on ByteSpace.",
 };
 
 export default function CreatorsPage() {
-  return <CreatorProfilePage />;
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-white" />}>
+      <CreatorsCatalogPage />
+    </Suspense>
+  );
 }
+
