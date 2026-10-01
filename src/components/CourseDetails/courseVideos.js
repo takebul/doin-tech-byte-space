@@ -129,6 +129,48 @@ export const COURSE_VIDEOS = {
     duration: "4 hours 55 mins",
     topic: "Mobile App Prototyping & iOS Gestures",
   },
+  19: {
+    id: "rgaTLrZGlk0",
+    title: "Learn Music Theory in Half an Hour",
+    channel: "Andrew Huang",
+    duration: "3 hours 20 mins",
+    topic: "Music Production & Sound Design",
+  },
+  20: {
+    id: "u4ZoJKF_VuA",
+    title: "Start with Why -- How Great Leaders Inspire Action",
+    channel: "Simon Sinek | TEDx",
+    duration: "2 hours 55 mins",
+    topic: "Creative Brand Marketing & Campaigns",
+  },
+  21: {
+    id: "8rAe8RuICYM",
+    title: "The Basics of Cinematography - Filmmaking for Beginners",
+    channel: "Camp Films",
+    duration: "4 hours 15 mins",
+    topic: "Cinematography & Video Production",
+  },
+  22: {
+    id: "41bEeL8rVs4",
+    title: "Pottery Tutorial for Beginners — Slab & Coil Technique",
+    channel: "HasTakArt Studio",
+    duration: "2 hours 45 mins",
+    topic: "Handcrafted Ceramics & Clay Design",
+  },
+  23: {
+    id: "7ZVyNjKSr0M",
+    title: "9 Photo Composition Tips (feat. Steve McCurry)",
+    channel: "COOPH",
+    duration: "3 hours 35 mins",
+    topic: "Commercial & Portrait Photography",
+  },
+  24: {
+    id: "dCGS067s0zo",
+    title: "Gordon Ramsay's Knife Skills & Onion Dicing",
+    channel: "Gordon Ramsay",
+    duration: "3 hours 10 mins",
+    topic: "Artisan Culinary & Modern Cooking",
+  },
 };
 
 /**
@@ -158,6 +200,13 @@ export function getCourseVideo(course, courseId) {
   const title = (course?.title || "").toLowerCase();
   const category = (course?.category || "").toLowerCase();
 
+  if (category === "music" || slug.includes("music")) return COURSE_VIDEOS[19];
+  if (category === "creative marketing" || slug.includes("creative-brand")) return COURSE_VIDEOS[20];
+  if (category === "film & video" || slug.includes("film") || slug.includes("cinematography")) return COURSE_VIDEOS[21];
+  if (category === "crafts" || slug.includes("crafts") || slug.includes("pottery") || slug.includes("ceramics")) return COURSE_VIDEOS[22];
+  if (category === "photography" || slug.includes("photography") || slug.includes("photo")) return COURSE_VIDEOS[23];
+  if (category === "cooking" || slug.includes("cooking") || slug.includes("culinary")) return COURSE_VIDEOS[24];
+
   if (slug.includes("figma") || title.includes("figma")) return COURSE_VIDEOS[1];
   if (slug.includes("asset") || slug.includes("library") || title.includes("asset")) return COURSE_VIDEOS[2];
   if (slug.includes("big-data") || title.includes("data analytics") || category.includes("data science")) return COURSE_VIDEOS[3];
@@ -177,13 +226,13 @@ export function getCourseVideo(course, courseId) {
   if (slug.includes("swiss") || title.includes("swiss") || title.includes("typography")) return COURSE_VIDEOS[17];
   if (slug.includes("mobile") || slug.includes("prototyping") || title.includes("gestures")) return COURSE_VIDEOS[18];
 
-  // 4. Deterministic hash fallback (1..18)
+  // 4. Deterministic hash fallback (1..24)
   const seed = String(courseId || course?.title || "1");
   let hash = 0;
   for (let i = 0; i < seed.length; i++) {
     hash = (hash << 5) - hash + seed.charCodeAt(i);
     hash |= 0;
   }
-  const pickedNum = (Math.abs(hash) % 18) + 1;
+  const pickedNum = (Math.abs(hash) % 24) + 1;
   return COURSE_VIDEOS[pickedNum] || COURSE_VIDEOS[1];
 }
