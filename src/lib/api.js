@@ -2855,3 +2855,164 @@ export async function fetchCategories() {
     };
   }
 }
+
+/**
+ * Fetch enrollments for a user
+ */
+export async function fetchUserEnrollments(userEmail, userId) {
+  const localKey = userEmail ? `bytespace_enrollments_${userEmail.toLowerCase()}` : "bytespace_enrollments_guest";
+  let localList = [];
+  if (typeof window !== "undefined") {
+    try {
+      const stored = localStorage.getItem(localKey);
+      if (stored) localList = JSON.parse(stored);
+    } catch (_) {}
+  }
+
+  try {
+    const params = new URLSearchParams();
+    if (userEmail) params.append("userEmail", userEmail);
+    if (userId) params.append("userId", userId);
+
+    const res = await fetch(`${API_BASE_URL}/enrollments?${params.toString()}`, {
+      cache: "no-store",
+    });
+
+    if (res.ok) {
+      const data = await res.json();
+      if (data?.success && Array.isArray(data.enrollments)) {
+        if (typeof window !== "undefined") {
+          try {
+            localStorage.setItem(localKey, JSON.stringify(data.enrollments));
+          } catch (_) {}
+        }
+        return data.enrollments;
+      }
+    }
+  } catch (error) {
+    console.warn("Could not fetch enrollments from server, using local store:", error.message);
+  }
+
+  return localList;
+}
+
+/**
+ * Enroll a user into a course
+ */
+export async function enrollInCourse(enrollmentData) {
+  const { userEmail, courseId } = enrollmentData;
+  const localKey = userEmail ? `bytespace_enrollments_${userEmail.toLowerCase()}` : "bytespace_enrollments_guest";
+
+  const optimisticEnrollment = {
+    id: `enr_${Date.now()}`,
+    userId: enrollmentData.userId || "user",
+    userEmail: (userEmail || "").toLowerCase(),
+    userName: enrollmentData.userName || "User",
+    courseId: Number(courseId) || courseId,
+    courseTitle: enrollmentData.courseTitle || "Enrolled Course",
+    courseSlug: enrollmentData.courseSlug || `course-${courseId}`,
+    courseImage: enrollmentData.courseImage || "/course-1.png",
+    courseAuthor: enrollmentData.courseAuthor || "ByteSpace Instructor",
+    coursePrice: enrollmentData.coursePrice || 0,
+    category: enrollmentData.category || "General",
+    progress: 0,
+    status: "In Progress",
+    enrolledAt: new Date().toISOString(),
+  };
+
+  if (typeof window !== "undefined") {
+    try {
+      const stored = localStorage.getItem(localKey);
+      let list = stored ? JSON.parse(stored) : [];
+      const exists = list.some((e) => String(e.courseId) === String(courseId));
+      if (!exists) {
+        list.unshift(optimisticEnrollment);
+        localStorage.setItem(localKey, JSON.stringify(list));
+      }
+      window.dispatchEvent(
+        new CustomEvent("bytespace:enrollment-updated", {
+          detail: { enrollment: optimisticEnrollment, total: list.length },
+        })
+      );
+    } catch (_) {}
+  }
+
+  try {
+    const res = await fetch(`${API_BASE_URL}/enrollments`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(enrollmentData),
+    });
+
+    if (res.ok) {
+      const data = await res.json();
+      return data;
+    }
+  } catch (error) {
+    console.warn("Server enrollment sync failed, saved locally:", error.message);
+  }
+
+  return {
+    success: true,
+    alreadyEnrolled: false,
+    message: "Enrolled in course successfully!",
+    enrollment: optimisticEnrollment,
+  };
+}
+
+/**
+ * Delete an enrollment (unenroll from a course)
+ */
+export async function deleteEnrollment({ enrollmentId, courseId, userEmail, userId }) {
+  const localKey = userEmail
+    ? `bytespace_enrollments_${userEmail.toLowerCase()}`
+    : "bytespace_enrollments_guest";
+
+  let serverSuccess = false;
+  try {
+    const targetId = enrollmentId || courseId;
+    const params = new URLSearchParams();
+    if (userEmail) params.append("userEmail", userEmail);
+    if (userId) params.append("userId", userId);
+    if (courseId) params.append("courseId", String(courseId));
+
+    const res = await fetch(`${API_BASE_URL}/enrollments/${targetId}?${params.toString()}`, {
+      method: "DELETE",
+    });
+
+    if (res.ok) {
+      serverSuccess = true;
+    }
+  } catch (error) {
+    console.warn("Server delete enrollment failed, updated locally:", error.message);
+  }
+
+  let remaining = [];
+  if (typeof window !== "undefined") {
+    try {
+      const stored = localStorage.getItem(localKey);
+      if (stored) {
+        const list = JSON.parse(stored);
+        remaining = list.filter((e) => {
+          const matchId =
+            (enrollmentId && (e.id === enrollmentId || String(e._id) === String(enrollmentId))) ||
+            (courseId && String(e.courseId) === String(courseId));
+          return !matchId;
+        });
+        localStorage.setItem(localKey, JSON.stringify(remaining));
+      }
+      window.dispatchEvent(
+        new CustomEvent("bytespace:enrollment-updated", {
+          detail: { deletedCourseId: courseId, total: remaining.length },
+        })
+      );
+    } catch (_) {}
+  }
+
+  return {
+    success: true,
+    serverSuccess,
+    message: "Course removed from enrolled history.",
+    remaining,
+  };
+}
