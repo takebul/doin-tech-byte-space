@@ -2,10 +2,26 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import ByteSpaceLogo from "./Hero/ByteSpaceLogo";
+import { authClient } from "@/lib/auth-client";
 
 export default function Navbar() {
+  const router = useRouter();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  // Directly consume Better-Auth session backed by cookieCache and MongoDB
+  const { data: session } = authClient.useSession();
+  const currentUser = session?.user;
+
+  const handleSignOut = async () => {
+    try {
+      await authClient.signOut();
+      router.refresh();
+    } catch (err) {
+      console.error("Sign out error:", err);
+    }
+  };
 
   return (
     <header className="relative z-30 w-full pt-6 pb-2 px-6 sm:px-12 lg:px-22 max-w-[1440px] mx-auto flex items-center justify-between">
@@ -21,12 +37,12 @@ export default function Navbar() {
         aria-label="Main Navigation"
         className="hidden md:flex items-center gap-7 lg:gap-8 absolute left-1/2 -translate-x-1/2"
       >
-        <a
-          href="#home"
+        <Link
+          href="/"
           className="text-white font-medium text-[13px] hover:text-[#cbfc01] transition-colors duration-150"
         >
           Home
-        </a>
+        </Link>
         <Link
           href="/courses"
           className="text-white/80 font-normal text-[13px] hover:text-white transition-colors duration-150"
@@ -43,18 +59,40 @@ export default function Navbar() {
 
       {/* Right Action Items */}
       <div className="hidden md:flex items-center gap-5 lg:gap-6">
-        <Link
-          href="/signin"
-          className="text-white/90 font-normal text-[13px] hover:text-white transition-colors duration-150"
-        >
-          Sign In
-        </Link>
-        <Link
-          href="/register"
-          className="text-white/90 font-normal text-[13px] hover:text-white transition-colors duration-150"
-        >
-          Join Us
-        </Link>
+        {currentUser ? (
+          <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 bg-white/10 hover:bg-white/15 px-3 py-1.5 rounded-full transition-colors">
+              <div className="w-5 h-5 rounded-full bg-[#cbfc01] text-[#18181b] font-bold text-[10px] flex items-center justify-center uppercase">
+                {currentUser.name ? currentUser.name[0] : "U"}
+              </div>
+              <span className="text-white text-[13px] font-medium max-w-[110px] truncate">
+                {currentUser.name?.split(" ")[0] || "User"}
+              </span>
+            </div>
+            <button
+              type="button"
+              onClick={handleSignOut}
+              className="text-white/70 hover:text-white text-[12px] font-normal transition-colors cursor-pointer"
+            >
+              Sign Out
+            </button>
+          </div>
+        ) : (
+          <>
+            <Link
+              href="/signin"
+              className="text-white/90 font-normal text-[13px] hover:text-white transition-colors duration-150"
+            >
+              Sign In
+            </Link>
+            <Link
+              href="/register"
+              className="text-white/90 font-normal text-[13px] hover:text-white transition-colors duration-150"
+            >
+              Join Us
+            </Link>
+          </>
+        )}
 
         {/* Shopping Bag Icon */}
         <button
@@ -143,13 +181,13 @@ export default function Navbar() {
       {/* Mobile Menu Dropdown */}
       {mobileMenuOpen && (
         <div className="absolute top-full left-0 w-full px-6 py-4 bg-[#071e5f]/95 backdrop-blur-md border-b border-white/10 md:hidden flex flex-col gap-4 text-center shadow-xl animate-in fade-in slide-in-from-top-2 duration-200">
-          <a
-            href="#home"
+          <Link
+            href="/"
             onClick={() => setMobileMenuOpen(false)}
             className="text-white font-medium py-1.5"
           >
             Home
-          </a>
+          </Link>
           <Link
             href="/courses"
             onClick={() => setMobileMenuOpen(false)}
@@ -166,20 +204,40 @@ export default function Navbar() {
           </Link>
           <hr className="border-white/10 my-1" />
           <div className="flex justify-center items-center gap-6 pt-2">
-            <Link
-              href="/signin"
-              onClick={() => setMobileMenuOpen(false)}
-              className="text-white/90 text-sm"
-            >
-              Sign In
-            </Link>
-            <Link
-              href="/register"
-              onClick={() => setMobileMenuOpen(false)}
-              className="bg-[#cbfc01] text-black font-semibold text-sm px-4 py-1.5 rounded-full"
-            >
-              Join Us
-            </Link>
+            {currentUser ? (
+              <div className="flex items-center gap-4">
+                <span className="text-white font-medium text-sm">
+                  {currentUser.name || "User"}
+                </span>
+                <button
+                  type="button"
+                  onClick={() => {
+                    handleSignOut();
+                    setMobileMenuOpen(false);
+                  }}
+                  className="bg-white/20 text-white text-xs px-3 py-1.5 rounded-full"
+                >
+                  Sign Out
+                </button>
+              </div>
+            ) : (
+              <>
+                <Link
+                  href="/signin"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="text-white/90 text-sm"
+                >
+                  Sign In
+                </Link>
+                <Link
+                  href="/register"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="bg-[#cbfc01] text-black font-semibold text-sm px-4 py-1.5 rounded-full"
+                >
+                  Join Us
+                </Link>
+              </>
+            )}
           </div>
         </div>
       )}

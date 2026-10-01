@@ -1,94 +1,20 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import CourseCard from "./CourseCard";
+import { fetchCourses, fetchCategories, fallbackCourses, fallbackCategories } from "@/lib/api";
 
-const categories = [
-  "Featured",
-  "Music",
-  "Drawing & Painting",
-  "Marketing",
-  "Animation",
-  "Social Media",
-  "UI/UX Design",
-  "Creative Marketing",
-  "Cooking",
-];
+const categories = fallbackCategories;
 
-// 18 course items matching reference 6-row by 3-column layout
-const baseCourseCatalog = [
-  {
-    id: 1,
-    title: "Learn Figma from Basic",
-    author: "purepearl studio",
-    rating: 4.5,
-    level: "Beginner",
-    price: 25,
-    image: "/course-1.png",
-    category: "UI/UX Design",
-  },
-  {
-    id: 2,
-    title: "Build Digital Asset",
-    author: "purepearl studio",
-    rating: 4.5,
-    level: "Beginner",
-    price: 25,
-    image: "/course-2.png",
-    category: "Drawing & Painting",
-  },
-  {
-    id: 3,
-    title: "the Power of Big Data",
-    author: "purepearl studio",
-    rating: 4.5,
-    level: "Beginner",
-    price: 25,
-    image: "/course-3.png",
-    category: "Marketing",
-  },
-  {
-    id: 4,
-    title: "Balancing Productivity an...",
-    author: "purepearl studio",
-    rating: 4.5,
-    level: "Beginner",
-    price: 25,
-    image: "/course-4.png",
-    category: "Animation",
-  },
-  {
-    id: 5,
-    title: "Mastering Money Manage...",
-    author: "purepearl studio",
-    rating: 4.5,
-    level: "Beginner",
-    price: 25,
-    image: "/course-5.png",
-    category: "Creative Marketing",
-  },
-  {
-    id: 6,
-    title: "From Idea to Startup Succe...",
-    author: "purepearl studio",
-    rating: 4.5,
-    level: "Beginner",
-    price: 25,
-    image: "/course-6.png",
-    category: "Social Media",
-  },
-];
-
-// Duplicate across 18 items to faithfully render the 18-card Figma catalog grid
-const fullCatalog = [
-  ...baseCourseCatalog.map((c, i) => ({ ...c, id: i + 1 })),
-  ...baseCourseCatalog.map((c, i) => ({ ...c, id: i + 7 })),
-  ...baseCourseCatalog.map((c, i) => ({ ...c, id: i + 13 })),
-];
+// 18-course catalog from dataset
+const fullCatalog = fallbackCourses;
 
 export default function CoursesCatalogPage() {
+  const [courses, setCourses] = useState(fullCatalog);
+  const [categoriesList, setCategoriesList] = useState(categories);
+  const [isLoading, setIsLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("Featured");
   const [selectedLevel, setSelectedLevel] = useState("All Level");
@@ -97,8 +23,37 @@ export default function CoursesCatalogPage() {
   const [showLevelMenu, setShowLevelMenu] = useState(false);
   const [showSortMenu, setShowSortMenu] = useState(false);
 
+  useEffect(() => {
+    let isMounted = true;
+    async function loadData() {
+      try {
+        setIsLoading(true);
+        const [fetchedCourses, fetchedCatDoc] = await Promise.all([
+          fetchCourses(),
+          fetchCategories(),
+        ]);
+        if (isMounted) {
+          if (Array.isArray(fetchedCourses) && fetchedCourses.length > 0) {
+            setCourses(fetchedCourses);
+          }
+          if (fetchedCatDoc?.featured) {
+            setCategoriesList(fetchedCatDoc.featured);
+          }
+        }
+      } catch (err) {
+        console.warn("Using fallback catalog:", err);
+      } finally {
+        if (isMounted) setIsLoading(false);
+      }
+    }
+    loadData();
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
   const filteredCourses = useMemo(() => {
-    return fullCatalog.filter((course) => {
+    return courses.filter((course) => {
       const matchesSearch =
         course.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         course.author.toLowerCase().includes(searchQuery.toLowerCase());
@@ -108,7 +63,7 @@ export default function CoursesCatalogPage() {
         selectedLevel === "All Level" || course.level === selectedLevel;
       return matchesSearch && matchesCategory && matchesLevel;
     });
-  }, [searchQuery, selectedCategory, selectedLevel]);
+  }, [courses, searchQuery, selectedCategory, selectedLevel]);
 
   return (
     <div className="relative min-h-screen w-full bg-white flex flex-col overflow-x-hidden">
@@ -305,7 +260,7 @@ export default function CoursesCatalogPage() {
 
           {/* Row 2: Category Pills */}
           <div className="flex items-center gap-2 overflow-x-auto pb-1.5 scrollbar-none">
-            {categories.map((cat) => {
+            {categoriesList.map((cat) => {
               const isActive = selectedCategory === cat;
               return (
                 <button
@@ -328,7 +283,7 @@ export default function CoursesCatalogPage() {
         {filteredCourses.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7">
             {filteredCourses.map((course, idx) => (
-              <CourseCard key={course.id} course={course} index={idx % 6} />
+              <CourseCard key={course.id || idx} course={course} index={idx % 6} />
             ))}
           </div>
         ) : (
