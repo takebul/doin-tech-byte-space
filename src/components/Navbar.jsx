@@ -1,13 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import ByteSpaceLogo from "./Hero/ByteSpaceLogo";
 import { authClient } from "@/lib/auth-client";
 
 export default function Navbar() {
   const router = useRouter();
+  const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // Directly consume Better-Auth session backed by cookieCache and MongoDB
@@ -23,6 +24,55 @@ export default function Navbar() {
     }
   };
 
+  const navLinks = [
+    { name: "Home", href: "/" },
+    { name: "Courses", href: "/courses" },
+    { name: "Creators", href: "/creators" },
+  ];
+
+  const [mounted, setMounted] = useState(false);
+  const [currentPath, setCurrentPath] = useState("");
+
+  useEffect(() => {
+    setMounted(true);
+    const updatePath = () => {
+      if (typeof window !== "undefined") {
+        setCurrentPath(window.location.pathname);
+      }
+    };
+    updatePath();
+    window.addEventListener("popstate", updatePath);
+    return () => window.removeEventListener("popstate", updatePath);
+  }, [pathname]);
+
+  const activePath = (
+    (mounted && typeof window !== "undefined" ? window.location.pathname : "") ||
+    pathname ||
+    currentPath ||
+    "/"
+  ).toLowerCase();
+
+  const isActiveLink = (href) => {
+    if (href === "/") {
+      return activePath === "/" || activePath === "";
+    }
+    if (href === "/courses") {
+      return (
+        activePath === "/courses" ||
+        activePath.startsWith("/courses/") ||
+        activePath.startsWith("/course-details")
+      );
+    }
+    if (href === "/creators") {
+      return (
+        activePath === "/creators" ||
+        activePath.startsWith("/creators/") ||
+        activePath.startsWith("/creator-profile")
+      );
+    }
+    return activePath === href;
+  };
+
   return (
     <header className="relative z-30 w-full pt-6 pb-2 px-6 sm:px-12 lg:px-22 max-w-[1440px] mx-auto flex items-center justify-between">
       {/* Brand Logo (Left) */}
@@ -32,29 +82,27 @@ export default function Navbar() {
         </Link>
       </div>
 
-      {/* Desktop Navigation Links (Center) */}
+      {/* Desktop Navigation Links (Center) - Dynamic Route Active Color Switching */}
       <nav
         aria-label="Main Navigation"
         className="hidden md:flex items-center gap-7 lg:gap-8 absolute left-1/2 -translate-x-1/2"
       >
-        <Link
-          href="/"
-          className="text-white font-medium text-[13px] hover:text-[#cbfc01] transition-colors duration-150"
-        >
-          Home
-        </Link>
-        <Link
-          href="/courses"
-          className="text-white/80 font-normal text-[13px] hover:text-white transition-colors duration-150"
-        >
-          Courses
-        </Link>
-        <Link
-          href="/creators"
-          className="text-white/80 font-normal text-[13px] hover:text-white transition-colors duration-150"
-        >
-          Creators
-        </Link>
+        {navLinks.map((link) => {
+          const active = isActiveLink(link.href);
+          return (
+            <Link
+              key={link.href}
+              href={link.href}
+              className={`text-[13px] transition-colors duration-150 py-1 ${
+                active
+                  ? "text-white font-semibold"
+                  : "text-white/70 font-normal hover:text-white"
+              }`}
+            >
+              {link.name}
+            </Link>
+          );
+        })}
       </nav>
 
       {/* Right Action Items */}
@@ -81,13 +129,21 @@ export default function Navbar() {
           <>
             <Link
               href="/signin"
-              className="text-white/90 font-normal text-[13px] hover:text-white transition-colors duration-150"
+              className={`text-[13px] transition-colors duration-150 ${
+                pathname === "/signin"
+                  ? "text-white font-semibold"
+                  : "text-white/70 font-normal hover:text-white"
+              }`}
             >
               Sign In
             </Link>
             <Link
               href="/register"
-              className="text-white/90 font-normal text-[13px] hover:text-white transition-colors duration-150"
+              className={`text-[13px] transition-colors duration-150 ${
+                pathname === "/register"
+                  ? "text-white font-semibold"
+                  : "text-white/70 font-normal hover:text-white"
+              }`}
             >
               Join Us
             </Link>
@@ -181,27 +237,23 @@ export default function Navbar() {
       {/* Mobile Menu Dropdown */}
       {mobileMenuOpen && (
         <div className="absolute top-full left-0 w-full px-6 py-4 bg-[#071e5f]/95 backdrop-blur-md border-b border-white/10 md:hidden flex flex-col gap-4 text-center shadow-xl animate-in fade-in slide-in-from-top-2 duration-200">
-          <Link
-            href="/"
-            onClick={() => setMobileMenuOpen(false)}
-            className="text-white font-medium py-1.5"
-          >
-            Home
-          </Link>
-          <Link
-            href="/courses"
-            onClick={() => setMobileMenuOpen(false)}
-            className="text-white/80 py-1.5"
-          >
-            Courses
-          </Link>
-          <Link
-            href="/creators"
-            onClick={() => setMobileMenuOpen(false)}
-            className="text-white/80 py-1.5"
-          >
-            Creators
-          </Link>
+          {navLinks.map((link) => {
+            const active = isActiveLink(link.href);
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                onClick={() => setMobileMenuOpen(false)}
+                className={`py-1.5 text-base transition-colors ${
+                  active
+                    ? "text-white font-semibold"
+                    : "text-white/70 font-normal hover:text-white"
+                }`}
+              >
+                {link.name}
+              </Link>
+            );
+          })}
           <hr className="border-white/10 my-1" />
           <div className="flex justify-center items-center gap-6 pt-2">
             {currentUser ? (
@@ -225,7 +277,11 @@ export default function Navbar() {
                 <Link
                   href="/signin"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="text-white/90 text-sm"
+                  className={`text-sm transition-colors ${
+                    pathname === "/signin"
+                      ? "text-white font-semibold"
+                      : "text-white/70 font-normal hover:text-white"
+                  }`}
                 >
                   Sign In
                 </Link>
