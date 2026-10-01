@@ -9,7 +9,7 @@ export const fallbackCourses = [
     "title": "Learn Figma from Basic",
     "author": "purepearl studio",
     "authorId": "purepearl-studio",
-    "authorAvatar": "/creator-avatar-large.png",
+    "authorAvatar": "/user-creator-avatar.jpg",
     "authorBio": "Passionate UI/UX designer with 8+ years experience guiding tens of thousands of designers worldwide.",
     "rating": 4.8,
     "level": "Beginner",
@@ -1469,6 +1469,336 @@ export const fallbackCourses = [
         "date": "3 days ago"
       }
     ]
+  },
+  {
+    "id": 19,
+    "slug": "music-production-sound-design",
+    "title": "Music Production & Sound Design",
+    "author": "EchoWave Audio Lab",
+    "authorId": "echowave-audio",
+    "authorAvatar": "/avatar-1.png",
+    "authorBio": "Electronic music producer and audio engineer with over 10 years experience producing chart-topping tracks.",
+    "rating": 4.9,
+    "level": "All Levels",
+    "price": 35,
+    "currency": "$",
+    "billing": "lifetime",
+    "image": "/course-4.png",
+    "category": "Music",
+    "lessons": "22 Lessons",
+    "lessonsCount": 22,
+    "duration": "3 hours 20 mins",
+    "comments": "84 Comments",
+    "commentsCount": 84,
+    "description": "Master digital audio workstations, chord theory, vocal mixing, synthesis, and release-ready mastering.",
+    "overview": "Dive into the art and science of modern music production. Learn chord theory, drum sequencing, synthesizer sound design, EQ, compression, and professional audio mixing workflows.",
+    "youtubeVideoId": "rgaTLrZGlk0",
+    "whatYouWillLearn": [
+      "Master modern DAW workflows, MIDI routing, and audio interfaces",
+      "Build captivating chord progressions and infectious melodies",
+      "Sculpt custom synthesizer patches with subtractive and FM synthesis",
+      "Mix and master full tracks for Spotify and Apple Music distribution"
+    ],
+    "syllabus": [
+      {
+        "sectionTitle": "Section 1: Music Theory & Rhythm Architecture",
+        "lessons": [
+          { "number": "01", "title": "Modern Chord Progressions & Harmonies", "duration": "18 mins", "preview": true },
+          { "number": "02", "title": "Drum Programming & Groove Velocity", "duration": "24 mins", "preview": false }
+        ]
+      },
+      {
+        "sectionTitle": "Section 2: Mixing & Spatial Audio",
+        "lessons": [
+          { "number": "03", "title": "Surgical EQ & Dynamic Multiband Compression", "duration": "26 mins", "preview": true },
+          { "number": "04", "title": "Final Mastering Chains for Streaming Loudness", "duration": "22 mins", "preview": false }
+        ]
+      }
+    ],
+    "reviews": [
+      {
+        "id": 1,
+        "user": "Marcus Bell",
+        "rating": 5,
+        "comment": "The music theory section blew my mind. Made my first track in 48 hours!",
+        "date": "2 days ago"
+      }
+    ]
+  },
+  {
+    "id": 20,
+    "slug": "creative-brand-marketing-viral-campaigns",
+    "title": "Creative Brand Marketing & Campaigns",
+    "author": "Vanguard Creative",
+    "authorId": "vanguard-creative",
+    "authorAvatar": "/avatar-2.png",
+    "authorBio": "Award-winning creative strategists behind memorable consumer campaigns and viral product launches.",
+    "rating": 4.85,
+    "level": "Intermediate",
+    "price": 32,
+    "currency": "$",
+    "billing": "lifetime",
+    "image": "/course-5.png",
+    "category": "Creative Marketing",
+    "lessons": "20 Lessons",
+    "lessonsCount": 20,
+    "duration": "2 hours 55 mins",
+    "comments": "76 Comments",
+    "commentsCount": 76,
+    "description": "Craft unforgettable brand narratives, launch viral organic activations, and build high-affinity communities.",
+    "overview": "Learn how top consumer brands break through the noise. Explore distinctive brand assets, culture jacking, emotional hooks, and positioning strategies that generate earned media.",
+    "youtubeVideoId": "u4ZoJKF_VuA",
+    "whatYouWillLearn": [
+      "Define distinctive brand archetypes and strategic positioning",
+      "Engineer organic viral loops and guerilla marketing activations",
+      "Build high-retention community ambassadors and advocates",
+      "Measure brand equity and earned media value accurately"
+    ],
+    "syllabus": [
+      {
+        "sectionTitle": "Section 1: Brand Essence & Unorthodox Positioning",
+        "lessons": [
+          { "number": "01", "title": "The Golden Circle of Brand Identity", "duration": "16 mins", "preview": true },
+          { "number": "02", "title": "Identifying Cultural White Space", "duration": "22 mins", "preview": false }
+        ]
+      },
+      {
+        "sectionTitle": "Section 2: Viral Mechanics & Earned Media",
+        "lessons": [
+          { "number": "03", "title": "Designing Shareable Brand Moments", "duration": "25 mins", "preview": true },
+          { "number": "04", "title": "Amplifying PR Stunts with Digital Retargeting", "duration": "21 mins", "preview": false }
+        ]
+      }
+    ],
+    "reviews": [
+      {
+        "id": 1,
+        "user": "Chloe Bennett",
+        "rating": 5,
+        "comment": "Changed how our whole agency thinks about creative marketing campaigns.",
+        "date": "4 days ago"
+      }
+    ]
+  },
+  {
+    "id": 21,
+    "slug": "cinematography-film-video-production",
+    "title": "Cinematography & Video Production",
+    "author": "CineCraft Studio",
+    "authorId": "cinecraft-studio",
+    "authorAvatar": "/avatar-3.png",
+    "authorBio": "Indie filmmaker and commercial director with credits on Netflix documentaries and global brand commercials.",
+    "rating": 4.95,
+    "level": "Intermediate",
+    "price": 42,
+    "currency": "$",
+    "billing": "lifetime",
+    "image": "/course-7.png",
+    "category": "Film & Video",
+    "lessons": "25 Lessons",
+    "lessonsCount": 25,
+    "duration": "4 hours 15 mins",
+    "comments": "128 Comments",
+    "commentsCount": 128,
+    "description": "Master camera movement, 3-point cinematic lighting, storyboarding, and color grading in DaVinci Resolve.",
+    "overview": "Take your video projects from amateur to cinematic perfection. Discover camera sensor physics, focal length storytelling, negative fill lighting, motivated camera movements, and film emulation.",
+    "youtubeVideoId": "8rAe8RuICYM",
+    "whatYouWillLearn": [
+      "Master manual exposure, shutter angles, and cinematic focal lengths",
+      "Design atmospheric 3-point lighting setups on any budget",
+      "Direct fluid camera movements using gimbals, sliders, and handheld rigs",
+      "Grade professional log footage with custom tone curves and film LUTs"
+    ],
+    "syllabus": [
+      {
+        "sectionTitle": "Section 1: Visual Language & Camera Control",
+        "lessons": [
+          { "number": "01", "title": "The Emotional Impact of Focal Lengths", "duration": "19 mins", "preview": true },
+          { "number": "02", "title": "Motivated Camera Motion & Blocking", "duration": "27 mins", "preview": false }
+        ]
+      },
+      {
+        "sectionTitle": "Section 2: Lighting & Color Grading",
+        "lessons": [
+          { "number": "03", "title": "Sculpting Faces with Key, Fill & Rim Lights", "duration": "24 mins", "preview": true },
+          { "number": "04", "title": "Color Grading Log Footage in DaVinci Resolve", "duration": "30 mins", "preview": false }
+        ]
+      }
+    ],
+    "reviews": [
+      {
+        "id": 1,
+        "user": "David Sterling",
+        "rating": 5,
+        "comment": "The cinematography tips instantly elevated my commercial reels.",
+        "date": "1 week ago"
+      }
+    ]
+  },
+  {
+    "id": 22,
+    "slug": "handcrafted-ceramics-pottery-clay",
+    "title": "Handcrafted Ceramics & Clay Design",
+    "author": "Terra & Wheel Studio",
+    "authorId": "terra-wheel",
+    "authorAvatar": "/avatar-4.png",
+    "authorBio": "Master ceramicist and sculptor exhibiting handcrafted clay collections across international galleries.",
+    "rating": 4.8,
+    "level": "Beginner",
+    "price": 28,
+    "currency": "$",
+    "billing": "lifetime",
+    "image": "/course-8.png",
+    "category": "Crafts",
+    "lessons": "18 Lessons",
+    "lessonsCount": 18,
+    "duration": "2 hours 45 mins",
+    "comments": "64 Comments",
+    "commentsCount": 64,
+    "description": "Learn clay preparation, wheel centering, slab building, underglaze decoration, and kiln firing techniques.",
+    "overview": "Experience the therapeutic and creative craft of pottery. From wedge-centering on the wheel to carving organic textures, this beginner-friendly course teaches traditional and modern clay crafting.",
+    "youtubeVideoId": "41bEeL8rVs4",
+    "whatYouWillLearn": [
+      "Wedge, center, and pull balanced clay cylinders on the pottery wheel",
+      "Construct architectural ceramic vessels using slab and coil methods",
+      "Mix custom ceramic glazes and paint expressive botanical underglazes",
+      "Safely bisque and glaze fire finished stoneware pieces"
+    ],
+    "syllabus": [
+      {
+        "sectionTitle": "Section 1: Clay Chemistry & Wheel Centering",
+        "lessons": [
+          { "number": "01", "title": "Understanding Clay Bodies & Moisture Stages", "duration": "15 mins", "preview": true },
+          { "number": "02", "title": "The Physics of Wheel Centering", "duration": "24 mins", "preview": false }
+        ]
+      },
+      {
+        "sectionTitle": "Section 2: Glazing & Surface Design",
+        "lessons": [
+          { "number": "03", "title": "Carving Textures & Leather-Hard Trimming", "duration": "20 mins", "preview": true },
+          { "number": "04", "title": "Dipping, Pouring & Glaze Chemistry", "duration": "22 mins", "preview": false }
+        ]
+      }
+    ],
+    "reviews": [
+      {
+        "id": 1,
+        "user": "Emily Rivera",
+        "rating": 5,
+        "comment": "So calming and informative. Made my first complete ceramic set!",
+        "date": "3 days ago"
+      }
+    ]
+  },
+  {
+    "id": 23,
+    "slug": "mastering-commercial-photography",
+    "title": "Commercial & Portrait Photography",
+    "author": "Lumen Photography Lab",
+    "authorId": "lumen-photo",
+    "authorAvatar": "/avatar-5.png",
+    "authorBio": "Editorial photographer featured in Vogue, Architectural Digest, and commercial agency campaigns.",
+    "rating": 4.9,
+    "level": "All Levels",
+    "price": 36,
+    "currency": "$",
+    "billing": "lifetime",
+    "image": "/course-2.png",
+    "category": "Photography",
+    "lessons": "21 Lessons",
+    "lessonsCount": 21,
+    "duration": "3 hours 35 mins",
+    "comments": "92 Comments",
+    "commentsCount": 92,
+    "description": "Master camera exposure, ambient flash balance, studio strobe modifiers, and portrait retouching in Lightroom.",
+    "overview": "Capture striking, editorial-grade portraits and commercial product photos. Learn the exposure triangle, off-camera flash lighting, model posing communication, and color grading workflows in Lightroom and Photoshop.",
+    "youtubeVideoId": "7ZVyNjKSr0M",
+    "whatYouWillLearn": [
+      "Master manual exposure, dynamic range, and prime lens optics",
+      "Control studio strobes with softboxes, beauty dishes, and scrims",
+      "Direct natural poses and authentic expressions on portrait shoots",
+      "Retouch skin and grade colors professionally in Adobe Lightroom"
+    ],
+    "syllabus": [
+      {
+        "sectionTitle": "Section 1: Exposure Triangle & Natural Light",
+        "lessons": [
+          { "number": "01", "title": "Aperture, Shutter & ISO in Action", "duration": "18 mins", "preview": true },
+          { "number": "02", "title": "Working with Golden Hour & Harsh Sunlight", "duration": "23 mins", "preview": false }
+        ]
+      },
+      {
+        "sectionTitle": "Section 2: Studio Lighting & Commercial Retouching",
+        "lessons": [
+          { "number": "03", "title": "Softbox Modifiers & Rim Light Separation", "duration": "28 mins", "preview": true },
+          { "number": "04", "title": "High-End Frequency Separation Retouching", "duration": "25 mins", "preview": false }
+        ]
+      }
+    ],
+    "reviews": [
+      {
+        "id": 1,
+        "user": "Jason Thorne",
+        "rating": 5,
+        "comment": "Steve McCurry's composition rules and lighting breakdowns are pure gold.",
+        "date": "5 days ago"
+      }
+    ]
+  },
+  {
+    "id": 24,
+    "slug": "artisan-culinary-gastronomy-cooking",
+    "title": "Artisan Culinary & Modern Cooking",
+    "author": "Chef Olivier Gastronomie",
+    "authorId": "chef-olivier",
+    "authorAvatar": "/avatar-6.png",
+    "authorBio": "Michelin-trained executive chef sharing fine dining techniques adapted for everyday home kitchens.",
+    "rating": 4.92,
+    "level": "Beginner",
+    "price": 34,
+    "currency": "$",
+    "billing": "lifetime",
+    "image": "/course-3.png",
+    "category": "Cooking",
+    "lessons": "19 Lessons",
+    "lessonsCount": 19,
+    "duration": "3 hours 10 mins",
+    "comments": "115 Comments",
+    "commentsCount": 115,
+    "description": "Transform home cooking with professional knife skills, flavor layering, sauce emulsions, and plating aesthetics.",
+    "overview": "Cook like a professional chef without the culinary school tuition. Learn the fundamentals of heat control, maillard browning, mother sauces, acid-salt balancing, and restaurant plating presentation.",
+    "youtubeVideoId": "dCGS067s0zo",
+    "whatYouWillLearn": [
+      "Master French chef knife cuts (julienne, brunoise, chiffonade)",
+      "Build complex flavor bases with mirepoix, stocks, and reductions",
+      "Execute foolproof pan-searing, braising, and sauce emulsions",
+      "Plate dishes with color harmony, height, and textural contrast"
+    ],
+    "syllabus": [
+      {
+        "sectionTitle": "Section 1: Knife Mastery & Kitchen Fundamentals",
+        "lessons": [
+          { "number": "01", "title": "Knife Sharpening & Precision Cuts", "duration": "16 mins", "preview": true },
+          { "number": "02", "title": "The Science of Salt, Acid, Fat & Heat", "duration": "24 mins", "preview": false }
+        ]
+      },
+      {
+        "sectionTitle": "Section 2: Pan Sauces & Restaurant Plating",
+        "lessons": [
+          { "number": "03", "title": "Velvety Reductions & Pan-Sauce Emulsions", "duration": "22 mins", "preview": true },
+          { "number": "04", "title": "Fine Dining Plating Architecture", "duration": "26 mins", "preview": false }
+        ]
+      }
+    ],
+    "reviews": [
+      {
+        "id": 1,
+        "user": "Sophie Martin",
+        "rating": 5,
+        "comment": "My family thinks I went to culinary school in Paris. Amazing course!",
+        "date": "2 days ago"
+      }
+    ]
   }
 ];
 
@@ -1511,12 +1841,639 @@ export const fallbackCategoryRows = [
   ],
 ];
 
+export const fallbackCreators = [
+  {
+    "id": "purepearl-studio",
+    "slug": "purepearl-studio",
+    "name": "purepearl studio",
+    "badge": "Creator",
+    "subtitle": "Passionate UI/UX designer with 8+ years experience guiding tens of thousands of designers worldwide",
+    "avatar": "/user-creator-avatar.jpg",
+    "bio": [
+      "Passionate UI/UX designer with 8+ years experience guiding tens of thousands of designers worldwide.",
+      "Explore comprehensive courses, practical toolkits, and project-based tutorials designed for real-world excellence."
+    ],
+    "productsCount": 6,
+    "followerCount": 12,
+    "rating": 4.8,
+    "coursesCount": 6,
+    "skills": [
+      "Figma",
+      "UI/UX",
+      "Auto Layout",
+      "Design Systems"
+    ],
+    "category": "UI/UX Design",
+    "featuredCourseIds": [
+      1
+    ]
+  },
+  {
+    "id": "aura-creative-lab",
+    "slug": "aura-creative-lab",
+    "name": "Aura Creative Lab",
+    "badge": "Top Instructor",
+    "subtitle": "Specialist studio building enterprise design systems and icon ecosystems for global tech platforms",
+    "avatar": "/creator-purepearl-avatar.png",
+    "bio": [
+      "Specialist studio building enterprise design systems and icon ecosystems for global tech platforms.",
+      "Explore comprehensive courses, practical toolkits, and project-based tutorials designed for real-world excellence."
+    ],
+    "productsCount": 24,
+    "followerCount": 2450,
+    "rating": 4.9,
+    "coursesCount": 1,
+    "skills": [
+      "Branding",
+      "Typography",
+      "Vector Art",
+      "Visual Identity"
+    ],
+    "category": "Graphic Design",
+    "featuredCourseIds": [
+      2
+    ]
+  },
+  {
+    "id": "nexus-data-studio",
+    "slug": "nexus-data-studio",
+    "name": "Nexus Data Studio",
+    "badge": "Top Instructor",
+    "subtitle": "Data architects and visualization experts helping modern organizations turn massive datasets into actionable insight",
+    "avatar": "/avatar-1.png",
+    "bio": [
+      "Data architects and visualization experts helping modern organizations turn massive datasets into actionable insight.",
+      "Explore comprehensive courses, practical toolkits, and project-based tutorials designed for real-world excellence."
+    ],
+    "productsCount": 21,
+    "followerCount": 3820,
+    "rating": 4.7,
+    "coursesCount": 1,
+    "skills": [
+      "SQL",
+      "Big Data",
+      "Analytics",
+      "Dashboards"
+    ],
+    "category": "Data Science",
+    "featuredCourseIds": [
+      3
+    ]
+  },
+  {
+    "id": "elena-vance",
+    "slug": "elena-vance",
+    "name": "Elena Vance",
+    "badge": "Top Instructor",
+    "subtitle": "Author, cognitive productivity coach, and former design director focused on high-performance creative routines",
+    "avatar": "/avatar-2.png",
+    "bio": [
+      "Author, cognitive productivity coach, and former design director focused on high-performance creative routines.",
+      "Explore comprehensive courses, practical toolkits, and project-based tutorials designed for real-world excellence."
+    ],
+    "productsCount": 15,
+    "followerCount": 1890,
+    "rating": 4.6,
+    "coursesCount": 1,
+    "skills": [
+      "Flow State",
+      "Deep Work",
+      "Habit Systems",
+      "Time Management"
+    ],
+    "category": "Productivity",
+    "featuredCourseIds": [
+      4
+    ]
+  },
+  {
+    "id": "marcus-sterling",
+    "slug": "marcus-sterling",
+    "name": "Marcus Sterling",
+    "badge": "Top Instructor",
+    "subtitle": "Chartered financial analyst and CFO consultant for digital creators, creative agencies, and indie founders",
+    "avatar": "/avatar-3.png",
+    "bio": [
+      "Chartered financial analyst and CFO consultant for digital creators, creative agencies, and indie founders.",
+      "Explore comprehensive courses, practical toolkits, and project-based tutorials designed for real-world excellence."
+    ],
+    "productsCount": 18,
+    "followerCount": 4120,
+    "rating": 4.7,
+    "coursesCount": 1,
+    "skills": [
+      "Value Pricing",
+      "Client Acquisition",
+      "Negotiation",
+      "Finance"
+    ],
+    "category": "Freelance & Entrepreneurship",
+    "featuredCourseIds": [
+      5
+    ]
+  },
+  {
+    "id": "venturecraft-studio",
+    "slug": "venturecraft-studio",
+    "name": "VentureCraft Studio",
+    "badge": "Top Instructor",
+    "subtitle": "Serial entrepreneurs and product architects who have launched 14 bootstrapped software products",
+    "avatar": "/avatar-4.png",
+    "bio": [
+      "Serial entrepreneurs and product architects who have launched 14 bootstrapped software products.",
+      "Explore comprehensive courses, practical toolkits, and project-based tutorials designed for real-world excellence."
+    ],
+    "productsCount": 26,
+    "followerCount": 5600,
+    "rating": 4.9,
+    "coursesCount": 1,
+    "skills": [
+      "SaaS Funnels",
+      "Product Hunt",
+      "Growth Marketing",
+      "User Acquisition"
+    ],
+    "category": "Marketing",
+    "featuredCourseIds": [
+      6
+    ]
+  },
+  {
+    "id": "cyberflux-studio",
+    "slug": "cyberflux-studio",
+    "name": "CyberFlux Studio",
+    "badge": "Top Instructor",
+    "subtitle": "Award-winning creative technologist specializing in WebGL, CSS physics animations, and fluid motion design",
+    "avatar": "/avatar-5.png",
+    "bio": [
+      "Award-winning creative technologist specializing in WebGL, CSS physics animations, and fluid motion design.",
+      "Explore comprehensive courses, practical toolkits, and project-based tutorials designed for real-world excellence."
+    ],
+    "productsCount": 22,
+    "followerCount": 3240,
+    "rating": 4.9,
+    "coursesCount": 1,
+    "skills": [
+      "Motion Design",
+      "After Effects",
+      "Framer Motion",
+      "Interaction"
+    ],
+    "category": "Animation",
+    "featuredCourseIds": [
+      7
+    ]
+  },
+  {
+    "id": "maya-lin",
+    "slug": "maya-lin",
+    "name": "Maya Lin Illustration",
+    "badge": "Top Instructor",
+    "subtitle": "Editorial illustrator and visual storyteller featured in The New Yorker, Wired, and Apple Design Award apps",
+    "avatar": "/avatar-6.png",
+    "bio": [
+      "Editorial illustrator and visual storyteller featured in The New Yorker, Wired, and Apple Design Award apps.",
+      "Explore comprehensive courses, practical toolkits, and project-based tutorials designed for real-world excellence."
+    ],
+    "productsCount": 20,
+    "followerCount": 4780,
+    "rating": 4.8,
+    "coursesCount": 1,
+    "skills": [
+      "Color Theory",
+      "Composition",
+      "Visual Storytelling",
+      "Character Art"
+    ],
+    "category": "Digital Illustration",
+    "featuredCourseIds": [
+      8
+    ]
+  },
+  {
+    "id": "devstack-collective",
+    "slug": "devstack-collective",
+    "name": "DevStack Collective",
+    "badge": "Top Instructor",
+    "subtitle": "Principal software engineers training teams in modern full-stack TypeScript, React 19, and cloud infrastructure",
+    "avatar": "/avatar-1.png",
+    "bio": [
+      "Principal software engineers training teams in modern full-stack TypeScript, React 19, and cloud infrastructure.",
+      "Explore comprehensive courses, practical toolkits, and project-based tutorials designed for real-world excellence."
+    ],
+    "productsCount": 30,
+    "followerCount": 6890,
+    "rating": 4.95,
+    "coursesCount": 1,
+    "skills": [
+      "Next.js",
+      "React 19",
+      "TypeScript",
+      "Tailwind CSS"
+    ],
+    "category": "Web Development",
+    "featuredCourseIds": [
+      9
+    ]
+  },
+  {
+    "id": "finlytix-design",
+    "slug": "finlytix-design",
+    "name": "Finlytix Design",
+    "badge": "Top Instructor",
+    "subtitle": "Specialist fintech and enterprise dashboard design team crafting mission-critical interfaces for Fortune 500 apps",
+    "avatar": "/avatar-2.png",
+    "bio": [
+      "Specialist fintech and enterprise dashboard design team crafting mission-critical interfaces for Fortune 500 apps.",
+      "Explore comprehensive courses, practical toolkits, and project-based tutorials designed for real-world excellence."
+    ],
+    "productsCount": 19,
+    "followerCount": 2950,
+    "rating": 4.8,
+    "coursesCount": 1,
+    "skills": [
+      "Figma",
+      "UI/UX",
+      "Auto Layout",
+      "Design Systems"
+    ],
+    "category": "UI/UX Design",
+    "featuredCourseIds": [
+      10
+    ]
+  },
+  {
+    "id": "kaelen-voss",
+    "slug": "kaelen-voss",
+    "name": "Kaelen Voss",
+    "badge": "Top Instructor",
+    "subtitle": "Independent design consultant who has billed over $1",
+    "avatar": "/avatar-3.png",
+    "bio": [
+      "Independent design consultant who has billed over $1.2M in client projects over a 7-year solo career.",
+      "Explore comprehensive courses, practical toolkits, and project-based tutorials designed for real-world excellence."
+    ],
+    "productsCount": 16,
+    "followerCount": 3100,
+    "rating": 4.75,
+    "coursesCount": 1,
+    "skills": [
+      "Value Pricing",
+      "Client Acquisition",
+      "Negotiation",
+      "Finance"
+    ],
+    "category": "Freelance & Entrepreneurship",
+    "featuredCourseIds": [
+      11
+    ]
+  },
+  {
+    "id": "pulse-creative-media",
+    "slug": "pulse-creative-media",
+    "name": "Pulse Creative Media",
+    "badge": "Top Instructor",
+    "subtitle": "Growth marketers and viral content producers who have generated over 50M organic impressions for digital products",
+    "avatar": "/avatar-4.png",
+    "bio": [
+      "Growth marketers and viral content producers who have generated over 50M organic impressions for digital products.",
+      "Explore comprehensive courses, practical toolkits, and project-based tutorials designed for real-world excellence."
+    ],
+    "productsCount": 23,
+    "followerCount": 4420,
+    "rating": 4.85,
+    "coursesCount": 1,
+    "skills": [
+      "Viral Content",
+      "Audience Growth",
+      "Brand Storytelling",
+      "Community"
+    ],
+    "category": "Social Media",
+    "featuredCourseIds": [
+      12
+    ]
+  },
+  {
+    "id": "atomic-systems-lab",
+    "slug": "atomic-systems-lab",
+    "name": "Atomic Systems Lab",
+    "badge": "Top Instructor",
+    "subtitle": "Design token pioneers and design engineering leaders shaping systems for top SaaS platforms",
+    "avatar": "/avatar-5.png",
+    "bio": [
+      "Design token pioneers and design engineering leaders shaping systems for top SaaS platforms.",
+      "Explore comprehensive courses, practical toolkits, and project-based tutorials designed for real-world excellence."
+    ],
+    "productsCount": 28,
+    "followerCount": 5100,
+    "rating": 4.95,
+    "coursesCount": 1,
+    "skills": [
+      "Figma",
+      "UI/UX",
+      "Auto Layout",
+      "Design Systems"
+    ],
+    "category": "UI/UX Design",
+    "featuredCourseIds": [
+      13
+    ]
+  },
+  {
+    "id": "claycraft-3d",
+    "slug": "claycraft-3d",
+    "name": "ClayCraft 3D",
+    "badge": "Top Instructor",
+    "subtitle": "Digital toy designer, 3D character artist, and Blender community educator renowned for cute playful styles",
+    "avatar": "/avatar-6.png",
+    "bio": [
+      "Digital toy designer, 3D character artist, and Blender community educator renowned for cute playful styles.",
+      "Explore comprehensive courses, practical toolkits, and project-based tutorials designed for real-world excellence."
+    ],
+    "productsCount": 25,
+    "followerCount": 3750,
+    "rating": 4.85,
+    "coursesCount": 1,
+    "skills": [
+      "3D Vector",
+      "Blender",
+      "Digital Painting",
+      "Concept Art"
+    ],
+    "category": "Drawing & Painting",
+    "featuredCourseIds": [
+      14
+    ]
+  },
+  {
+    "id": "fluxflow-growth",
+    "slug": "fluxflow-growth",
+    "name": "FluxFlow Growth",
+    "badge": "Top Instructor",
+    "subtitle": "Product-led growth advisors helping software companies optimize trial-to-paid funnels and user onboarding",
+    "avatar": "/avatar-1.png",
+    "bio": [
+      "Product-led growth advisors helping software companies optimize trial-to-paid funnels and user onboarding.",
+      "Explore comprehensive courses, practical toolkits, and project-based tutorials designed for real-world excellence."
+    ],
+    "productsCount": 21,
+    "followerCount": 2680,
+    "rating": 4.8,
+    "coursesCount": 1,
+    "skills": [
+      "SaaS Funnels",
+      "Product Hunt",
+      "Growth Marketing",
+      "User Acquisition"
+    ],
+    "category": "Marketing",
+    "featuredCourseIds": [
+      15
+    ]
+  },
+  {
+    "id": "fluidmotion-studio",
+    "slug": "fluidmotion-studio",
+    "name": "FluidMotion Studio",
+    "badge": "Top Instructor",
+    "subtitle": "Creative animation studio producing kinetic typography campaigns for Spotify, Nike, and leading design conferences",
+    "avatar": "/avatar-2.png",
+    "bio": [
+      "Creative animation studio producing kinetic typography campaigns for Spotify, Nike, and leading design conferences.",
+      "Explore comprehensive courses, practical toolkits, and project-based tutorials designed for real-world excellence."
+    ],
+    "productsCount": 27,
+    "followerCount": 4930,
+    "rating": 4.9,
+    "coursesCount": 1,
+    "skills": [
+      "Motion Design",
+      "After Effects",
+      "Framer Motion",
+      "Interaction"
+    ],
+    "category": "Animation",
+    "featuredCourseIds": [
+      16
+    ]
+  },
+  {
+    "id": "studio-lowen",
+    "slug": "studio-lowen",
+    "name": "Studio Löwen Zurich",
+    "badge": "Top Instructor",
+    "subtitle": "Heritage Swiss design bureau dedicated to grid-based visual systems, timeless typography, and modern minimalism",
+    "avatar": "/avatar-3.png",
+    "bio": [
+      "Heritage Swiss design bureau dedicated to grid-based visual systems, timeless typography, and modern minimalism.",
+      "Explore comprehensive courses, practical toolkits, and project-based tutorials designed for real-world excellence."
+    ],
+    "productsCount": 18,
+    "followerCount": 3400,
+    "rating": 4.8,
+    "coursesCount": 1,
+    "skills": [
+      "Branding",
+      "Typography",
+      "Vector Art",
+      "Visual Identity"
+    ],
+    "category": "Graphic Design",
+    "featuredCourseIds": [
+      17
+    ]
+  },
+  {
+    "id": "aether-ui-lab",
+    "slug": "aether-ui-lab",
+    "name": "Aether UI Lab",
+    "badge": "Top Instructor",
+    "subtitle": "Human interface designers and iOS prototyping specialists behind multiple App Store Best of the Year winners",
+    "avatar": "/avatar-4.png",
+    "bio": [
+      "Human interface designers and iOS prototyping specialists behind multiple App Store Best of the Year winners.",
+      "Explore comprehensive courses, practical toolkits, and project-based tutorials designed for real-world excellence."
+    ],
+    "productsCount": 29,
+    "followerCount": 6200,
+    "rating": 4.95,
+    "coursesCount": 1,
+    "skills": [
+      "Figma",
+      "UI/UX",
+      "Auto Layout",
+      "Design Systems"
+    ],
+    "category": "UI/UX Design",
+    "featuredCourseIds": [
+      18
+    ]
+  },
+  {
+    "id": "echowave-audio",
+    "slug": "echowave-audio",
+    "name": "EchoWave Audio Lab",
+    "badge": "Top Instructor",
+    "subtitle": "Electronic music producer and audio engineer with over 10 years experience producing chart-topping tracks",
+    "avatar": "/avatar-1.png",
+    "bio": [
+      "Electronic music producer and audio engineer with over 10 years experience producing chart-topping tracks.",
+      "Explore comprehensive courses, practical toolkits, and project-based tutorials designed for real-world excellence."
+    ],
+    "productsCount": 22,
+    "followerCount": 2850,
+    "rating": 4.9,
+    "coursesCount": 1,
+    "skills": [
+      "Sound Design",
+      "DAW",
+      "Synthesizers",
+      "Music Production"
+    ],
+    "category": "Music",
+    "featuredCourseIds": [
+      19
+    ]
+  },
+  {
+    "id": "vanguard-creative",
+    "slug": "vanguard-creative",
+    "name": "Vanguard Creative",
+    "badge": "Top Instructor",
+    "subtitle": "Award-winning creative strategists behind memorable consumer campaigns and viral product launches",
+    "avatar": "/avatar-2.png",
+    "bio": [
+      "Award-winning creative strategists behind memorable consumer campaigns and viral product launches.",
+      "Explore comprehensive courses, practical toolkits, and project-based tutorials designed for real-world excellence."
+    ],
+    "productsCount": 20,
+    "followerCount": 3920,
+    "rating": 4.85,
+    "coursesCount": 1,
+    "skills": [
+      "Brand Strategy",
+      "Consumer Campaigns",
+      "Content Direction",
+      "Positioning"
+    ],
+    "category": "Creative Marketing",
+    "featuredCourseIds": [
+      20
+    ]
+  },
+  {
+    "id": "cinecraft-studio",
+    "slug": "cinecraft-studio",
+    "name": "CineCraft Studio",
+    "badge": "Top Instructor",
+    "subtitle": "Indie filmmaker and commercial director with credits on Netflix documentaries and global brand commercials",
+    "avatar": "/avatar-3.png",
+    "bio": [
+      "Indie filmmaker and commercial director with credits on Netflix documentaries and global brand commercials.",
+      "Explore comprehensive courses, practical toolkits, and project-based tutorials designed for real-world excellence."
+    ],
+    "productsCount": 25,
+    "followerCount": 4310,
+    "rating": 4.95,
+    "coursesCount": 1,
+    "skills": [
+      "Cinematography",
+      "Directing",
+      "Color Grading",
+      "Lighting Setup"
+    ],
+    "category": "Film & Video",
+    "featuredCourseIds": [
+      21
+    ]
+  },
+  {
+    "id": "terra-wheel",
+    "slug": "terra-wheel",
+    "name": "Terra & Wheel Studio",
+    "badge": "Top Instructor",
+    "subtitle": "Master ceramicist and sculptor exhibiting handcrafted clay collections across international galleries",
+    "avatar": "/avatar-4.png",
+    "bio": [
+      "Master ceramicist and sculptor exhibiting handcrafted clay collections across international galleries.",
+      "Explore comprehensive courses, practical toolkits, and project-based tutorials designed for real-world excellence."
+    ],
+    "productsCount": 18,
+    "followerCount": 1950,
+    "rating": 4.8,
+    "coursesCount": 1,
+    "skills": [
+      "Ceramics",
+      "Clay Sculpting",
+      "Wheel Throwing",
+      "Handmade Goods"
+    ],
+    "category": "Crafts",
+    "featuredCourseIds": [
+      22
+    ]
+  },
+  {
+    "id": "lumen-photo",
+    "slug": "lumen-photo",
+    "name": "Lumen Photography Lab",
+    "badge": "Top Instructor",
+    "subtitle": "Editorial photographer featured in Vogue, Architectural Digest, and commercial agency campaigns",
+    "avatar": "/avatar-5.png",
+    "bio": [
+      "Editorial photographer featured in Vogue, Architectural Digest, and commercial agency campaigns.",
+      "Explore comprehensive courses, practical toolkits, and project-based tutorials designed for real-world excellence."
+    ],
+    "productsCount": 21,
+    "followerCount": 3670,
+    "rating": 4.9,
+    "coursesCount": 1,
+    "skills": [
+      "Portrait Lighting",
+      "Studio Strobes",
+      "Lightroom Retouching",
+      "Composition"
+    ],
+    "category": "Photography",
+    "featuredCourseIds": [
+      23
+    ]
+  },
+  {
+    "id": "chef-olivier",
+    "slug": "chef-olivier",
+    "name": "Chef Olivier Gastronomie",
+    "badge": "Top Instructor",
+    "subtitle": "Michelin-trained executive chef sharing fine dining techniques adapted for everyday home kitchens",
+    "avatar": "/avatar-6.png",
+    "bio": [
+      "Michelin-trained executive chef sharing fine dining techniques adapted for everyday home kitchens.",
+      "Explore comprehensive courses, practical toolkits, and project-based tutorials designed for real-world excellence."
+    ],
+    "productsCount": 19,
+    "followerCount": 5820,
+    "rating": 4.92,
+    "coursesCount": 1,
+    "skills": [
+      "Knife Skills",
+      "Sauce Emulsions",
+      "Fine Dining",
+      "Flavor Layering"
+    ],
+    "category": "Cooking",
+    "featuredCourseIds": [
+      24
+    ]
+  }
+];
+
 export const fallbackCreator = {
   id: "purepearl-studio",
   name: "PurePearl Studio",
   badge: "Creator",
   subtitle: "Passionate UI/UX, Web designer",
-  avatar: "/creator-avatar-large.png",
+  avatar: "/user-creator-avatar.jpg",
   bio: [
     "Welcome to the creative world of PurePearl Studio. Here, you'll discover the passion, expertise, and inspiration that drive my creative journey. Let's explore and learn together!",
     "Dive into my creative portfolio, showcasing a glimpse of my artistic endeavors. From digital designs to multimedia projects, each piece tells a unique story. Explore the world of creativity with me.",
@@ -1528,7 +2485,64 @@ export const fallbackCreator = {
 };
 
 /**
- * Fetch courses from Express/MongoDB backend with optional query params
+ * Client-side fallback for filtering, sorting and paginating when server is offline
+ */
+function paginateFallbackCourses(params = {}) {
+  let list = [...fallbackCourses];
+  const { category, level, search, sortBy, page = 1, limit = 6 } = params;
+
+  if (category && category !== "Featured" && category !== "All") {
+    list = list.filter(
+      (c) => (c.category || "").toLowerCase() === category.trim().toLowerCase()
+    );
+  }
+  if (level && level !== "All Level" && level !== "All") {
+    list = list.filter(
+      (c) => (c.level || "").toLowerCase() === level.trim().toLowerCase()
+    );
+  }
+  if (search && search.trim()) {
+    const s = search.trim().toLowerCase();
+    list = list.filter(
+      (c) =>
+        (c.title || "").toLowerCase().includes(s) ||
+        (c.author || "").toLowerCase().includes(s) ||
+        (c.category || "").toLowerCase().includes(s) ||
+        (c.description || "").toLowerCase().includes(s)
+    );
+  }
+
+  if (sortBy === "Highest Rated") {
+    list.sort((a, b) => (b.rating || 0) - (a.rating || 0));
+  } else if (sortBy === "Price: Low to High") {
+    list.sort((a, b) => (a.price || 0) - (b.price || 0));
+  } else if (sortBy === "Price: High to Low") {
+    list.sort((a, b) => (b.price || 0) - (a.price || 0));
+  } else {
+    list.sort((a, b) => (a.id || 0) - (b.id || 0));
+  }
+
+  const total = list.length;
+  const p = Math.max(1, parseInt(page, 10) || 1);
+  const l = Math.max(1, parseInt(limit, 10) || 6);
+  const totalPages = Math.ceil(total / l) || 1;
+  const skip = (p - 1) * l;
+  const courses = list.slice(skip, skip + l);
+
+  return {
+    success: true,
+    courses,
+    total,
+    page: p,
+    limit: l,
+    totalPages,
+  };
+}
+
+/**
+ * Fetch courses from Express/MongoDB backend with optional query params.
+ * If params.page is provided, returns paginated object { courses, total, totalPages, page, limit }.
+ * Otherwise, returns the courses array with attached pagination properties.
  */
 export async function fetchCourses(params = {}) {
   try {
@@ -1548,13 +2562,71 @@ export async function fetchCourses(params = {}) {
     }
 
     const data = await res.json();
-    if (data?.success && Array.isArray(data.courses) && data.courses.length > 0) {
-      return data.courses;
+    if (data?.success && Array.isArray(data.courses)) {
+      if (params.page !== undefined || params.limit !== undefined) {
+        return {
+          success: true,
+          courses: data.courses,
+          total: data.total ?? data.courses.length,
+          page: data.page ?? 1,
+          limit: data.limit ?? data.courses.length,
+          totalPages: data.totalPages ?? 1,
+        };
+      }
+      const arr = data.courses;
+      arr.total = data.total ?? data.courses.length;
+      arr.page = data.page ?? 1;
+      arr.limit = data.limit ?? data.courses.length;
+      arr.totalPages = data.totalPages ?? 1;
+      return arr;
     }
-    return fallbackCourses;
+    return params.page !== undefined ? paginateFallbackCourses(params) : fallbackCourses;
   } catch (error) {
     console.warn("Backend API unavailable, using fallback courses:", error.message);
-    return fallbackCourses;
+    return params.page !== undefined ? paginateFallbackCourses(params) : fallbackCourses;
+  }
+}
+
+/**
+ * Dedicated paginated course fetcher for the courses catalog route
+ */
+export async function fetchPaginatedCourses(params = {}) {
+  try {
+    const url = new URL(`${API_BASE_URL}/courses`);
+    const finalParams = {
+      page: 1,
+      limit: 6,
+      ...params,
+    };
+    Object.entries(finalParams).forEach(([key, val]) => {
+      if (val !== undefined && val !== null && val !== "") {
+        url.searchParams.append(key, val);
+      }
+    });
+
+    const res = await fetch(url.toString(), {
+      cache: "no-store",
+    });
+
+    if (!res.ok) {
+      throw new Error(`Failed to fetch paginated courses: ${res.status}`);
+    }
+
+    const data = await res.json();
+    if (data?.success && Array.isArray(data.courses)) {
+      return {
+        success: true,
+        courses: data.courses,
+        total: data.total ?? data.courses.length,
+        page: data.page ?? Number(finalParams.page),
+        limit: data.limit ?? Number(finalParams.limit),
+        totalPages: data.totalPages ?? Math.ceil((data.total ?? data.courses.length) / Number(finalParams.limit)),
+      };
+    }
+    return paginateFallbackCourses(finalParams);
+  } catch (error) {
+    console.warn("Backend API unavailable, using paginated fallback:", error.message);
+    return paginateFallbackCourses(params);
   }
 }
 
@@ -1586,11 +2658,67 @@ export async function fetchCourseById(id) {
 }
 
 /**
- * Fetch creators
+ * Client-side fallback for filtering, sorting and paginating creators when server is offline
  */
-export async function fetchCreators() {
+function paginateFallbackCreators(params = {}) {
+  let list = [...fallbackCreators];
+  const { category, search, sortBy, page = 1, limit = 6 } = params;
+
+  if (category && category !== "Featured" && category !== "All") {
+    list = list.filter(
+      (c) => (c.category || "").toLowerCase() === category.trim().toLowerCase()
+    );
+  }
+
+  if (search && search.trim()) {
+    const s = search.trim().toLowerCase();
+    list = list.filter(
+      (c) =>
+        (c.name || "").toLowerCase().includes(s) ||
+        (c.subtitle || "").toLowerCase().includes(s) ||
+        (c.category || "").toLowerCase().includes(s) ||
+        (Array.isArray(c.skills) && c.skills.some((sk) => sk.toLowerCase().includes(s)))
+    );
+  }
+
+  if (sortBy === "Highest Rated") {
+    list.sort((a, b) => (b.rating || 0) - (a.rating || 0));
+  } else if (sortBy === "Most Followers" || sortBy === "Most Popular") {
+    list.sort((a, b) => (b.followerCount || 0) - (a.followerCount || 0));
+  } else if (sortBy === "Most Products") {
+    list.sort((a, b) => (b.productsCount || 0) - (a.productsCount || 0));
+  }
+
+  const total = list.length;
+  const p = Math.max(1, parseInt(page, 10) || 1);
+  const l = Math.max(1, parseInt(limit, 10) || 6);
+  const totalPages = Math.ceil(total / l) || 1;
+  const skip = (p - 1) * l;
+  const creators = list.slice(skip, skip + l);
+
+  return {
+    success: true,
+    creators,
+    total,
+    page: p,
+    limit: l,
+    totalPages,
+  };
+}
+
+/**
+ * Fetch creators with optional query parameters and pagination
+ */
+export async function fetchCreators(params = {}) {
   try {
-    const res = await fetch(`${API_BASE_URL}/creators`, {
+    const url = new URL(`${API_BASE_URL}/creators`);
+    Object.entries(params).forEach(([key, val]) => {
+      if (val !== undefined && val !== null && val !== "") {
+        url.searchParams.append(key, val);
+      }
+    });
+
+    const res = await fetch(url.toString(), {
       cache: "no-store",
     });
 
@@ -1599,15 +2727,71 @@ export async function fetchCreators() {
     }
 
     const data = await res.json();
-    if (data?.success && Array.isArray(data.creators) && data.creators.length > 0) {
+    if (data?.success && Array.isArray(data.creators)) {
+      if (params.page !== undefined || params.limit !== undefined) {
+        return {
+          success: true,
+          creators: data.creators,
+          total: data.total ?? data.creators.length,
+          page: data.page ?? 1,
+          limit: data.limit ?? data.creators.length,
+          totalPages: data.totalPages ?? 1,
+        };
+      }
       return data.creators;
     }
-    return [fallbackCreator];
+    return params.page !== undefined ? paginateFallbackCreators(params) : fallbackCreators;
   } catch (error) {
     console.warn("Backend API error for creators, using fallback:", error.message);
-    return [fallbackCreator];
+    return params.page !== undefined ? paginateFallbackCreators(params) : fallbackCreators;
   }
 }
+
+/**
+ * Dedicated paginated creator fetcher for the creators route
+ */
+export async function fetchPaginatedCreators(params = {}) {
+  try {
+    const url = new URL(`${API_BASE_URL}/creators`);
+    const finalParams = {
+      page: 1,
+      limit: 6,
+      ...params,
+    };
+    Object.entries(finalParams).forEach(([key, val]) => {
+      if (val !== undefined && val !== null && val !== "") {
+        url.searchParams.append(key, val);
+      }
+    });
+
+    const res = await fetch(url.toString(), {
+      cache: "no-store",
+    });
+
+    if (!res.ok) {
+      throw new Error(`Failed to fetch paginated creators: ${res.status}`);
+    }
+
+    const data = await res.json();
+    if (data?.success && Array.isArray(data.creators)) {
+      return {
+        success: true,
+        creators: data.creators,
+        total: data.total ?? data.creators.length,
+        page: data.page ?? Number(finalParams.page),
+        limit: data.limit ?? Number(finalParams.limit),
+        totalPages:
+          data.totalPages ??
+          Math.ceil((data.total ?? data.creators.length) / Number(finalParams.limit)),
+      };
+    }
+    return paginateFallbackCreators(finalParams);
+  } catch (error) {
+    console.warn("Backend API unavailable, using paginated creators fallback:", error.message);
+    return paginateFallbackCreators(params);
+  }
+}
+
 
 /**
  * Fetch a single creator with their courses
@@ -1670,4 +2854,165 @@ export async function fetchCategories() {
       rows: fallbackCategoryRows,
     };
   }
+}
+
+/**
+ * Fetch enrollments for a user
+ */
+export async function fetchUserEnrollments(userEmail, userId) {
+  const localKey = userEmail ? `bytespace_enrollments_${userEmail.toLowerCase()}` : "bytespace_enrollments_guest";
+  let localList = [];
+  if (typeof window !== "undefined") {
+    try {
+      const stored = localStorage.getItem(localKey);
+      if (stored) localList = JSON.parse(stored);
+    } catch (_) {}
+  }
+
+  try {
+    const params = new URLSearchParams();
+    if (userEmail) params.append("userEmail", userEmail);
+    if (userId) params.append("userId", userId);
+
+    const res = await fetch(`${API_BASE_URL}/enrollments?${params.toString()}`, {
+      cache: "no-store",
+    });
+
+    if (res.ok) {
+      const data = await res.json();
+      if (data?.success && Array.isArray(data.enrollments)) {
+        if (typeof window !== "undefined") {
+          try {
+            localStorage.setItem(localKey, JSON.stringify(data.enrollments));
+          } catch (_) {}
+        }
+        return data.enrollments;
+      }
+    }
+  } catch (error) {
+    console.warn("Could not fetch enrollments from server, using local store:", error.message);
+  }
+
+  return localList;
+}
+
+/**
+ * Enroll a user into a course
+ */
+export async function enrollInCourse(enrollmentData) {
+  const { userEmail, courseId } = enrollmentData;
+  const localKey = userEmail ? `bytespace_enrollments_${userEmail.toLowerCase()}` : "bytespace_enrollments_guest";
+
+  const optimisticEnrollment = {
+    id: `enr_${Date.now()}`,
+    userId: enrollmentData.userId || "user",
+    userEmail: (userEmail || "").toLowerCase(),
+    userName: enrollmentData.userName || "User",
+    courseId: Number(courseId) || courseId,
+    courseTitle: enrollmentData.courseTitle || "Enrolled Course",
+    courseSlug: enrollmentData.courseSlug || `course-${courseId}`,
+    courseImage: enrollmentData.courseImage || "/course-1.png",
+    courseAuthor: enrollmentData.courseAuthor || "ByteSpace Instructor",
+    coursePrice: enrollmentData.coursePrice || 0,
+    category: enrollmentData.category || "General",
+    progress: 0,
+    status: "In Progress",
+    enrolledAt: new Date().toISOString(),
+  };
+
+  if (typeof window !== "undefined") {
+    try {
+      const stored = localStorage.getItem(localKey);
+      let list = stored ? JSON.parse(stored) : [];
+      const exists = list.some((e) => String(e.courseId) === String(courseId));
+      if (!exists) {
+        list.unshift(optimisticEnrollment);
+        localStorage.setItem(localKey, JSON.stringify(list));
+      }
+      window.dispatchEvent(
+        new CustomEvent("bytespace:enrollment-updated", {
+          detail: { enrollment: optimisticEnrollment, total: list.length },
+        })
+      );
+    } catch (_) {}
+  }
+
+  try {
+    const res = await fetch(`${API_BASE_URL}/enrollments`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(enrollmentData),
+    });
+
+    if (res.ok) {
+      const data = await res.json();
+      return data;
+    }
+  } catch (error) {
+    console.warn("Server enrollment sync failed, saved locally:", error.message);
+  }
+
+  return {
+    success: true,
+    alreadyEnrolled: false,
+    message: "Enrolled in course successfully!",
+    enrollment: optimisticEnrollment,
+  };
+}
+
+/**
+ * Delete an enrollment (unenroll from a course)
+ */
+export async function deleteEnrollment({ enrollmentId, courseId, userEmail, userId }) {
+  const localKey = userEmail
+    ? `bytespace_enrollments_${userEmail.toLowerCase()}`
+    : "bytespace_enrollments_guest";
+
+  let serverSuccess = false;
+  try {
+    const targetId = enrollmentId || courseId;
+    const params = new URLSearchParams();
+    if (userEmail) params.append("userEmail", userEmail);
+    if (userId) params.append("userId", userId);
+    if (courseId) params.append("courseId", String(courseId));
+
+    const res = await fetch(`${API_BASE_URL}/enrollments/${targetId}?${params.toString()}`, {
+      method: "DELETE",
+    });
+
+    if (res.ok) {
+      serverSuccess = true;
+    }
+  } catch (error) {
+    console.warn("Server delete enrollment failed, updated locally:", error.message);
+  }
+
+  let remaining = [];
+  if (typeof window !== "undefined") {
+    try {
+      const stored = localStorage.getItem(localKey);
+      if (stored) {
+        const list = JSON.parse(stored);
+        remaining = list.filter((e) => {
+          const matchId =
+            (enrollmentId && (e.id === enrollmentId || String(e._id) === String(enrollmentId))) ||
+            (courseId && String(e.courseId) === String(courseId));
+          return !matchId;
+        });
+        localStorage.setItem(localKey, JSON.stringify(remaining));
+      }
+      window.dispatchEvent(
+        new CustomEvent("bytespace:enrollment-updated", {
+          detail: { deletedCourseId: courseId, total: remaining.length },
+        })
+      );
+    } catch (_) {}
+  }
+
+  return {
+    success: true,
+    serverSuccess,
+    message: "Course removed from enrolled history.",
+    remaining,
+  };
 }

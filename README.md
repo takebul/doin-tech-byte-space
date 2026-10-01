@@ -13,7 +13,7 @@
 [![MongoDB Atlas](https://img.shields.io/badge/MongoDB-Atlas-47a248?style=flat-square&logo=mongodb)](https://www.mongodb.com/atlas)
 [![Better Auth](https://img.shields.io/badge/Better_Auth-JWT_Cookie-orange?style=flat-square)](https://better-auth.com/)
 
-**ByteSpace** is a modern, high-performance e-learning web platform crafted with pixel-perfect visual fidelity to original Figma designs. It bridges passionate learners with world-class course creators through dynamic catalogs, interactive course breakdowns, creator analytics, and secure authentication.
+**ByteSpace** is a modern, high-performance e-learning platform crafted with pixel-perfect visual fidelity to original Figma designs. It bridges passionate learners with world-class course creators through dynamic catalogs, interactive course breakdowns, real-time enrollment management, creator analytics, and secure authentication.
 
 [Explore Live Demo](https://byte-space-black.vercel.app) • [Client Repo](https://github.com/takebul/doin-tech-byte-space) • [Server Repo](https://github.com/takebul/doin-tech-byte-space-server)
 
@@ -31,7 +31,7 @@
 
 ---
 
-## ✨ Key Features
+## ✨ Key Features & User Experience
 
 ### 1. Hero & Signature Visual Composition
 - **Authentic Figma Hero Composition**: Centered around a modern student model, floating information cards, and dynamic lime accents (`#cbfc01`).
@@ -52,16 +52,33 @@
 - **Instructor Showcase**: Instructor avatar, bio, credentials, and course counts.
 - **Verified Student Reviews**: Community ratings, review commentary, and timestamp badges.
 - **Sticky Enrollment Sidebar**: Transparent pricing breakdown, money-back guarantee, and instant enrollment triggers.
+- **Auth Required Gatekeeper Modal**: When an unauthenticated visitor clicks *"Enroll Now"*, an interactive modal informs them that an account is required with instant *"Sign In to Enroll"* and *"Create an Account"* action buttons.
+- **Interactive Social Share Modal**: Share courses effortlessly with 1-click triggers for WhatsApp, X (Twitter), LinkedIn, Facebook, Web Share API, and an auto-copyable link input with visual feedback.
 
-### 4. Creator Profile & Analytics (`/creator-profile`, `/creators`)
-- Dedicated instructor hub showcasing creator biographies, social channels, and taught courses.
+### 4. Enrolled Courses Management & Quick-Access Drawer (`/enrolled-courses`)
+- **Sign-Out Right-Side History Icon**: Dedicated quick-access drawer trigger located right next to the user profile avatar and sign-out button in the top navigation bar, with a real-time badge count of enrolled courses.
+- **Slide-Over Interactive Drawer (`EnrolledCoursesDrawer.jsx`)**: Instant slide-over drawer displaying enrolled courses, instructor details, progress indicators, category badges, and quick links.
+- **Unenroll / Delete Action Confirmation Modal**: Allows learners to remove courses directly from either the slide-over drawer or the full `/enrolled-courses` dashboard, with a confirmation modal (`"Are you sure you want to unenroll?"`), immediate local state updates, and backend synchronization (`DELETE /api/enrollments/:id`).
+
+### 5. Creator Profile & Directory (`/creators`, `/creator-profile`)
+- **Creator Catalog (`/creators`)**: 6-card responsive pagination engine showcasing instructor profiles, rating scores, follower numbers, active course counts, and topic tags.
+- **Dedicated Profile Page (`/creator-profile`)**: Instructor biography, social channels, and taught course catalog.
 - **"Create & Manage Courses Easily"** Feature Section: Realistic revenue cards (*Total Revenue $120.29*, *Year to Date $1,200.38*, and *Happy Students 4.5 ★ with 2K+ students*).
 
-### 5. Authentication & Cookie Sessions (`/signin`, `/register`)
+### 6. Sign-Out Confirmation Action Modal
+- **Accidental Logout Prevention**: Clicking Sign Out on desktop or mobile triggers a confirmation action modal in the navigation bar displaying user account details (name, email, avatar) with *"Cancel"* and *"Sign Out"* options, complete with loading states.
+
+### 7. Route Protection & Custom Error Pages
+- **401 Unauthorized (`/unauthorized`)**: Custom designed gatekeeper page displayed when accessing credentials-only resources.
+- **403 Forbidden (`/forbidden`)**: Permission denial error page with navigation back to safety.
+- **Admin Protected Route (`/admin`)**: Example administrative route protected by role-based validation.
+- **404 Not Found (`/not-found`)**: Branded custom 404 page with quick navigation back to the catalog.
+
+### 8. Authentication & Cookie Sessions (`/signin`, `/register`)
 - **Better Auth Integration**: Clean sign-up and sign-in workflows with password visibility toggles and validation.
 - **Cookie Session Strategy**: Configured with `cookieCache` (JWT strategy, 7-day maxAge) for persistent, secure user sessions.
 
-### 6. Robust Fallback & Offline Resilience
+### 9. Robust Fallback & Offline Resilience
 - **Dual-Layer Data Fetching**: The frontend connects to the MongoDB Atlas REST API (`http://localhost:5000/api/courses`), but embeds a synchronized fallback dataset so all features remain functional even if the backend is temporarily offline.
 
 ---
@@ -92,24 +109,33 @@ doin-tech-project/
 │   ├── public/                         # Optimized image assets, course graphics & 3D doodles
 │   ├── src/
 │   │   ├── app/                        # Next.js App Router pages
+│   │   │   ├── (auth)/                 # Route group for signin & register
+│   │   │   │   ├── signin/             # Sign-in page
+│   │   │   │   └── register/           # Registration page
+│   │   │   ├── admin/                  # Protected administrative dashboard
 │   │   │   ├── courses/                # Catalog (/courses) & dynamic details (/courses/[id])
-│   │   │   ├── creators/               # Creator directory & profile routes
-│   │   │   ├── signin/ & register/     # Authentication pages
+│   │   │   ├── creators/               # Creator directory with 6-card pagination
+│   │   │   ├── creator-profile/        # Instructor bio & courses showcase
+│   │   │   ├── enrolled-courses/       # User enrolled courses management dashboard
+│   │   │   ├── unauthorized/           # 401 Unauthorized error page
+│   │   │   ├── forbidden/              # 403 Forbidden error page
 │   │   │   ├── not-found.js            # Custom 404 page
 │   │   │   └── page.js                 # Homepage root
 │   │   ├── components/                 # Modular, reusable React components
-│   │   │   ├── Auth/                   # Sign-in & register form sections
-│   │   │   ├── CourseDetails/          # Syllabus, reviews, video player & sidebar
+│   │   │   ├── Auth/                   # Sign-in & register form components
+│   │   │   ├── CourseDetails/          # CourseDetailsPage, syllabus, reviews & share modal
 │   │   │   ├── Courses/                # CourseCard, catalog grid, filtering & pagination
-│   │   │   ├── Creators/               # Creator profile cards & course tabs
+│   │   │   ├── Creators/               # CreatorsCatalogPage, CreatorCard & CreatorProfilePage
+│   │   │   ├── EnrolledCourses/        # EnrolledCoursesDrawer & EnrolledCoursesPage
+│   │   │   ├── ErrorPages/             # UnauthorizedSection & ForbiddenSection
 │   │   │   ├── Features/               # Growth & creator analytics feature blocks
 │   │   │   ├── Hero/                   # MainVisual, CourseInfoCard, progress cards & shapes
-│   │   │   └── Navbar.jsx & Footer.jsx # Global navigation & footer
+│   │   │   └── Navbar.jsx & Footer.jsx # Navigation with drawer toggle, signout modal & footer
 │   │   └── lib/                        # api.js (data layer) & auth-client.js
 │   └── package.json
 │
 └── byte-space-server/                  # Express.js REST API Server
-    ├── data/                           # courses.json, creators.json, categories.json
+    ├── data/                           # courses.json, creators.json, categories.json, enrollments.json
     ├── index.js                        # Express server & API route handlers
     ├── seed.js                         # MongoDB Atlas automated seeder script
     ├── .env.example                    # Environment variable template
@@ -203,10 +229,14 @@ npm run build
 | Method | Endpoint | Description |
 |---|---|---|
 | `GET` | `/api/courses` | Fetch courses with optional `search`, `category`, `level`, `sort`, `page`, `limit` |
-| `GET` | `/api/courses/:idOrSlug` | Fetch single course details by numeric ID or slug |
-| `GET` | `/api/creators` | List creators and instructor profiles |
-| `GET` | `/api/creators/:id` | Fetch creator details with attributed courses |
+| `GET` | `/api/courses/:id` | Fetch single course details by numeric ID, slug, or ObjectId |
+| `GET` | `/api/creators` | List creators with pagination (`page`, `limit`), search, and sorting |
+| `GET` | `/api/creators/:id` | Fetch creator details along with attributed courses |
 | `GET` | `/api/categories` | Get featured and catalog category taxonomies |
+| `POST` | `/api/enrollments` | Enroll an authenticated user in a course (with duplicate prevention) |
+| `GET` | `/api/enrollments` | Fetch enrolled courses for a user by `userEmail` or `userId` |
+| `DELETE` | `/api/enrollments/:id` | Unenroll/remove course by enrollment ID or course ID |
+| `POST` | `/api/seed` | Programmatically reset and seed MongoDB collections from JSON files |
 
 ---
 

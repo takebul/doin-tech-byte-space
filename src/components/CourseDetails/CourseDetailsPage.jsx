@@ -1,13 +1,25 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { fetchCourseById } from "@/lib/api";
+import { fetchCourseById, enrollInCourse, fetchUserEnrollments } from "@/lib/api";
+import { authClient } from "@/lib/auth-client";
+import { getCourseVideo } from "./courseVideos";
 
-function CourseSidebarCard({ course, enrolled, handleEnroll }) {
+function CourseSidebarCard({
+  course,
+  isEnrolled,
+  enrolling,
+  handleEnroll,
+  currentUser,
+  successMessage,
+  handleShare,
+}) {
   return (
     <div className="w-full bg-white rounded-[26px] sm:rounded-[30px] p-6 sm:p-7 shadow-2xl border border-neutral-100 flex flex-col">
       {/* Syllabus Header */}
@@ -55,11 +67,67 @@ function CourseSidebarCard({ course, enrolled, handleEnroll }) {
       <button
         type="button"
         onClick={handleEnroll}
-        disabled={enrolled}
-        className="w-full bg-[#cbfc01] hover:bg-[#bcf000] text-black font-bold text-[13.5px] py-2.5 rounded-full shadow-sm hover:shadow transition-all duration-150 active:scale-95 cursor-pointer disabled:opacity-75"
+        disabled={enrolling}
+        className={`w-full font-extrabold text-[13.5px] py-2.5 rounded-full shadow-sm hover:shadow transition-all duration-150 active:scale-95 cursor-pointer disabled:opacity-75 flex items-center justify-center gap-2 ${
+          isEnrolled
+            ? "bg-[#cbfc01] text-black hover:bg-[#bcf000]"
+            : "bg-[#cbfc01] hover:bg-[#bcf000] text-black"
+        }`}
       >
-        {enrolled ? "Enrolling..." : "Enroll Now"}
+        {enrolling ? (
+          <>
+            <div className="w-4 h-4 border-2 border-black border-t-transparent rounded-full animate-spin" />
+            <span>Enrolling...</span>
+          </>
+        ) : isEnrolled ? (
+          <>
+            <svg className="w-4 h-4 text-black stroke-[3]" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <polyline points="20 6 9 17 4 12" />
+            </svg>
+            <span>Enrolled (View History)</span>
+          </>
+        ) : (
+          <span>Enroll Now</span>
+        )}
       </button>
+
+      {/* Share Button in Sidebar */}
+      {handleShare && (
+        <button
+          type="button"
+          onClick={handleShare}
+          className="mt-2.5 w-full border border-[#e2e4e9] hover:border-neutral-400 bg-[#fbfcfd] hover:bg-neutral-50 text-[#3a3e47] hover:text-[#18181b] text-[12px] font-semibold py-2 rounded-full transition-colors flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs active:scale-98"
+        >
+          <svg
+            className="w-3.5 h-3.5 text-neutral-600"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <circle cx="18" cy="5" r="3" />
+            <circle cx="6" cy="12" r="3" />
+            <circle cx="18" cy="19" r="3" />
+            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
+            <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
+          </svg>
+          <span>Share This Course</span>
+        </button>
+      )}
+
+      {successMessage && (
+        <div className="mt-2.5 p-2.5 bg-emerald-50 border border-emerald-200 rounded-xl text-emerald-800 text-[11.5px] text-center font-medium animate-in fade-in">
+          {successMessage}
+        </div>
+      )}
+
+      {!currentUser && !isEnrolled && (
+        <p className="text-[11px] text-center text-[#717682] mt-2 font-normal">
+          Sign in required to enroll and save course progress
+        </p>
+      )}
 
       {/* This course include */}
       <div className="mt-6 pt-5 border-t border-[#f0f1f4]">
@@ -120,7 +188,7 @@ function CourseSidebarCard({ course, enrolled, handleEnroll }) {
         <div className="flex items-center gap-3">
           <div className="w-9 h-9 rounded-full overflow-hidden relative shrink-0 border border-neutral-200">
             <Image
-              src={course?.authorAvatar || "/creator-avatar-large.png"}
+              src={course?.authorAvatar || "/user-creator-avatar.jpg"}
               alt="Course creator"
               fill
               className="object-cover"
@@ -153,12 +221,59 @@ function CourseSidebarCard({ course, enrolled, handleEnroll }) {
 }
 
 export default function CourseDetailsPage({ courseId = "1" }) {
+  const router = useRouter();
+  const { data: session } = authClient.useSession();
+  const currentUser = session?.user;
+
   const [course, setCourse] = useState(null);
   const [activeTab, setActiveTab] = useState("About");
   const [isPlaying, setIsPlaying] = useState(false);
-  const [enrolled, setEnrolled] = useState(false);
+  const [isEnrolled, setIsEnrolled] = useState(false);
+  const [enrolling, setEnrolling] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
   const [shared, setShared] = useState(false);
   const [reviewFilter, setReviewFilter] = useState("All rating");
+  const currentVideo = getCourseVideo(course, courseId);
+
+  // Auth Required Modal State
+  const [mounted, setMounted] = useState(false);
+  const [showAuthModal, setShowAuthModal] = useState(false);
+
+  // Share Modal State
+  const [showShareModal, setShowShareModal] = useState(false);
+  const [copiedLink, setCopiedLink] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Lock body scroll when auth modal or share modal is open
+  useEffect(() => {
+    if (showAuthModal || showShareModal) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [showAuthModal, showShareModal]);
+
+  // Close modals on Escape key
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape") {
+        if (showShareModal) setShowShareModal(false);
+        if (showAuthModal) setShowAuthModal(false);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [showAuthModal, showShareModal]);
+
+  useEffect(() => {
+    setIsPlaying(false);
+  }, [courseId]);
 
   useEffect(() => {
     let isMounted = true;
@@ -178,22 +293,117 @@ export default function CourseDetailsPage({ courseId = "1" }) {
     };
   }, [courseId]);
 
+  // Check if current user is already enrolled
+  useEffect(() => {
+    if (!currentUser) {
+      setIsEnrolled(false);
+      return;
+    }
+    fetchUserEnrollments(currentUser.email, currentUser.id).then((list) => {
+      const enrolled = (list || []).some(
+        (e) =>
+          String(e.courseId) === String(courseId) ||
+          (course && String(e.courseId) === String(course.id)) ||
+          (course && e.courseSlug === course.slug)
+      );
+      setIsEnrolled(enrolled);
+    });
+
+    const handleUpdate = () => {
+      fetchUserEnrollments(currentUser.email, currentUser.id).then((list) => {
+        const enrolled = (list || []).some(
+          (e) =>
+            String(e.courseId) === String(courseId) ||
+            (course && String(e.courseId) === String(course.id)) ||
+            (course && e.courseSlug === course.slug)
+        );
+        setIsEnrolled(enrolled);
+      });
+    };
+    window.addEventListener("bytespace:enrollment-updated", handleUpdate);
+    return () => window.removeEventListener("bytespace:enrollment-updated", handleUpdate);
+  }, [currentUser, courseId, course]);
+
   const handleShare = () => {
-    if (typeof navigator !== "undefined" && navigator.clipboard) {
-      navigator.clipboard.writeText(window.location.href);
-      setShared(true);
-      setTimeout(() => setShared(false), 2000);
-    } else {
-      alert("Link copied to clipboard!");
+    setShowShareModal(true);
+  };
+
+  const handleCopyLink = () => {
+    if (typeof window !== "undefined") {
+      const url = window.location.href;
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(url);
+      } else {
+        const textarea = document.createElement("textarea");
+        textarea.value = url;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand("copy");
+        document.body.removeChild(textarea);
+      }
+      setCopiedLink(true);
+      setTimeout(() => setCopiedLink(false), 2500);
     }
   };
 
-  const handleEnroll = () => {
-    setEnrolled(true);
-    setTimeout(() => {
-      alert(`Congratulations! You have successfully enrolled in '${course?.title || "Build Digital Asset"}'.`);
-      setEnrolled(false);
-    }, 400);
+  const handleNativeShare = async () => {
+    if (typeof navigator !== "undefined" && navigator.share) {
+      try {
+        await navigator.share({
+          title: course?.title || "ByteSpace Course",
+          text: `Check out "${course?.title || "this course"}" by ${course?.author || "ByteSpace Creator"} on ByteSpace!`,
+          url: typeof window !== "undefined" ? window.location.href : "",
+        });
+      } catch (err) {
+        if (err.name !== "AbortError") {
+          console.warn("Native share error:", err);
+        }
+      }
+    } else {
+      handleCopyLink();
+    }
+  };
+
+  const handleEnroll = async () => {
+    // If user does not exist (not signed in), firstly show a modal explaining sign in requirement
+    if (!currentUser) {
+      setShowAuthModal(true);
+      return;
+    }
+
+    // If already enrolled, open their enrolled course history drawer
+    if (isEnrolled) {
+      window.dispatchEvent(new CustomEvent("bytespace:open-enrolled-drawer"));
+      return;
+    }
+
+    setEnrolling(true);
+    try {
+      await enrollInCourse({
+        userId: currentUser.id,
+        userEmail: currentUser.email,
+        userName: currentUser.name || "Student",
+        courseId: course?.id || courseId,
+        courseTitle: course?.title || "Build Digital Asset: A Comprehensive Guide",
+        courseSlug: course?.slug || `course-${courseId}`,
+        courseImage: course?.image || "/course-1.png",
+        courseAuthor: course?.author || "purepearl studio",
+        coursePrice: course?.price || 25,
+        category: course?.category || "UI/UX Design",
+      });
+
+      setIsEnrolled(true);
+      setSuccessMessage("🎉 Enrolled successfully! View it anytime from the top bag icon.");
+      // Open the enrolled courses drawer so user immediately sees their enrolled course history
+      setTimeout(() => {
+        window.dispatchEvent(new CustomEvent("bytespace:open-enrolled-drawer"));
+      }, 700);
+      setTimeout(() => setSuccessMessage(""), 6000);
+    } catch (err) {
+      console.error("Enrollment failed:", err);
+    } finally {
+      setEnrolling(false);
+    }
   };
 
   return (
@@ -285,7 +495,7 @@ export default function CourseDetailsPage({ courseId = "1" }) {
               <button
                 type="button"
                 onClick={handleShare}
-                className="bg-[#cbfc01] hover:bg-[#bcf000] text-black font-semibold text-[13px] px-5 py-2 rounded-full flex items-center gap-2 shadow-sm transition-all duration-150 active:scale-95 cursor-pointer"
+                className="bg-[#cbfc01] hover:bg-[#bcf000] text-black font-semibold text-[13px] px-5 py-2 rounded-full flex items-center gap-2 shadow-sm hover:shadow transition-all duration-150 active:scale-95 cursor-pointer"
               >
                 <svg
                   className="w-4 h-4 text-black"
@@ -302,7 +512,7 @@ export default function CourseDetailsPage({ courseId = "1" }) {
                   <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
                   <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
                 </svg>
-                <span>{shared ? "Copied!" : "Share"}</span>
+                <span>Share</span>
               </button>
             </div>
           </div>
@@ -311,40 +521,110 @@ export default function CourseDetailsPage({ courseId = "1" }) {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
             <div className="lg:col-span-8">
               {/* Video Player Card (Sits completely on blue background) */}
-              <div className="relative w-full aspect-[16/10.5] rounded-[24px] sm:rounded-[28px] overflow-hidden shadow-2xl bg-neutral-100 border border-neutral-100 group">
-                <Image
-                  src="/course-video-player.png"
-                  alt="Course preview video"
-                  fill
-                  priority
-                  className="object-cover transition-transform duration-500 group-hover:scale-102"
-                />
+              <div className="relative w-full aspect-[16/10.5] rounded-[24px] sm:rounded-[28px] overflow-hidden shadow-2xl bg-neutral-900 border border-white/10 group">
+                {isPlaying ? (
+                  <div className="relative w-full h-full bg-black">
+                    <iframe
+                      key={currentVideo.id}
+                      src={`https://www.youtube.com/embed/${currentVideo.id}?autoplay=1&rel=0&modestbranding=1&enablejsapi=1`}
+                      title={currentVideo.title || course?.title || "Course Video Preview"}
+                      className="w-full h-full border-0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      allowFullScreen
+                    />
+                    {/* Small Close/Reset Video Button */}
+                    <button
+                      type="button"
+                      onClick={() => setIsPlaying(false)}
+                      title="Return to preview cover"
+                      className="absolute top-3 right-3 z-20 bg-black/75 hover:bg-black text-white/90 hover:text-white text-xs px-2.5 py-1 rounded-full backdrop-blur-md border border-white/20 transition-all flex items-center gap-1 cursor-pointer shadow-md"
+                    >
+                      <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                        <line x1="18" y1="6" x2="6" y2="18" />
+                        <line x1="6" y1="6" x2="18" y2="18" />
+                      </svg>
+                      <span>Close</span>
+                    </button>
+                  </div>
+                ) : (
+                  <div
+                    className="relative w-full h-full cursor-pointer"
+                    onClick={() => setIsPlaying(true)}
+                  >
+                    {/* YouTube High-Resolution Video Thumbnail with error fallback */}
+                    <img
+                      src={`https://img.youtube.com/vi/${currentVideo.id}/maxresdefault.jpg`}
+                      onError={(e) => {
+                        e.currentTarget.src = `https://img.youtube.com/vi/${currentVideo.id}/hqdefault.jpg`;
+                      }}
+                      alt={currentVideo.title || "Course preview video"}
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-102"
+                    />
 
-                {/* Play Button Overlay */}
-                <button
-                  type="button"
-                  onClick={() => setIsPlaying(!isPlaying)}
-                  aria-label="Play Course Video Preview"
-                  className="absolute inset-0 m-auto w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-white/70 backdrop-blur-md flex items-center justify-center shadow-lg transition-transform duration-200 group-hover:scale-110 active:scale-95 cursor-pointer"
-                >
-                  {isPlaying ? (
-                    <svg className="w-6 h-6 text-neutral-800" fill="currentColor" viewBox="0 0 24 24">
-                      <rect x="6" y="4" width="4" height="16" rx="1" />
-                      <rect x="14" y="4" width="4" height="16" rx="1" />
-                    </svg>
-                  ) : (
-                    <svg className="w-6 h-6 text-neutral-800 ml-1" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M8 5v14l11-7z" />
-                    </svg>
-                  )}
-                </button>
+                    {/* Gradient Overlay for legibility */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-black/40 pointer-events-none" />
+
+                    {/* Top Info Bar Badges */}
+                    <div className="absolute top-4 left-4 sm:top-5 sm:left-5 flex items-center gap-2 sm:gap-2.5 z-10 pointer-events-none">
+                      <span className="bg-[#cbfc01] text-black font-bold text-[10.5px] sm:text-[11px] px-3 py-1 rounded-full uppercase tracking-wider shadow-sm">
+                        Free Preview
+                      </span>
+                      <span className="bg-black/60 backdrop-blur-md text-white/90 text-[11px] sm:text-[11.5px] font-medium px-3 py-1 rounded-full border border-white/10 flex items-center gap-1.5 shadow-sm">
+                        <svg className="w-3.5 h-3.5 text-red-500 fill-current shrink-0" viewBox="0 0 24 24">
+                          <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z" />
+                        </svg>
+                        YouTube Lesson
+                      </span>
+                    </div>
+
+                    {/* Bottom Video Metadata */}
+                    <div className="absolute bottom-4 left-4 right-4 sm:bottom-5 sm:left-5 sm:right-5 z-10 pointer-events-none flex flex-col">
+                      <span className="text-[#cbfc01] font-semibold text-[11px] sm:text-[12px] uppercase tracking-wider">
+                        {currentVideo.channel}
+                      </span>
+                      <h3 className="text-white font-bold text-[14px] sm:text-[17px] leading-snug line-clamp-1 drop-shadow-md mt-0.5">
+                        {currentVideo.title}
+                      </h3>
+                      <p className="text-white/80 text-[11.5px] sm:text-[12px] font-normal mt-1 flex items-center gap-1.5">
+                        <svg className="w-3.5 h-3.5 text-[#cbfc01]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                          <circle cx="12" cy="12" r="10" />
+                          <polygon points="10 8 16 12 10 16 10 8" />
+                        </svg>
+                        <span>Click to watch lesson in high definition</span>
+                      </p>
+                    </div>
+
+                    {/* Play Button Overlay */}
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setIsPlaying(true);
+                      }}
+                      aria-label={`Play ${currentVideo.title} preview video`}
+                      className="absolute inset-0 m-auto w-14 h-14 sm:w-18 sm:h-18 rounded-full bg-white/90 hover:bg-white text-black shadow-2xl flex items-center justify-center transition-all duration-200 group-hover:scale-110 active:scale-95 cursor-pointer z-10"
+                    >
+                      <svg className="w-7 h-7 text-neutral-900 ml-1" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M8 5v14l11-7z" />
+                      </svg>
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
 
             {/* Desktop Sidebar Anchor (Starts in header, hangs down into white section) */}
             <div className="hidden lg:block lg:col-span-4 relative">
               <div className="absolute top-0 left-0 w-full z-30">
-                <CourseSidebarCard course={course} enrolled={enrolled} handleEnroll={handleEnroll} />
+                <CourseSidebarCard
+                  course={course}
+                  isEnrolled={isEnrolled}
+                  enrolling={enrolling}
+                  handleEnroll={handleEnroll}
+                  currentUser={currentUser}
+                  successMessage={successMessage}
+                  handleShare={handleShare}
+                />
               </div>
             </div>
           </div>
@@ -515,7 +795,17 @@ export default function CourseDetailsPage({ courseId = "1" }) {
                                     <span className="font-semibold text-neutral-400">{les.number}</span>
                                     <span className="font-medium text-[#2d313a]">{les.title}</span>
                                     {les.preview && (
-                                      <span className="bg-blue-50 text-[#0047ff] text-[10px] font-semibold px-2 py-0.5 rounded-full">Preview</span>
+                                      <button
+                                        type="button"
+                                        onClick={() => {
+                                          setIsPlaying(true);
+                                          window.scrollTo({ top: 0, behavior: "smooth" });
+                                        }}
+                                        title="Watch preview video"
+                                        className="bg-blue-50 hover:bg-blue-100 text-[#0047ff] text-[10px] font-semibold px-2 py-0.5 rounded-full cursor-pointer transition-colors"
+                                      >
+                                        Preview
+                                      </button>
                                     )}
                                   </div>
                                   <span className="text-[#8c919c] font-mono text-[11.5px] shrink-0 ml-2">{les.duration}</span>
@@ -744,7 +1034,15 @@ export default function CourseDetailsPage({ courseId = "1" }) {
             <div className="lg:col-span-4 w-full">
               {/* Mobile Sidebar (< lg) */}
               <div className="block lg:hidden mt-8">
-                <CourseSidebarCard course={course} enrolled={enrolled} handleEnroll={handleEnroll} />
+                <CourseSidebarCard
+                  course={course}
+                  isEnrolled={isEnrolled}
+                  enrolling={enrolling}
+                  handleEnroll={handleEnroll}
+                  currentUser={currentUser}
+                  successMessage={successMessage}
+                  handleShare={handleShare}
+                />
               </div>
             </div>
 
@@ -754,6 +1052,326 @@ export default function CourseDetailsPage({ courseId = "1" }) {
 
       {/* 3. Main Footer */}
       <Footer />
+
+      {/* 4. Auth Required Modal (shown when unauthenticated visitor clicks Enroll Now) */}
+      {mounted && showAuthModal && createPortal(
+        <div className="fixed inset-0 z-[999999] flex items-center justify-center p-4">
+          {/* Backdrop with blur */}
+          <div
+            onClick={() => setShowAuthModal(false)}
+            className="fixed inset-0 bg-black/65 backdrop-blur-xs transition-opacity duration-300 animate-in fade-in"
+            aria-hidden="true"
+          />
+
+          {/* Modal Container */}
+          <div className="relative w-full max-w-[460px] bg-white rounded-[28px] sm:rounded-[32px] p-6 sm:p-8 shadow-2xl z-10 animate-in zoom-in-95 duration-200 border border-neutral-100 text-left">
+            {/* Close Button */}
+            <button
+              type="button"
+              onClick={() => setShowAuthModal(false)}
+              aria-label="Close modal"
+              className="absolute top-5 right-5 w-8 h-8 rounded-full bg-neutral-100 hover:bg-neutral-200 text-neutral-500 hover:text-neutral-800 flex items-center justify-center transition-colors cursor-pointer"
+            >
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+
+            {/* Header Icon */}
+            <div className="w-13 h-13 rounded-2xl bg-[#003be2]/10 text-[#003be2] flex items-center justify-center mb-4 shadow-2xs">
+              <svg
+                className="w-6 h-6"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                <circle cx="9" cy="7" r="4" />
+                <path d="M19 8v6m3-3h-6" />
+              </svg>
+            </div>
+
+            {/* Title & Description */}
+            <h3 className="font-black text-[21px] sm:text-[23px] text-[#18181b] tracking-tight leading-tight">
+              Sign In Required to Enroll
+            </h3>
+            <p className="text-[#646a78] text-[13px] sm:text-[13.5px] mt-2 leading-relaxed font-normal">
+              To enroll in this course and access video lessons, downloadable resources, and lifetime progress tracking, please sign in or create a ByteSpace account.
+            </p>
+
+            {/* Course Summary Pill */}
+            <div className="mt-4 p-3 sm:p-3.5 bg-[#f8f9fb] border border-[#e8eaee] rounded-2xl flex items-center gap-3">
+              <div className="w-13 h-13 rounded-xl overflow-hidden relative shrink-0 bg-neutral-200 border border-neutral-200">
+                <Image
+                  src={course?.image || "/course-1.png"}
+                  alt={course?.title || "Course thumbnail"}
+                  fill
+                  className="object-cover"
+                />
+              </div>
+              <div className="flex-1 min-w-0">
+                <span className="text-[9.5px] font-bold text-[#003be2] bg-[#003be2]/10 px-2 py-0.5 rounded-full uppercase tracking-wider">
+                  {course?.category || "Course"}
+                </span>
+                <h4 className="font-bold text-[12.5px] sm:text-[13px] text-[#18181b] truncate mt-0.5">
+                  {course?.title || "Build Digital Asset: A Comprehensive Guide"}
+                </h4>
+                <div className="flex items-center gap-1.5 mt-0.5 text-[11px] text-[#717682]">
+                  <span className="text-[#003be2] font-black text-[12px]">
+                    {course?.price ? `$${course.price}` : "$25"}
+                  </span>
+                  <span>•</span>
+                  <span className="truncate">by {course?.author || "ByteSpace Creator"}</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Actions */}
+            <div className="mt-6 flex flex-col gap-2.5">
+              <button
+                type="button"
+                onClick={() => {
+                  const currentPath = typeof window !== "undefined" ? window.location.pathname : `/courses/${courseId}`;
+                  router.push(`/signin?redirect=${encodeURIComponent(currentPath)}`);
+                }}
+                className="w-full bg-[#003be2] hover:bg-[#0032c2] text-white font-extrabold text-[13.5px] sm:text-[14px] py-3 rounded-full shadow-md hover:shadow-lg transition-all cursor-pointer flex items-center justify-center gap-2 active:scale-98"
+              >
+                <span>Sign In to Continue</span>
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                </svg>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  const currentPath = typeof window !== "undefined" ? window.location.pathname : `/courses/${courseId}`;
+                  router.push(`/register?redirect=${encodeURIComponent(currentPath)}`);
+                }}
+                className="w-full bg-[#cbfc01] hover:bg-[#bcf000] text-black font-extrabold text-[13.5px] sm:text-[14px] py-3 rounded-full shadow-xs transition-all cursor-pointer flex items-center justify-center gap-2 active:scale-98"
+              >
+                <span>Create Free Account</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setShowAuthModal(false)}
+                className="w-full text-center text-[#717682] hover:text-[#18181b] font-medium text-[12.5px] sm:text-[13px] py-1 transition-colors cursor-pointer mt-0.5"
+              >
+                Maybe Later, Continue Browsing
+              </button>
+            </div>
+          </div>
+        </div>,
+        document.body
+      )}
+
+      {/* 5. Share Course Modal */}
+      {mounted && showShareModal && createPortal(
+        <div className="fixed inset-0 z-[999999] flex items-center justify-center p-4">
+          {/* Backdrop with blur */}
+          <div
+            onClick={() => setShowShareModal(false)}
+            className="fixed inset-0 bg-black/65 backdrop-blur-xs transition-opacity duration-300 animate-in fade-in"
+            aria-hidden="true"
+          />
+
+          {/* Modal Container */}
+          <div className="relative w-full max-w-[480px] bg-white rounded-[28px] sm:rounded-[32px] p-6 sm:p-7 shadow-2xl z-10 animate-in zoom-in-95 duration-200 border border-neutral-100 text-left">
+            {/* Close Button */}
+            <button
+              type="button"
+              onClick={() => setShowShareModal(false)}
+              aria-label="Close share modal"
+              className="absolute top-5 right-5 w-8 h-8 rounded-full bg-neutral-100 hover:bg-neutral-200 text-neutral-500 hover:text-neutral-800 flex items-center justify-center transition-colors cursor-pointer"
+            >
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+
+            {/* Header Icon */}
+            <div className="w-12 h-12 rounded-2xl bg-[#cbfc01] text-black flex items-center justify-center mb-3.5 shadow-xs">
+              <svg
+                className="w-5 h-5 text-black"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.4"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <circle cx="18" cy="5" r="3" />
+                <circle cx="6" cy="12" r="3" />
+                <circle cx="18" cy="19" r="3" />
+                <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
+                <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
+              </svg>
+            </div>
+
+            {/* Title & Tagline */}
+            <h3 className="font-black text-[20px] sm:text-[22px] text-[#18181b] tracking-tight leading-tight">
+              Share This Course
+            </h3>
+            <p className="text-[#646a78] text-[12.5px] sm:text-[13px] mt-1.5 leading-relaxed font-normal">
+              Share this course with your friends, colleagues, or social network.
+            </p>
+
+            {/* Course Summary Card */}
+            <div className="mt-4 p-3 bg-[#f8f9fb] border border-[#e8eaee] rounded-2xl flex items-center gap-3">
+              <div className="w-13 h-13 rounded-xl overflow-hidden relative shrink-0 bg-neutral-200 border border-neutral-200">
+                <Image
+                  src={course?.image || "/course-1.png"}
+                  alt={course?.title || "Course"}
+                  fill
+                  className="object-cover"
+                />
+              </div>
+              <div className="flex-1 min-w-0">
+                <span className="text-[9.5px] font-bold text-[#003be2] bg-[#003be2]/10 px-2 py-0.5 rounded-full uppercase tracking-wider">
+                  {course?.category || "Course"}
+                </span>
+                <h4 className="font-bold text-[12.5px] sm:text-[13px] text-[#18181b] truncate mt-0.5">
+                  {course?.title || "Build Digital Asset: A Comprehensive Guide"}
+                </h4>
+                <div className="flex items-center gap-1.5 mt-0.5 text-[11px] text-[#717682]">
+                  <span className="text-[#003be2] font-black">{course?.price ? `$${course.price}` : "$25"}</span>
+                  <span>•</span>
+                  <span className="truncate">by {course?.author || "ByteSpace Creator"}</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Social Sharing Options */}
+            <div className="mt-5">
+              <span className="text-[11.5px] font-semibold text-[#717682] uppercase tracking-wider block mb-2.5">
+                Share via
+              </span>
+              <div className="grid grid-cols-4 sm:grid-cols-5 gap-2.5">
+                {/* WhatsApp */}
+                <a
+                  href={`https://api.whatsapp.com/send?text=${encodeURIComponent(`Check out this course on ByteSpace: ${course?.title || "Course"} - ${typeof window !== "undefined" ? window.location.href : ""}`)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex flex-col items-center gap-1.5 p-2 rounded-2xl hover:bg-neutral-50 transition-colors group text-center"
+                >
+                  <div className="w-11 h-11 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center group-hover:scale-105 transition-transform border border-emerald-200/60 shadow-2xs">
+                    <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                      <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z" />
+                    </svg>
+                  </div>
+                  <span className="text-[11px] font-medium text-[#4b4f58]">WhatsApp</span>
+                </a>
+
+                {/* X / Twitter */}
+                <a
+                  href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(`Check out "${course?.title || "this course"}" on @ByteSpace:`)}&url=${encodeURIComponent(typeof window !== "undefined" ? window.location.href : "")}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex flex-col items-center gap-1.5 p-2 rounded-2xl hover:bg-neutral-50 transition-colors group text-center"
+                >
+                  <div className="w-11 h-11 rounded-2xl bg-black text-white flex items-center justify-center group-hover:scale-105 transition-transform shadow-2xs">
+                    <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                    </svg>
+                  </div>
+                  <span className="text-[11px] font-medium text-[#4b4f58]">X</span>
+                </a>
+
+                {/* LinkedIn */}
+                <a
+                  href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(typeof window !== "undefined" ? window.location.href : "")}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex flex-col items-center gap-1.5 p-2 rounded-2xl hover:bg-neutral-50 transition-colors group text-center"
+                >
+                  <div className="w-11 h-11 rounded-2xl bg-sky-50 text-[#0077b5] flex items-center justify-center group-hover:scale-105 transition-transform border border-sky-200/60 shadow-2xs">
+                    <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                      <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+                    </svg>
+                  </div>
+                  <span className="text-[11px] font-medium text-[#4b4f58]">LinkedIn</span>
+                </a>
+
+                {/* Facebook */}
+                <a
+                  href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(typeof window !== "undefined" ? window.location.href : "")}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex flex-col items-center gap-1.5 p-2 rounded-2xl hover:bg-neutral-50 transition-colors group text-center"
+                >
+                  <div className="w-11 h-11 rounded-2xl bg-blue-50 text-[#1877f2] flex items-center justify-center group-hover:scale-105 transition-transform border border-blue-200/60 shadow-2xs">
+                    <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                      <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+                    </svg>
+                  </div>
+                  <span className="text-[11px] font-medium text-[#4b4f58]">Facebook</span>
+                </a>
+
+                {/* Native Device Share / More */}
+                <button
+                  type="button"
+                  onClick={handleNativeShare}
+                  className="flex flex-col items-center gap-1.5 p-2 rounded-2xl hover:bg-neutral-50 transition-colors group text-center cursor-pointer"
+                >
+                  <div className="w-11 h-11 rounded-2xl bg-[#003be2]/10 text-[#003be2] flex items-center justify-center group-hover:scale-105 transition-transform border border-[#003be2]/20 shadow-2xs">
+                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.2">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+                    </svg>
+                  </div>
+                  <span className="text-[11px] font-medium text-[#4b4f58]">More</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Copy Link Input Bar */}
+            <div className="mt-5 pt-4 border-t border-[#f0f1f4]">
+              <label className="text-[11.5px] font-semibold text-[#717682] uppercase tracking-wider block mb-2">
+                Or copy course link
+              </label>
+              <div className="flex items-center gap-2 bg-[#f8f9fb] border border-[#e8eaee] rounded-full p-1.5 pl-4 focus-within:border-[#003be2] transition-colors">
+                <input
+                  type="text"
+                  readOnly
+                  value={typeof window !== "undefined" ? window.location.href : ""}
+                  onFocus={(e) => e.target.select()}
+                  className="bg-transparent text-[12.5px] text-[#4b4f58] flex-1 outline-none truncate select-all"
+                />
+                <button
+                  type="button"
+                  onClick={handleCopyLink}
+                  className={`px-4 py-2 rounded-full font-bold text-[12px] transition-all cursor-pointer flex items-center gap-1.5 shrink-0 ${
+                    copiedLink
+                      ? "bg-emerald-600 text-white shadow-xs"
+                      : "bg-[#003be2] hover:bg-[#0032c2] text-white shadow-xs hover:shadow"
+                  }`}
+                >
+                  {copiedLink ? (
+                    <>
+                      <svg className="w-3.5 h-3.5 stroke-[3]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <polyline points="20 6 9 17 4 12" />
+                      </svg>
+                      <span>Copied!</span>
+                    </>
+                  ) : (
+                    <>
+                      <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+                      </svg>
+                      <span>Copy Link</span>
+                    </>
+                  )}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>,
+        document.body
+      )}
     </div>
   );
 }

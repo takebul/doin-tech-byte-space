@@ -52,9 +52,14 @@ export default function SignInSection() {
       }
 
 
+      const redirectUrl =
+        typeof window !== "undefined"
+          ? new URLSearchParams(window.location.search).get("redirect") || "/"
+          : "/";
+
       setSuccess("Signed in successfully! Redirecting...");
       setTimeout(() => {
-        router.push("/");
+        router.push(redirectUrl);
         router.refresh();
       }, 800);
     } catch (err) {

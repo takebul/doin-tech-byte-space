@@ -68,14 +68,14 @@ export default function CreatorProfilePage() {
         <div className="w-full max-w-[1240px] mx-auto px-6 sm:px-10 lg:px-12 pt-8 sm:pt-10 flex flex-col">
           {/* Creator Avatar & Info Row */}
           <div className="flex items-start gap-4 sm:gap-5">
-            {/* Avatar with rounded corners */}
-            <div className="w-18 h-18 sm:w-22 sm:h-22 rounded-[20px] sm:rounded-[24px] overflow-hidden relative shrink-0 shadow-lg border-2 border-white/20 bg-[#f89d9d]">
+            {/* Avatar with rounded corners (User's Photo) */}
+            <div className="w-18 h-18 sm:w-22 sm:h-22 rounded-[20px] sm:rounded-[24px] overflow-hidden relative shrink-0 shadow-xl border-2 border-white/30 bg-neutral-900 ring-4 ring-black/10">
               <Image
-                src={creator.avatar || "/creator-avatar-large.png"}
+                src="/user-creator-avatar.jpg"
                 alt={`${creator.name} Avatar`}
                 fill
                 priority
-                className="object-cover"
+                className="object-cover object-top"
               />
             </div>
 
