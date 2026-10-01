@@ -6,6 +6,7 @@ import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { fetchCourseById } from "@/lib/api";
+import { getCourseVideo } from "./courseVideos";
 
 function CourseSidebarCard({ course, enrolled, handleEnroll }) {
   return (
@@ -159,6 +160,11 @@ export default function CourseDetailsPage({ courseId = "1" }) {
   const [enrolled, setEnrolled] = useState(false);
   const [shared, setShared] = useState(false);
   const [reviewFilter, setReviewFilter] = useState("All rating");
+  const currentVideo = getCourseVideo(course, courseId);
+
+  useEffect(() => {
+    setIsPlaying(false);
+  }, [courseId]);
 
   useEffect(() => {
     let isMounted = true;
@@ -311,33 +317,95 @@ export default function CourseDetailsPage({ courseId = "1" }) {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
             <div className="lg:col-span-8">
               {/* Video Player Card (Sits completely on blue background) */}
-              <div className="relative w-full aspect-[16/10.5] rounded-[24px] sm:rounded-[28px] overflow-hidden shadow-2xl bg-neutral-100 border border-neutral-100 group">
-                <Image
-                  src="/course-video-player.png"
-                  alt="Course preview video"
-                  fill
-                  priority
-                  className="object-cover transition-transform duration-500 group-hover:scale-102"
-                />
+              <div className="relative w-full aspect-[16/10.5] rounded-[24px] sm:rounded-[28px] overflow-hidden shadow-2xl bg-neutral-900 border border-white/10 group">
+                {isPlaying ? (
+                  <div className="relative w-full h-full bg-black">
+                    <iframe
+                      key={currentVideo.id}
+                      src={`https://www.youtube.com/embed/${currentVideo.id}?autoplay=1&rel=0&modestbranding=1&enablejsapi=1`}
+                      title={currentVideo.title || course?.title || "Course Video Preview"}
+                      className="w-full h-full border-0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      allowFullScreen
+                    />
+                    {/* Small Close/Reset Video Button */}
+                    <button
+                      type="button"
+                      onClick={() => setIsPlaying(false)}
+                      title="Return to preview cover"
+                      className="absolute top-3 right-3 z-20 bg-black/75 hover:bg-black text-white/90 hover:text-white text-xs px-2.5 py-1 rounded-full backdrop-blur-md border border-white/20 transition-all flex items-center gap-1 cursor-pointer shadow-md"
+                    >
+                      <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                        <line x1="18" y1="6" x2="6" y2="18" />
+                        <line x1="6" y1="6" x2="18" y2="18" />
+                      </svg>
+                      <span>Close</span>
+                    </button>
+                  </div>
+                ) : (
+                  <div
+                    className="relative w-full h-full cursor-pointer"
+                    onClick={() => setIsPlaying(true)}
+                  >
+                    {/* YouTube High-Resolution Video Thumbnail with error fallback */}
+                    <img
+                      src={`https://img.youtube.com/vi/${currentVideo.id}/maxresdefault.jpg`}
+                      onError={(e) => {
+                        e.currentTarget.src = `https://img.youtube.com/vi/${currentVideo.id}/hqdefault.jpg`;
+                      }}
+                      alt={currentVideo.title || "Course preview video"}
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-102"
+                    />
 
-                {/* Play Button Overlay */}
-                <button
-                  type="button"
-                  onClick={() => setIsPlaying(!isPlaying)}
-                  aria-label="Play Course Video Preview"
-                  className="absolute inset-0 m-auto w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-white/70 backdrop-blur-md flex items-center justify-center shadow-lg transition-transform duration-200 group-hover:scale-110 active:scale-95 cursor-pointer"
-                >
-                  {isPlaying ? (
-                    <svg className="w-6 h-6 text-neutral-800" fill="currentColor" viewBox="0 0 24 24">
-                      <rect x="6" y="4" width="4" height="16" rx="1" />
-                      <rect x="14" y="4" width="4" height="16" rx="1" />
-                    </svg>
-                  ) : (
-                    <svg className="w-6 h-6 text-neutral-800 ml-1" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M8 5v14l11-7z" />
-                    </svg>
-                  )}
-                </button>
+                    {/* Gradient Overlay for legibility */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-black/40 pointer-events-none" />
+
+                    {/* Top Info Bar Badges */}
+                    <div className="absolute top-4 left-4 sm:top-5 sm:left-5 flex items-center gap-2 sm:gap-2.5 z-10 pointer-events-none">
+                      <span className="bg-[#cbfc01] text-black font-bold text-[10.5px] sm:text-[11px] px-3 py-1 rounded-full uppercase tracking-wider shadow-sm">
+                        Free Preview
+                      </span>
+                      <span className="bg-black/60 backdrop-blur-md text-white/90 text-[11px] sm:text-[11.5px] font-medium px-3 py-1 rounded-full border border-white/10 flex items-center gap-1.5 shadow-sm">
+                        <svg className="w-3.5 h-3.5 text-red-500 fill-current shrink-0" viewBox="0 0 24 24">
+                          <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z" />
+                        </svg>
+                        YouTube Lesson
+                      </span>
+                    </div>
+
+                    {/* Bottom Video Metadata */}
+                    <div className="absolute bottom-4 left-4 right-4 sm:bottom-5 sm:left-5 sm:right-5 z-10 pointer-events-none flex flex-col">
+                      <span className="text-[#cbfc01] font-semibold text-[11px] sm:text-[12px] uppercase tracking-wider">
+                        {currentVideo.channel}
+                      </span>
+                      <h3 className="text-white font-bold text-[14px] sm:text-[17px] leading-snug line-clamp-1 drop-shadow-md mt-0.5">
+                        {currentVideo.title}
+                      </h3>
+                      <p className="text-white/80 text-[11.5px] sm:text-[12px] font-normal mt-1 flex items-center gap-1.5">
+                        <svg className="w-3.5 h-3.5 text-[#cbfc01]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                          <circle cx="12" cy="12" r="10" />
+                          <polygon points="10 8 16 12 10 16 10 8" />
+                        </svg>
+                        <span>Click to watch lesson in high definition</span>
+                      </p>
+                    </div>
+
+                    {/* Play Button Overlay */}
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setIsPlaying(true);
+                      }}
+                      aria-label={`Play ${currentVideo.title} preview video`}
+                      className="absolute inset-0 m-auto w-14 h-14 sm:w-18 sm:h-18 rounded-full bg-white/90 hover:bg-white text-black shadow-2xl flex items-center justify-center transition-all duration-200 group-hover:scale-110 active:scale-95 cursor-pointer z-10"
+                    >
+                      <svg className="w-7 h-7 text-neutral-900 ml-1" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M8 5v14l11-7z" />
+                      </svg>
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
 
@@ -515,7 +583,17 @@ export default function CourseDetailsPage({ courseId = "1" }) {
                                     <span className="font-semibold text-neutral-400">{les.number}</span>
                                     <span className="font-medium text-[#2d313a]">{les.title}</span>
                                     {les.preview && (
-                                      <span className="bg-blue-50 text-[#0047ff] text-[10px] font-semibold px-2 py-0.5 rounded-full">Preview</span>
+                                      <button
+                                        type="button"
+                                        onClick={() => {
+                                          setIsPlaying(true);
+                                          window.scrollTo({ top: 0, behavior: "smooth" });
+                                        }}
+                                        title="Watch preview video"
+                                        className="bg-blue-50 hover:bg-blue-100 text-[#0047ff] text-[10px] font-semibold px-2 py-0.5 rounded-full cursor-pointer transition-colors"
+                                      >
+                                        Preview
+                                      </button>
                                     )}
                                   </div>
                                   <span className="text-[#8c919c] font-mono text-[11.5px] shrink-0 ml-2">{les.duration}</span>
